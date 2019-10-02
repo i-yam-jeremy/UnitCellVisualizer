@@ -6,17 +6,17 @@
 
         <link rel="stylesheet" type="text/css" href="crystal.css">
         <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
-        
+
         <script type="text/javascript" src="src/assert.js"></script>
         <script type="text/javascript" src="src/webgl-utils.js"></script>
-        
+
         <script type="text/javascript" src="src/gl-matrix/common.js"></script>
         <script type="text/javascript" src="src/gl-matrix/mat3.js"></script>
         <script type="text/javascript" src="src/gl-matrix/mat4.js"></script>
         <script type="text/javascript" src="src/gl-matrix/vec2.js"></script>
         <script type="text/javascript" src="src/gl-matrix/vec3.js"></script>
         <script type="text/javascript" src="src/gl-matrix/vec4.js"></script>
-        
+
         <script type="text/javascript" src="src/graphics/program.js"></script>
         <script type="text/javascript" src="src/graphics/shader.js"></script>
         <script type="text/javascript" src="src/graphics/obj-loader.js"></script>
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="src/graphics/stack.js"></script>
         <script type="text/javascript" src="src/graphics/camera.js"></script>
         <script type="text/javascript" src="src/graphics/angleAxis.js"></script>
-        
+
         <script type="text/javascript" src="src/lattices/unitCell.js"></script>
         <script type="text/javascript" src="src/lattices/simpleCubic.js"></script>
         <script type="text/javascript" src="src/lattices/layer.js"></script>
@@ -37,8 +37,9 @@
         <script type="text/javascript" src="src/lattices/CalciumFluoride.js"></script>
         <script type="text/javascript" src="src/lattices/legend.js"></script>
         <script type="text/javascript" src="src/lattices/hcp.js"></script>
+        <script type="text/javascript" src="src/lattices/hcpLayer.js"></script>
         <script type="text/javascript" src="src/lattices/faceCenteredLayer.js"></script>
-        
+
         <script type="text/javascript" src="src/UI/user.js"></script>
         <script type="text/javascript" src="src/UI/scene.js"></script>
         <script type="text/javascript" src="src/UI/crystal.js"></script>
@@ -84,7 +85,7 @@
                 User.setup($('#displaySelector'), $('#crystalSelector'));
 
                 $('#aboutText').hide();
-                $('#legendText').hide(); 
+                $('#legendText').hide();
                 tick();
             }
 
@@ -124,7 +125,7 @@
                              + "mouse + ctrl : zoom\n"
                              + "scroll : zoom\n"
                              + "shift (command on mac) + scroll: expand/contract\n"
-                             + "'e' : expand\n" 
+                             + "'e' : expand\n"
                              + "'c' : contract\n"
                              + "'i' : inspect unit cell makeup\n"
                              + "'t' : translucent view\n"
@@ -175,14 +176,14 @@
                     $('#simulation').hide();
                 }
             }
-            
+
             function changeCrystal(value) {
                 goToCrystal(value);
                 if($('#displaySelector').val() == 3) {
                     Scene.activateCoord($('displaySelector'), value);
                 }
             }
-            
+
             function showDisplay(value) {
                 if(value == "0") {
                     goToLattice();
@@ -200,17 +201,17 @@
                     Scene.toggleSingle();
                 }
             }
-            
+
             function goToLattice() {
                 Scene.goToLattice();
                 // change display selector back to lattice
                 $('#displaySelector').val('0');
             }
-            
+
             function amuse() {
                 window.open('https://www.inorganicventures.com/fun-chemists');
             }
-            
+
             function color() {
                 Scene.toggleColor();
             }
@@ -220,19 +221,19 @@
     </head>
 
     <body onload="webGLStart();">
-        
+
         <div id="simulation">
-            
+
              <div id="navigation">
                 <p>Lattice Structures</p>
             </div>
 
             <div id="cells">
                 <center>
-                    
+
                     <button id="jokes" onclick="amuse()">Amuse me</button>
                     <button id="instructions" onclick="instruct()" type="button">Key Controls</button>
-                    
+
                     <select id="crystalSelector" onchange="changeCrystal(value)">
                         <option value="-1" disabled>--- Select a Lattice ---</option>
                         <option value="0" selected>Simple Cubic</option>
@@ -240,9 +241,9 @@
                         <option value="2">Face-Centered Cubic</option>
                         <option value="3">Sodium Chloride</option>
                         <option value="4">Calcium Fluoride</option>
-<!--                        <option value="6">HCP</option>-->
+                        <option value="6">HCP</option>
                     </select>
-                    
+
                     <button id="legend" onclick="goToCrystal(5)" type="button">Legend</button>
                     <button id="about" onclick="about()" type="button">About...</button>
                 </center>
@@ -251,7 +252,7 @@
             <div id="container">
                 <center>
                     <canvas id="canvas" width="900px" height="675"></canvas>
-                    
+
                     <div id="legendText">
                         <center>
                             <p id="Ca"><strong>Calcium</strong></p>
@@ -264,7 +265,7 @@
                     <p id="controlButtons">
                         <button id="expand" onclick="expand()" type="button">Expand</button>
                         <button id="contract" onclick="contract()" type="button">Contract</button>
-                        
+
                         <select id="displaySelector" onchange="showDisplay(value)">
                             <option selected value="0">Lattice</option>
                             <option value="1">Translucency</option>
@@ -272,7 +273,7 @@
                             <option value="3">Coordination</option>
                             <option value="4">Single</option>
                         </select>
-                        
+
                         <button id="layer" onclick="layer()" type="button">Layering</button>
                         <button id="color" onclick="color()" type="button">Coloring</button>
                     </p>
@@ -283,15 +284,15 @@
     <center><div id="aboutText">
             <center><h1>About</h1></center>
             <p>
-                This is a Unit Cell Visualization simulation designed for use in 
-                CHEM 124/127 at Cal Poly. The simulation is designed with student 
-                interaction in mind, and provides many features to facilitate 
+                This is a Unit Cell Visualization simulation designed for use in
+                CHEM 124/127 at Cal Poly. The simulation is designed with student
+                interaction in mind, and provides many features to facilitate
                 student's understanding of concepts relative to lattice structures.
             </p>
             <p>
-                This is an open source project. It is developed in JavaScript, 
+                This is an open source project. It is developed in JavaScript,
                 using WebGL for all graphics. The project's code is open source
-                and currently resides 
+                and currently resides
                 <a href="https://github.com/smrtalec95/UnitCellVisualizer">on Github</a>.
             </p>
 
@@ -299,35 +300,35 @@
 
             <h2>Dr. Zahra Alghoul</h2>
             <p>
-                Initial project specifications, and Chemistry knowledge. Ensured the 
-                simulation's displays were accurate to their real world 
+                Initial project specifications, and Chemistry knowledge. Ensured the
+                simulation's displays were accurate to their real world
                 counterparts. Specified simulation features.
             </p>
 
             <h2>Dr. Zoe Wood</h2>
             <p>
-                Initial project specifications, and Graphics 
-                knowledge. Oversaw Corbin's work on the simulation as his senior 
-                project advisor, as well as oversaw Alec's work on the simulation 
+                Initial project specifications, and Graphics
+                knowledge. Oversaw Corbin's work on the simulation as his senior
+                project advisor, as well as oversaw Alec's work on the simulation
                 as his final project for CPE 471, Into to Computer Graphics.
             </p>
 
             <h2>Corbin Gruber</h2>
             <p>
-                Initial project design and implementation. Created initial design 
+                Initial project design and implementation. Created initial design
                 for the simulation. Implementation and testing. Created the SC, BCC,
-                and FCC simulations, along with expand, contract, rotations, 
-                zooming, translucency, inspection, and layering views. Original 
-                control schema involving primarily keystroke controls, along with 
+                and FCC simulations, along with expand, contract, rotations,
+                zooming, translucency, inspection, and layering views. Original
+                control schema involving primarily keystroke controls, along with
                 mouse movement for rotating the views.
             </p>
 
             <h2>Alec James</h2>
             <p>
-                Updated project design and implementation. Added on 
-                Sodium Chloride and Calcium Fluoride along with all features 
-                implemented by Corbin in the simple crystal types. Added on 
-                coordination number views for the simple crystal types. Updated 
+                Updated project design and implementation. Added on
+                Sodium Chloride and Calcium Fluoride along with all features
+                implemented by Corbin in the simple crystal types. Added on
+                coordination number views for the simple crystal types. Updated
                 control schema using buttons and dropdowns for easier navigation
                 and control, as well as improved zooming and expand/contract controls.
                 Added option to change lattice coloring to deactivated, colored
@@ -336,7 +337,7 @@
 
             <center><h1>Special thanks</h1></center>
             <p>
-                Thanks to Dr. Gregory Scott for putting the simulation under 
+                Thanks to Dr. Gregory Scott for putting the simulation under
                 Cal Poly's chemistry department site, and keeping it updated for
                 all future modifications.
             </p>

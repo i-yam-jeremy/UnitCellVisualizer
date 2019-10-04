@@ -1,15 +1,16 @@
 //the legend screen
 //pretends it's a crystal too
+import {vec3} from '../gl-matrix';
 
 function Legend(sphere, colors) {
     this.getCellLayers = function() {
         //legend has no layering
     }
-    
+
     this.drawInspect = function() {
         //legend has no inspect view
     }
-    
+
     this.draw = function(MV, prog, pos, alpha, center, bounds, ndx, splitAmt) {
         //todo
         MV.pushMatrix();
@@ -20,7 +21,7 @@ function Legend(sphere, colors) {
         this.drawCl(MV, prog);
         MV.popMatrix();
     };
-    
+
     this.drawCa = function(MV, prog) {
         MV.pushMatrix();
         MV.translate(vec3.fromValues(0, 8, 0));
@@ -30,7 +31,7 @@ function Legend(sphere, colors) {
         sphere.draw(prog);
         MV.popMatrix();
     };
-    
+
     this.drawF = function(MV, prog) {
         MV.pushMatrix();
         MV.translate(vec3.fromValues(0, 3, 0));
@@ -40,7 +41,7 @@ function Legend(sphere, colors) {
         sphere.draw(prog);
         MV.popMatrix();
     };
-    
+
     this.drawNa = function(MV, prog) {
         MV.pushMatrix();
         MV.translate(vec3.fromValues(0, -3, 0));
@@ -50,7 +51,7 @@ function Legend(sphere, colors) {
         sphere.draw(prog);
         MV.popMatrix();
     };
-    
+
     this.drawCl = function(MV, prog) {
         MV.pushMatrix();
         MV.translate(vec3.fromValues(0, -8, 0));
@@ -60,8 +61,10 @@ function Legend(sphere, colors) {
         sphere.draw(prog);
         MV.popMatrix();
     };
-    
+
     this.sphere = sphere;
     this.colors = colors;
     this.name = "Legend";
 }
+
+export {Legend};

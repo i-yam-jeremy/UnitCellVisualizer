@@ -18,6 +18,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
+import {glMatrix} from './common.js';
+
 /**
  * @class 2 Dimensional Vector
  * @name vec2
@@ -499,7 +501,7 @@ vec2.transformMat3 = function(out, a, m) {
  * @returns {vec2} out
  */
 vec2.transformMat4 = function(out, a, m) {
-    var x = a[0], 
+    var x = a[0],
         y = a[1];
     out[0] = m[0] * x + m[4] * y + m[12];
     out[1] = m[1] * x + m[5] * y + m[13];
@@ -530,7 +532,7 @@ vec2.forEach = (function() {
         if(!offset) {
             offset = 0;
         }
-        
+
         if(count) {
             l = Math.min((count * stride) + offset, a.length);
         } else {
@@ -542,7 +544,7 @@ vec2.forEach = (function() {
             fn(vec, vec, arg);
             a[i] = vec[0]; a[i+1] = vec[1];
         }
-        
+
         return a;
     };
 })();
@@ -581,3 +583,5 @@ vec2.equals = function (a, b) {
     return (Math.abs(a0 - b0) <= glMatrix.EPSILON*Math.max(1.0, Math.abs(a0), Math.abs(b0)) &&
             Math.abs(a1 - b1) <= glMatrix.EPSILON*Math.max(1.0, Math.abs(a1), Math.abs(b1)));
 };
+
+export {vec2};

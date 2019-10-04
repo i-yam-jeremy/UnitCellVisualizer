@@ -8,7 +8,7 @@ function CoordCheck(dispSelector) {
     this.checkedFace = false;
     this.checkedNaCl = false;
     this.checkedCaF2 = false;
-    
+
     this.checkCrystal = function(crystal) {
         var success;
         if(crystal == CrystalType.SIMPLE) {
@@ -35,14 +35,14 @@ function CoordCheck(dispSelector) {
                                            8, 4, this.checkedCaF2);
             success = this.checkedCaF2;
         }
-        
+
         if(!success) {
             alert('Sorry, that\'s incorrect...look closer at the lattice and try again!');
             dispSelector.val(0);
             Scene.goToLattice();
         }
     };
-    
+
     this.checked = function(crystal) {
         var out;
         if(crystal == CrystalType.SIMPLE) {
@@ -60,10 +60,10 @@ function CoordCheck(dispSelector) {
         else if(crystal == CrystalType.CaF2) {
             out = this.checkedCaF2;
         }
-        
+
         return out;
     }
-            
+
     this.verify = function(msg, correctVal, status) {
         var out = true;
         // don't ask again if they already answered correctly
@@ -73,10 +73,10 @@ function CoordCheck(dispSelector) {
                 out = false;;
             }
         }
-        
+
         return out;
     };
-            
+
     this.verifyIonic = function(msgCat, msgAn, correctCat, correctAn, status) {
         var out = true;
         if(!status) {
@@ -86,7 +86,9 @@ function CoordCheck(dispSelector) {
                 out = false;
             }
         }
-        
+
         return out;
     };
 }
+
+export {CoordCheck};

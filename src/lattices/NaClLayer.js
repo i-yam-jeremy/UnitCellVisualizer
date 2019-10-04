@@ -1,3 +1,5 @@
+import {vec3} from '../gl-matrix';
+
 // a more robust Layer
 // for NaCl
 function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1, color2, size2, sphere) {
@@ -11,7 +13,7 @@ function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1
     this.update = function() {
         if (curHeight - speed > restHeight) {
             curHeight -= speed;
-            
+
         } else {
             curHeight = restHeight;
             if(currSplitAmt > 0) {
@@ -29,7 +31,7 @@ function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1
 
         for (var i = 0; i < rows; i++) {
             for (var j = 0; j < cols; j++) {
-                
+
                 var pos = vec3.fromValues(offset[0] + j*2*xexpansion, curHeight*xexpansion, offset[2] + i*2*zexpansion);
 
                 MV.pushMatrix();
@@ -43,9 +45,9 @@ function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1
                 } else {
                     MV.translate(vec3.fromValues(-1 * currSplitAmt, 0, 0));
                 }
-                
+
                 MV.translate(pos);
-                
+
                 //even spheres get the first scale
                 if((i + j) % 2 == 0) {
                     MV.scale(size1);
@@ -54,7 +56,7 @@ function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1
                     MV.scale(size2);
                     gl.uniform3fv(prog.getHandle("kdFront"), color2);
                 }
-                
+
                 gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
                 sphere.draw(prog);
                 MV.popMatrix();
@@ -62,14 +64,14 @@ function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1
         }
 
     };
-    
+
     this.isAtRest = function() { return atRest; };
-    
+
     this.flip = function() {
         flip = !flip;
         calledFlip = true;
     }
-    
+
     this.notCalledFlip = function() {return !calledFlip;}
 
     var rows = rows;
@@ -94,3 +96,5 @@ function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1
     var splitAmt = 10;
     var currSplitAmt = 10;
 }
+
+export {NaClLayer};

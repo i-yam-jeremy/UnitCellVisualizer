@@ -1,7 +1,11 @@
+import {vec3} from '../gl-matrix';
+import {NaClLayer} from './NaClLayer.js';
+import {UnitCell, UnitCellPos} from './unitCell.js';
+
 function SodiumChloride(eighth, half, sphere, colors) {
-    
+
     this.prototype = new UnitCell(eighth, half, sphere, colors);
-    
+
     //only need to render a 3 by 3 area
     //reduces lag - this cell is more complex
     this.inDrawDist = function(bounds) {
@@ -9,37 +13,37 @@ function SodiumChloride(eighth, half, sphere, colors) {
                bounds[1] != UnitCellPos.MIN && bounds[1] != UnitCellPos.MAX &&
                bounds[2] != UnitCellPos.MIN && bounds[2] != UnitCellPos.MAX;
     }
-    
+
     this.draw = function(MV, prog, pos, alpha, center, bounds, ndx, color) {
         if(this.inDrawDist(bounds)) {
             this.drawUnit(MV, prog, pos, alpha, center, bounds, ndx, color);
         }
     }
-    
+
     this.drawUnit = function(MV, prog, pos, alpha, center, bounds, ndx, color) {
-        
+
         if(center && alpha < 1) {
             gl.uniform1f(prog.getHandle("alpha"), 1.0);
         }
         MV.pushMatrix();
         MV.translate(pos);
-        
+
         //cell generation code makes a 2 by 2 by 2 cell
         //need a 1 by 1 by 1 cell
         MV.scale(.51);
-        
+
         //draw:---
         this.drawClAtom(MV, prog, center, alpha, color);
-        
+
         if(bounds[0] != UnitCellPos.ONEB4MIN) {
             //draw: L--
             this.drawNaHalf(MV, prog, true, false, false, false, false, center, alpha, color);
-            
+
             if(bounds[1] != UnitCellPos.ONEB4MIN) {
                 //draw: LB-, -B-
                 this.drawClFourth(MV, prog, 270, false, 270, center, alpha, color);
                 this.drawNaHalf(MV, prog, false, true, true, false, false, center, alpha, color);
-                
+
                 if(bounds[2] != UnitCellPos.ONEB4MIN) {
                     //draw: LBF, L-F, -BF, --F
                     this.drawClFourth(MV, prog, 180, true, 0, center, alpha, color);
@@ -59,14 +63,14 @@ function SodiumChloride(eighth, half, sphere, colors) {
                 //draw: LT-, -T-
                 this.drawClFourth(MV, prog, 90, false, 270, center, alpha, color);
                 this.drawNaHalf(MV, prog, false, true, false, false, false, center, alpha, color);
-                
+
                 if(bounds[2] != UnitCellPos.ONEB4MIN) {
                     //draw: L-F, LTF, --F, -TF
                     this.drawNaHalf(MV, prog, false, false, true, true, true, center, alpha, color);
                     this.drawClFourth(MV, prog, 90, true, 0, center, alpha, color);
                     this.drawClFourth(MV, prog, 180, true, 0, center, alpha, color);
                     this.drawNaEighth(MV, prog, 180, true, center, alpha, color);
-                    
+
                 }
                 if(bounds[2] != UnitCellPos.ONEB4MAX) {
                     //draw: L-K, LTK, --K, -TK
@@ -74,27 +78,27 @@ function SodiumChloride(eighth, half, sphere, colors) {
                     this.drawClFourth(MV, prog, 90, false, 0, center, alpha, color);
                     this.drawClFourth(MV, prog, 180, false, 0, center, alpha, color);
                     this.drawNaEighth(MV, prog, 90, true, center, alpha, color);
-                    
+
                 }
             }
         }
-        
+
         if(bounds[0] != UnitCellPos.ONEB4MAX) {
             //draw: R--
             this.drawNaHalf(MV, prog, false, false, false, false, false, center, alpha, color);
-            
+
             if(bounds[1] != UnitCellPos.ONEB4MIN) {
                 //draw: -B-, RB-
                 this.drawNaHalf(MV, prog, false, true, true, false, false, center, alpha, color);
                 this.drawClFourth(MV, prog, 270, false, 90, center, alpha, color);
-                
+
                 if(bounds[2] != UnitCellPos.ONEB4MIN) {
                     //draw: -BF, --F, RBF, R-F
                     this.drawNaHalf(MV, prog, false, false, true, true, true, center, alpha, color);
                     this.drawClFourth(MV, prog, 270, true, 0, center, alpha, color);
                     this.drawClFourth(MV, prog, 0, true, 0, center, alpha, color);
                     this.drawNaEighth(MV, prog, 0, false, center, alpha, color);
-                    
+
                 }
                 if(bounds[2] != UnitCellPos.ONEB4MAX) {
                     //draw: -BK, --K, RBK, R-K
@@ -102,21 +106,21 @@ function SodiumChloride(eighth, half, sphere, colors) {
                     this.drawClFourth(MV, prog, 270, false, 0, center, alpha, color);
                     this.drawClFourth(MV, prog, 0, false, 0, center, alpha, color);
                     this.drawNaEighth(MV, prog, 270, false, center, alpha, color);
-                    
+
                 }
             }
             if(bounds[1] != UnitCellPos.ONEB4MAX) {
                 //draw: -T-, RT-
                 this.drawNaHalf(MV, prog, false, true, false, false, false, center, alpha, color);
                 this.drawClFourth(MV, prog, 90, false, 90, center, alpha, color);
-                
+
                 if(bounds[2] != UnitCellPos.ONEB4MIN) {
                     //draw: --F, -TF, R-F, RTF
                     this.drawNaHalf(MV, prog, false, false, true, true, true, center, alpha, color);
                     this.drawClFourth(MV, prog, 90, true, 0, center, alpha, color);
                     this.drawClFourth(MV, prog, 0, true, 0, center, alpha, color);
                     this.drawNaEighth(MV, prog, 270, true, center, alpha, color);
-                    
+
                 }
                 if(bounds[2] != UnitCellPos.ONEB4MAX) {
                     //draw: --K, -TK, R-K, RTK
@@ -127,13 +131,13 @@ function SodiumChloride(eighth, half, sphere, colors) {
                 }
             }
         }
-        
+
         MV.popMatrix();
         gl.uniform1f(prog.getHandle("alpha"), alpha); //reset alpha
     };
 
     this.drawClFourth = function(MV, prog, rot, flipX, rotY, center, alpha, color) {
-        
+
         if(color != 1) {
             if(alpha < 1 && !center) {
                 gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
@@ -166,11 +170,11 @@ function SodiumChloride(eighth, half, sphere, colors) {
             MV.popMatrix();
             MV.popMatrix();
         }
-        
+
     }
-    
+
     this.drawNaEighth = function(MV, prog, rot, flipY, center, alpha, color) {
-        
+
         if(color != 2) {
             if(alpha < 1 && !center) {
                 gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
@@ -192,9 +196,9 @@ function SodiumChloride(eighth, half, sphere, colors) {
             MV.popMatrix();
         }
     }
-    
+
     this.drawClAtom = function(MV, prog, center, alpha, color) {
-        
+
         if(color != 1) {
             if(alpha < 1 && !center) {
                 gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
@@ -209,7 +213,7 @@ function SodiumChloride(eighth, half, sphere, colors) {
             MV.popMatrix();
         }
     }
-    
+
     //pass param for which face to orient on
     //as well as another param that reflects it
     this.drawNaHalf = function(MV, prog, flipX, onY, flipY, onZ, flipZ, center, alpha, color) {
@@ -246,7 +250,7 @@ function SodiumChloride(eighth, half, sphere, colors) {
             MV.popMatrix();
         }
     }
-    
+
     //generates just one cell
     //not called, just here in case I need it
     this.drawCell = function(MV, prog) {
@@ -285,25 +289,25 @@ function SodiumChloride(eighth, half, sphere, colors) {
         //center Cl atom
         this.drawClAtom(MV, prog);
     }
-    
+
     this.drawInspect = function(MV, prog, scale, inspctExp) {
         // todo - fix to use inspect expansion
         var eps = .01;
-        
+
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
         gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
-        
+
         MV.pushMatrix();
         MV.scale(0.51);
-        
+
         for(var i = -6.5; i < 7; i+=4) {
-            
+
             MV.pushMatrix();
             MV.scale(scale);
             MV.translate(vec3.fromValues(-1.5, i, 0));
             MV.scale(1.3);
             gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-            
+
             //make the last sphere dark green
             if(i >= 5.5 - eps && i <= 5.5 + eps) {
                 gl.uniform3fv(prog.getHandle("kdFront"), colors["forestGreen"]);
@@ -313,9 +317,9 @@ function SodiumChloride(eighth, half, sphere, colors) {
         }
 
         gl.uniform3fv(prog.getHandle("kdFront"), colors["purple"]);
-        
+
         for(var i = -6.5; i < 7; i+=4) {
-        
+
             MV.pushMatrix();
             MV.scale(scale);
             MV.translate(vec3.fromValues(1.5, i, 0));
@@ -324,18 +328,18 @@ function SodiumChloride(eighth, half, sphere, colors) {
             sphere.draw(prog);
             MV.popMatrix();
         }
-        
+
         MV.popMatrix();
     }
-    
+
     this.drawCoord = function(MV, prog, scale) {
         MV.pushMatrix();
         MV.scale(scale);
-        
+
         // draw left coordination view (chlorine centered)
         MV.pushMatrix();
         MV.translate(vec3.fromValues(-4, 0, 0));
-        
+
         // draw center chlorine
         MV.pushMatrix();
         MV.scale(1.3);
@@ -343,12 +347,12 @@ function SodiumChloride(eighth, half, sphere, colors) {
         gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
         sphere.draw(prog);
         MV.popMatrix();
-        
+
         // draw surrounding sodiums
         MV.pushMatrix();
         MV.scale(.7);
         gl.uniform3fv(prog.getHandle("kdFront"), colors["purple"]);
-        
+
         for(var i = 0; i < 3; i++) {
             for(var j = -2.8; j < 5; j += 5.6) {
                 MV.pushMatrix();
@@ -367,13 +371,13 @@ function SodiumChloride(eighth, half, sphere, colors) {
             }
         }
         MV.popMatrix();
-        
+
         MV.popMatrix();
-        
+
         // draw right coordination (sodium centered)
         MV.pushMatrix();
         MV.translate(vec3.fromValues(4, 0, 0));
-        
+
         // draw center sodium
         MV.pushMatrix();
         MV.scale(.7);
@@ -381,12 +385,12 @@ function SodiumChloride(eighth, half, sphere, colors) {
         gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
         sphere.draw(prog);
         MV.popMatrix();
-        
+
         // draw surrounding chlorines
         MV.pushMatrix();
         MV.scale(1.3);
         gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
-        
+
         for(var i = 0; i < 3; i++) {
             for(var j = -1.5; j < 4; j += 3) {
                 MV.pushMatrix();
@@ -405,12 +409,12 @@ function SodiumChloride(eighth, half, sphere, colors) {
             }
         }
         MV.popMatrix();
-        
+
         MV.popMatrix();
-        
+
         MV.popMatrix();
     }
-    
+
     this.getCellLayers = function() {
         if(layers == null) {
             layers = new Array();
@@ -420,10 +424,10 @@ function SodiumChloride(eighth, half, sphere, colors) {
             layers.push(new NaClLayer(5, 5, 2, 1.0, 1.0, colors["purple"], .7, colors["green"], 1.3, sphere));
             layers.push(new NaClLayer(5, 5, 4, 1.0, 1.0, colors["green"], 1.3, colors["purple"], .7, sphere));
         }
-        
+
         return layers;
     }
-    
+
     this.drawSingle = function(MV, prog, scale) {
         MV.pushMatrix();
         MV.scale(scale);
@@ -434,7 +438,7 @@ function SodiumChloride(eighth, half, sphere, colors) {
                     MV.translate(vec3.fromValues(i, j, k));
                     if((i != 0 && j != 0 && k != 0) || (i == 0 && j == 0 && k != 0)
                         || (i == 0 && j != 0 && k == 0) || (i != 0 && j == 0 && k == 0)) {
-                        
+
                         gl.uniform3fv(prog.getHandle("kdFront"), colors["purple"]);
                         MV.scale(.7);
                     }
@@ -455,7 +459,9 @@ function SodiumChloride(eighth, half, sphere, colors) {
         }
         MV.popMatrix();
     }
-    
+
     this.name = "Sodium Chloride";
     var layers = null;
 }
+
+export {SodiumChloride};

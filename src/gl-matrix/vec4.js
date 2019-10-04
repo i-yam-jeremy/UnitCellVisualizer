@@ -18,6 +18,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. */
 
+import {glMatrix} from './common.js';
+
 /**
  * @class 4 Dimensional Vector
  * @name vec4
@@ -550,7 +552,7 @@ vec4.forEach = (function() {
         if(!offset) {
             offset = 0;
         }
-        
+
         if(count) {
             l = Math.min((count * stride) + offset, a.length);
         } else {
@@ -562,7 +564,7 @@ vec4.forEach = (function() {
             fn(vec, vec, arg);
             a[i] = vec[0]; a[i+1] = vec[1]; a[i+2] = vec[2]; a[i+3] = vec[3];
         }
-        
+
         return a;
     };
 })();
@@ -603,3 +605,5 @@ vec4.equals = function (a, b) {
             Math.abs(a2 - b2) <= glMatrix.EPSILON*Math.max(1.0, Math.abs(a2), Math.abs(b2)) &&
             Math.abs(a3 - b3) <= glMatrix.EPSILON*Math.max(1.0, Math.abs(a3), Math.abs(b3)));
 };
+
+export {vec4};

@@ -1,3 +1,5 @@
+import {vec3} from '../gl-matrix';
+
 function HCPLayer(rows, restHeight, xexpansion, zexpansion, color, sphere) {
 
     this.reset = function() {
@@ -53,3 +55,5 @@ function HCPLayer(rows, restHeight, xexpansion, zexpansion, color, sphere) {
     var offset = vec3.fromValues(-(rows-1)*xexpansion, restHeight,-(rows-1)*zexpansion);
     var sphere = sphere;
 }
+
+export {HCPLayer};

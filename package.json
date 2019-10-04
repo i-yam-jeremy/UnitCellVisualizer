@@ -1,0 +1,28 @@
+{
+  "name": "unitcellvisualizer",
+  "version": "1.0.0",
+  "description": "An open-source lattice structure and unit cell simulation.",
+  "private": true,
+  "scripts": {
+    "start": "webpack-dev-server --mode development --config webpack.config.js --open",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smrtalec95/UnitCellVisualizer.git"
+  },
+  "author": "smrtalec95",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/smrtalec95/UnitCellVisualizer/issues"
+  },
+  "homepage": "https://github.com/smrtalec95/UnitCellVisualizer#readme",
+  "devDependencies": {
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
+  },
+  "dependencies": {
+    "jquery": "^3.4.1"
+  }
+}

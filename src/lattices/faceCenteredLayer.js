@@ -1,3 +1,5 @@
+import {vec3} from '../gl-matrix';
+
 //FCC cell layering
 function FaceCenteredLayer(rows, cols, restHeight, xexpansion, zexpansion, sphere, even, color, color2) {
 
@@ -9,7 +11,7 @@ function FaceCenteredLayer(rows, cols, restHeight, xexpansion, zexpansion, spher
     this.update = function() {
         if (curHeight - speed > restHeight) {
             curHeight -= speed;
-            
+
         } else {
             curHeight = restHeight;
             atRest = true;
@@ -19,7 +21,7 @@ function FaceCenteredLayer(rows, cols, restHeight, xexpansion, zexpansion, spher
     this.draw = function(MV, prog) {
 
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
-            
+
         for(var i = 0; i < rows; i++) {
             for(var j = 0; j < cols; j++) {
                 var modVal = (even ? 0 : 1);
@@ -41,7 +43,7 @@ function FaceCenteredLayer(rows, cols, restHeight, xexpansion, zexpansion, spher
             }
         }
     };
-    
+
     this.isAtRest = function() { return atRest; };
 
     var rows = rows;
@@ -64,3 +66,5 @@ function FaceCenteredLayer(rows, cols, restHeight, xexpansion, zexpansion, spher
     var size2 = size2;
     var countTimes = 0;
 }
+
+export {FaceCenteredLayer};

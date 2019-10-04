@@ -1,3 +1,5 @@
+import {vec3} from '../gl-matrix';
+
 function Layer(rows, cols, restHeight, xexpansion, zexpansion, color, sphere) {
 
     this.reset = function() {
@@ -18,12 +20,12 @@ function Layer(rows, cols, restHeight, xexpansion, zexpansion, color, sphere) {
 
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
         gl.uniform3fv(prog.getHandle("kdFront"), color);
-        
-        
+
+
 
         for (var i = 0; i < rows; i++) {
             for (var j = 0; j < cols; j++) {
-                
+
                 var pos = vec3.fromValues(offset[0] + j*2*xexpansion, curHeight*xexpansion, offset[2] + i*2*zexpansion);
 
                 MV.pushMatrix();
@@ -35,7 +37,7 @@ function Layer(rows, cols, restHeight, xexpansion, zexpansion, color, sphere) {
         }
 
     };
-    
+
     this.isAtRest = function() { return atRest; };
 
     var rows = rows;
@@ -51,3 +53,5 @@ function Layer(rows, cols, restHeight, xexpansion, zexpansion, color, sphere) {
     var offset = vec3.fromValues(-(cols-1)*xexpansion, restHeight,-(rows-1)*zexpansion);
     var sphere = sphere;
 }
+
+export {Layer};

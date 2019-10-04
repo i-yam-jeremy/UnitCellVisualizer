@@ -1,24 +1,26 @@
+import {vertexShaderSrc, fragmentShaderSrc} from './shader.js';
+
 function Program(vertexShaderID, fragmentShaderID) {
-    
+
     // Returns the id of the vertex shader
     this.getVertexShaderFileName = function() { return vertexShaderID; }
-  
+
     // Returns the id of the fragment shader
     this.getFragmentShaderFileName = function() { return fragmentShaderID; }
-    
+
     // Return whether or not the ShaderProgram has been loaded yet
     this.isLoaded = function() { return loaded; }
-   
+
     // Returns the program ID of this ShaderProgram
     this.getID = function() { return pid; }
 
     // Load the ShaderProgram
     this.load = function() {
-        
+
         // Retrieve shaders from src
         var vertexShader = this.getShader(vertexShaderSrc, gl.VERTEX_SHADER)
         var fragmentShader = this.getShader(fragmentShaderSrc, gl.FRAGMENT_SHADER);
-        
+
         // Create shader's ProgramID
         this.pid = gl.createProgram();
 
@@ -28,31 +30,31 @@ function Program(vertexShaderID, fragmentShaderID) {
 
         // Link program
         gl.linkProgram(this.pid);
-        
+
         if (!gl.getProgramParameter(this.pid, gl.LINK_STATUS)) {
             console.log(gl.getProgramInfoLog(pid));
-            alert("Could not initialize shaders " + this.vertexShaderID 
+            alert("Could not initialize shaders " + this.vertexShaderID
                   + " and " + this.fragmentShaderID);
         }
 
         // Recognition of proper load
         loaded = true;
     }
-    
+
     // Retrieve a handle by name
     this.getHandle = function(handleName) {
         if (loaded) {
                 return handles[handleName];
         }
-        
+
         alert("ShaderProgram not loaded, handle undefined");
         return null;
     }
-    
+
 
     // Adds a handle to the shader such as attribute/uniform
     this.addHandle = function(handleName, type) {
-        
+
         if (!handles[handleName]){
             switch (type){
             case 'attribute':
@@ -78,22 +80,22 @@ function Program(vertexShaderID, fragmentShaderID) {
             }
         }
     }
-    
+
     // Grabs shader from source file
     this.getShader = function(shaderSrc, type) {
-       
+
         var shader = gl.createShader(type);
         gl.shaderSource(shader, shaderSrc);
         gl.compileShader(shader);
-       
+
         if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
             alert(gl.getShaderInfoLog(shader));
             return null;
         }
-        
+
         return shader;
     }
-   
+
     this.bind = function() {
         gl.useProgram(this.pid);
     }
@@ -101,7 +103,7 @@ function Program(vertexShaderID, fragmentShaderID) {
     this.unbind = function() {
         //gl.useProgram(0);
     }
-    
+
     var handles = {}
     var vertexShaderID = vertexShaderID;
     var fragmentShaderID = fragmentShaderID;
@@ -109,5 +111,4 @@ function Program(vertexShaderID, fragmentShaderID) {
     var pid;
 }
 
-    
-
+export {Program};

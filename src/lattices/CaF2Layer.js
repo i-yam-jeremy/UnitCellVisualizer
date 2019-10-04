@@ -1,3 +1,5 @@
+import {vec3} from '../gl-matrix';
+
 //Calcium fluoride cell layering
 function CaF2Layer(rows, cols, restHeight, xexpansion, zexpansion, sphere, atom, even, color) {
 
@@ -9,7 +11,7 @@ function CaF2Layer(rows, cols, restHeight, xexpansion, zexpansion, sphere, atom,
     this.update = function() {
         if (curHeight - speed > restHeight) {
             curHeight -= speed;
-            
+
         } else {
             curHeight = restHeight;
             atRest = true;
@@ -19,17 +21,17 @@ function CaF2Layer(rows, cols, restHeight, xexpansion, zexpansion, sphere, atom,
     this.draw = function(MV, prog) {
 
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
-        
+
         if(atom == "F") {
-            
+
             for(var i = 0; i < rows; i++) {
                 for(var j = 0; j < cols; j++) {
-                    
+
                     //draw a square of atoms at each index
                     var pos = vec3.fromValues(offset[0] + j*2*xexpansion, curHeight*xexpansion, offset[2] + i*2*zexpansion);
                     MV.pushMatrix();
                     MV.translate(pos);
-                    
+
                     for(var m = -1.25; m < 2; m += 2.5) {
                         for(var n = -1.25; n < 2; n += 2.5) {
                             MV.pushMatrix();
@@ -41,20 +43,20 @@ function CaF2Layer(rows, cols, restHeight, xexpansion, zexpansion, sphere, atom,
                             MV.popMatrix();
                         }
                     }
-                    
+
                     MV.popMatrix();
                 }
             }
-            
+
         } else if (atom == "Ca") {
-            
+
             for(var i = 0; i < rows; i++) {
                 for(var j = 0; j < cols; j++) {
                     var modVal = (even ? 0 : 1);
-                    
+
                     //different layers decide whether even atoms are rendered or odd atoms
                     if((i + j) % 2 == modVal) {
-                        
+
                         var pos = vec3.fromValues(offset[0] + j*2*xexpansion, curHeight*xexpansion, offset[2] + i*2*zexpansion);
                         MV.pushMatrix();
                         MV.translate(pos);
@@ -66,13 +68,13 @@ function CaF2Layer(rows, cols, restHeight, xexpansion, zexpansion, sphere, atom,
                     }
                 }
             }
-            
+
         } else {
             console.log("No layering exists for that atom");
         }
 
     };
-    
+
     this.isAtRest = function() { return atRest; };
 
     var rows = rows;
@@ -96,4 +98,4 @@ function CaF2Layer(rows, cols, restHeight, xexpansion, zexpansion, sphere, atom,
     var countTimes = 0;
 }
 
-
+export {CaF2Layer};

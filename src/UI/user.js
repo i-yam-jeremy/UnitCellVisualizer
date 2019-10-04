@@ -1,3 +1,5 @@
+import * as $ from 'jquery';
+
 var User = {
 
     mouseDown : false,
@@ -6,7 +8,7 @@ var User = {
     crystalSelector : null,
     dispSelector : null,
 
-    setup: function(dispSelector, crystalSelector) {
+    setup: function(dispSelector, crystalSelector, camera) {
         this.crystalSelector = crystalSelector;
         this.dispSelector = dispSelector;
         var canvas = document.getElementById("canvas");
@@ -32,7 +34,7 @@ var User = {
         };
 
         canvas.onwheel = function(e) {
-            
+
             if(e.shiftKey) {
                 //wheel up - expand
                 if(e.deltaY < 0) {
@@ -56,7 +58,7 @@ var User = {
         }
 
         $(document).keydown(function(e) {
-            
+
             shift = e.shiftKey;
 
             // deactivated key controls while I sort out the new UI
@@ -65,51 +67,51 @@ var User = {
 	        case 'E'.charCodeAt(0): // left
                     Scene.expand();
                     break;
-                        
+
 	        case 'C'.charCodeAt(0): // right
                     Scene.contract();
                     break;
-                        
+
 	        case 'T'.charCodeAt(0):
                     Scene.toggleTranslucency();
                     dispSelector.val('1');
                     break;
-                        
+
                 case 'L'.charCodeAt(0):
-                    
+
                     if(!shift) {
                         Scene.toggleLayers();
                     }
-                    
+
                     Scene.goToLattice();
                     dispSelector.val('0');
                     break;
-                    
+
                 case 'I'.charCodeAt(0):
                     Scene.toggleInspection();
                     dispSelector.val('2');
                     break;
-                    
+
                 case 'R'.charCodeAt(0) :
                     Scene.activateCoord(dispSelector, crystalSelector.val());
                     dispSelector.val('3');
                     break;
-                    
+
                 case 'N'.charCodeAt(0):
                     Scene.toggleColor();
                     break;
-                    
+
                 case 'S'.charCodeAt(0):
                     Scene.toggleSingle();
                     break;
-            
+
                 case 17:
                     User.ctrl = true;
                     break;
-//                
+//
 	        default: return; // exit this handler for other keys
             }
-            
+
             e.preventDefault(); // prevent the default action (scroll / move caret)
         });
 
@@ -124,3 +126,5 @@ var User = {
         });
     },
 };
+
+export {User};

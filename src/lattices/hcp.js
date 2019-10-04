@@ -1,3 +1,6 @@
+import {HCPLayer} from './hcpLayer.js';
+import {UnitCell, UnitCellPos} from './unitCell.js';
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -35,3 +38,5 @@ function HCP(eighth, sixth, half, sphere, colors) {
     var layers = null;
     this.name = "HCP";
 }
+
+export {HCP};

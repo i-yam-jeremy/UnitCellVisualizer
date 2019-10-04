@@ -5,222 +5,12 @@
         <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
         <link rel="stylesheet" type="text/css" href="crystal.css">
-        <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
 
-        <script type="text/javascript" src="src/assert.js"></script>
-        <script type="text/javascript" src="src/webgl-utils.js"></script>
-
-        <script type="text/javascript" src="src/gl-matrix/common.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/mat3.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/mat4.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/vec2.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/vec3.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/vec4.js"></script>
-
-        <script type="text/javascript" src="src/graphics/program.js"></script>
-        <script type="text/javascript" src="src/graphics/shader.js"></script>
-        <script type="text/javascript" src="src/graphics/obj-loader.js"></script>
-        <script type="text/javascript" src="src/graphics/shape.js"></script>
-        <script type="text/javascript" src="src/graphics/matrixStack.js"></script>
-        <script type="text/javascript" src="src/graphics/stack.js"></script>
-        <script type="text/javascript" src="src/graphics/camera.js"></script>
-        <script type="text/javascript" src="src/graphics/angleAxis.js"></script>
-
-        <script type="text/javascript" src="src/lattices/unitCell.js"></script>
-        <script type="text/javascript" src="src/lattices/simpleCubic.js"></script>
-        <script type="text/javascript" src="src/lattices/layer.js"></script>
-        <script type ="text/javascript" src="src/lattices/NaClLayer.js"></script>
-        <script type ="text/javascript" src="src/lattices/CaF2Layer.js"></script>
-        <script type="text/javascript" src="src/lattices/bodyCentered.js"></script>
-        <script type="text/javascript" src="src/lattices/faceCentered.js"></script>
-        <script type="text/javascript" src="src/lattices/sodiumChloride.js"></script>
-        <script type="text/javascript" src="src/lattices/CalciumFluoride.js"></script>
-        <script type="text/javascript" src="src/lattices/legend.js"></script>
-        <script type="text/javascript" src="src/lattices/hcp.js"></script>
-        <script type="text/javascript" src="src/lattices/hcpLayer.js"></script>
-        <script type="text/javascript" src="src/lattices/faceCenteredLayer.js"></script>
-
-        <script type="text/javascript" src="src/UI/user.js"></script>
-        <script type="text/javascript" src="src/UI/scene.js"></script>
-        <script type="text/javascript" src="src/UI/crystal.js"></script>
-        <script type="text/javascript" src="src/UI/CoordCheck.js"></script>
-
-        <script type="text/javascript">
-
-            var gl;
-            var prog;
-            var camera;
-            var sphere = new Shape();
-            var type = "";
-
-            function webGLStart() {
-
-                // Initialize scene
-                Scene.load("resources/", $('#displaySelector'));
-
-                initGL(); // sets up canvas element for webgl
-
-                gl.enable(gl.DEPTH_TEST);
-                gl.enable(gl.BLEND);
-                gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-                gl.enable(gl.CULL_FACE);
-
-
-                // Setup shader
-                prog = new Program("shader-vs", "shader-fs");
-                prog.load();
-                prog.bind();
-                prog.addHandle("vertPos", "attribute")
-                prog.addHandle("vertNor", "attribute");
-                prog.addHandle("P", "uniform");
-                prog.addHandle("MV", "uniform");
-                prog.addHandle("kdFront", "uniform");
-                prog.addHandle("alpha", "uniform");
-
-                // Setup camera
-                camera = new Camera();
-                camera.setAspect(1200.0 / 900.0);
-
-                // Setup key events
-                User.setup($('#displaySelector'), $('#crystalSelector'));
-
-                $('#aboutText').hide();
-                $('#legendText').hide();
-                tick();
-            }
-
-            function tick() {
-
-                requestAnimFrame(tick);
-
-                // configure gl viewport and clean buffers
-                gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-                gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-                gl.clearColor(1.0, 1.0, 1.0, 1.0);
-
-                var MV = new MatrixStack();
-                var P = new MatrixStack();
-
-                P.pushMatrix();
-                camera.applyProjectionMatrix(P);
-
-                MV.pushMatrix();
-                camera.applyViewMatrix(MV, type);
-
-                prog.bind();
-
-                gl.uniformMatrix4fv(prog.getHandle("P"), false, P.top());
-                MV.pushMatrix();
-                type = Scene.draw(MV, prog);
-                MV.popMatrix();
-
-                prog.unbind();
-
-                P.popMatrix();
-                MV.popMatrix();
-
-            }
-
-            var instructions = "mouse : rotate view\n"
-                             + "mouse + ctrl : zoom\n"
-                             + "scroll : zoom\n"
-                             + "shift (command on mac) + scroll: expand/contract\n"
-                             + "'e' : expand\n"
-                             + "'c' : contract\n"
-                             + "'i' : inspect unit cell makeup\n"
-                             + "'t' : translucent view\n"
-                             + "'r' : coordination view\n"
-                             + "'s' : single cell view\n"
-                             + "'n' : toggle cell coloring\n"
-                             + "'l' : toggle layer animation\n"
-                             + "shift + 'l' : lattice view\n";
-
-            function instruct() {
-                alert(instructions);
-            }
-
-            function expand() {
-                Scene.expand();
-            }
-
-            function contract() {
-                Scene.contract();
-            }
-
-            function layer() {
-                goToLattice();
-                Scene.toggleLayers();
-            }
-
-
-            function goToCrystal(crystalType) {
-                if(crystalType == 5) {
-                    $('#legendText').show();
-                    $('#crystalSelector').val('-1');
-                    $('#displaySelector').hide();
-                }
-                else {
-                    $('#legendText').hide();
-                    $('#displaySelector').show();
-                }
-                Scene.goToCrystal(crystalType);
-                document.getElementById("crystalType").innerHTML = Scene.getCrystalName();
-            }
-
-            function about() {
-                if ($('#aboutText').is(":visible")) {
-                    $('#aboutText').hide();
-                    $('#simulation').show();
-                } else {
-                    $('#aboutText').show();
-                    $('#simulation').hide();
-                }
-            }
-
-            function changeCrystal(value) {
-                goToCrystal(value);
-                if($('#displaySelector').val() == 3) {
-                    Scene.activateCoord($('displaySelector'), value);
-                }
-            }
-
-            function showDisplay(value) {
-                if(value == "0") {
-                    goToLattice();
-                }
-                else if(value == "1") {
-                    Scene.toggleTranslucency();
-                }
-                else if(value == "2") {
-                    Scene.toggleInspection();
-                }
-                else if(value == "3") {
-                    Scene.activateCoord($('#displaySelector'), $('#crystalSelector').val());
-                }
-                else if(value == "4") {
-                    Scene.toggleSingle();
-                }
-            }
-
-            function goToLattice() {
-                Scene.goToLattice();
-                // change display selector back to lattice
-                $('#displaySelector').val('0');
-            }
-
-            function amuse() {
-                window.open('https://www.inorganicventures.com/fun-chemists');
-            }
-
-            function color() {
-                Scene.toggleColor();
-            }
-
-        </script>
+        <script type="text/javascript" src="dist/main.js"></script>
 
     </head>
 
-    <body onload="webGLStart();">
+    <body>
 
         <div id="simulation">
 
@@ -231,10 +21,10 @@
             <div id="cells">
                 <center>
 
-                    <button id="jokes" onclick="amuse()">Amuse me</button>
-                    <button id="instructions" onclick="instruct()" type="button">Key Controls</button>
+                    <button id="jokes">Amuse me</button>
+                    <button id="instructions">Key Controls</button>
 
-                    <select id="crystalSelector" onchange="changeCrystal(value)">
+                    <select id="crystalSelector">
                         <option value="-1" disabled>--- Select a Lattice ---</option>
                         <option value="0" selected>Simple Cubic</option>
                         <option value="1">Body-Centered Cubic</option>
@@ -244,8 +34,8 @@
                         <option value="6">HCP</option>
                     </select>
 
-                    <button id="legend" onclick="goToCrystal(5)" type="button">Legend</button>
-                    <button id="about" onclick="about()" type="button">About...</button>
+                    <button id="legend">Legend</button>
+                    <button id="about">About...</button>
                 </center>
             </div>
 
@@ -263,10 +53,10 @@
                     </div>
                     <p id="crystalType">Simple Cubic</p>
                     <p id="controlButtons">
-                        <button id="expand" onclick="expand()" type="button">Expand</button>
-                        <button id="contract" onclick="contract()" type="button">Contract</button>
+                        <button id="expand">Expand</button>
+                        <button id="contract">Contract</button>
 
-                        <select id="displaySelector" onchange="showDisplay(value)">
+                        <select id="displaySelector">
                             <option selected value="0">Lattice</option>
                             <option value="1">Translucency</option>
                             <option value="2">Inspect</option>
@@ -274,8 +64,8 @@
                             <option value="4">Single</option>
                         </select>
 
-                        <button id="layer" onclick="layer()" type="button">Layering</button>
-                        <button id="color" onclick="color()" type="button">Coloring</button>
+                        <button id="layer">Layering</button>
+                        <button id="color">Coloring</button>
                     </p>
                 </center>
             </div>
@@ -341,7 +131,7 @@
                 Cal Poly's chemistry department site, and keeping it updated for
                 all future modifications.
             </p>
-            <button id="return" onclick="about()">Return</button>
+            <button id="return">Return</button>
         </div></center>
 
 </body>

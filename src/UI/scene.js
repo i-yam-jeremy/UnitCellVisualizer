@@ -1,4 +1,9 @@
-var Scene = {
+import {Shape} from '../graphics';
+import {CoordCheck} from './CoordCheck.js';
+import {Crystal, CrystalType} from './crystal.js';
+import {vec3} from '../gl-matrix';
+
+let Scene = {
 
     load : function(resourceDir, dispSelector) {
 
@@ -8,7 +13,7 @@ var Scene = {
         this.half.loadMesh(resourceDir + "half.obj");
 
         this.sphere.loadMesh(resourceDir + "sphere.obj");
-        
+
         this.sixth.loadMesh(resourceDir + "sixth.obj");
 
         // Setup colors
@@ -27,23 +32,23 @@ var Scene = {
         crystal = new Crystal(CrystalType.FACE, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
         crystal.init();
         this.crystals.push(crystal);
-        
+
         crystal = new Crystal(CrystalType.NaCl, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
         crystal.init();
         this.crystals.push(crystal);
-        
+
         crystal = new Crystal(CrystalType.CaF2, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
         crystal.init();
         this.crystals.push(crystal);
-        
+
         crystal = new Crystal(CrystalType.LEGEND, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
         crystal.init();
         this.crystals.push(crystal);
-        
+
         crystal = new Crystal(CrystalType.HCP, null, this.sixth, null, this.sphere, this.colors, dispSelector);
         crystal.init();
         this.crystals.push(crystal);
-        
+
         this.coordCheck = new CoordCheck(dispSelector);
     },
 
@@ -63,7 +68,7 @@ var Scene = {
         this.whichCrystal = (this.whichCrystal + 1) % this.crystals.length;
         this.crystals[this.whichCrystal].setDrawLayers();
     },
-    
+
     prevCrystal: function() {
         this.whichCrystal = (this.whichCrystal == 0 ? this.crystals.length - 1 : this.whichCrystal - 1);
         this.crystals[this.whichCrystal].setDrawLayers();
@@ -110,7 +115,7 @@ var Scene = {
             this.crystals[i].activateInspection();
         }
     },
-    
+
     activateCoord : function(dispSelector, crystal) {
         this.coordCheck.checkCrystal(crystal);
         if(this.coordCheck.checked(crystal)) {
@@ -122,20 +127,20 @@ var Scene = {
             this.goToLattice();
         }
     },
-    
+
     toggleColor : function() {
         this.color++;
         if(this.color == 3) {
             this.color = 0;
         }
     },
-    
+
     toggleSingle: function() {
         for (var i = 0; i < this.crystals.length; i++) {
             this.crystals[i].activateSingle();
         }
     },
-    
+
     goToLattice : function() {
         for(var i = 0; i < this.crystals.length; i++) {
             this.crystals[i].goToLattice();
@@ -145,7 +150,7 @@ var Scene = {
     isLoaded : function() {
         return this.eighth.isLoaded() && this.half.isLoaded() && this.sphere.isLoaded();
     },
-    
+
     goToCrystal : function(crystalType) {
         this.whichCrystal = crystalType;
         this.color = 0;
@@ -163,3 +168,5 @@ var Scene = {
     coordCheck : null,
     color : 0
 };
+
+export {Scene};

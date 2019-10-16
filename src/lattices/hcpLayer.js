@@ -1,59 +1,61 @@
 import {vec3} from '../gl-matrix';
 
-function HCPLayer(rows, restHeight, xexpansion, zexpansion, color, sphere) {
+class HCPLayer {
 
-    this.reset = function() {
-        curHeight = startHeight;
-        atRest = false;
-    };
+  constructor(layerType, restHeight, color, sphere) {
+    this.layerType = layerType;
+    this.restHeight = restHeight;
+    this.color = color;
+    this.sphere = sphere;
+    this.startHeight = 7.0;
+    this.curHeight = this.startHeight;
+    this.speed = 0.05;
+  }
 
-    this.update = function() {
-        if (curHeight - speed > restHeight) {
-            curHeight -= speed;
-        } else {
-            curHeight = restHeight;
-            atRest = true;
-        }
-    };
+  reset() {
+    this.curHeight = this.startHeight;
+    this.atRest = false;
+  }
 
-    this.draw = function(MV, prog) {
+  update() {
+    if (this.curHeight - this.speed > this.restHeight) {
+      this.curHeight -= this.speed;
+    } else {
+      this.curHeight = this.restHeight;
+      this.atRest = true;
+    }
+  }
 
-        gl.uniform1f(prog.getHandle("alpha"), 1.0);
-        gl.uniform3fv(prog.getHandle("kdFront"), color);
+  _drawSphere(MV, prog, pos) {
+    MV.pushMatrix();
+    MV.translate(pos);
+    gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
+    this.sphere.draw(prog);
+    MV.popMatrix();
+  }
 
-        const middleRow = (rows-1)/2;
+  draw(MV, prog) {
+    gl.uniform1f(prog.getHandle("alpha"), 1.0);
+    gl.uniform3fv(prog.getHandle("kdFront"), this.color);
 
-        for (var i = 0; i < rows; i++) {
-            const distFromMidRow = Math.abs(i-middleRow);
-            const rowLength = rows - distFromMidRow;
-            for (var j = 0; j < rowLength; j++) {
-                const rowOffset = distFromMidRow*xexpansion;
+    this._drawSphere(MV, prog, vec3.fromValues(0, this.curHeight, 0));
+    const radius = 2.0;
+    for (let i = 0; i < 6; i++) {
+      this._drawSphere(MV, prog,
+        vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), this.curHeight, radius*Math.sin(2*Math.PI*i/6)));
+    }
+  }
 
-                var pos = vec3.fromValues(offset[0] + j*2*xexpansion + rowOffset, curHeight*xexpansion, offset[2] + i*2*zexpansion);
+  isAtRest() {
+    return this.atRest;
+  }
 
-                MV.pushMatrix();
-                MV.translate(pos);
-                gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-                sphere.draw(prog);
-                MV.popMatrix();
-            }
-        }
 
-    };
-
-    this.isAtRest = function() { return atRest; };
-
-    var rows = rows;
-    var startHeight = 7.0;
-    var restHeight = restHeight;
-    var xexpansion = xexpansion;
-    var zexpansion = zexpansion;
-    var curHeight = 7.0;
-    var speed = .05;
-    var atRest = false;
-    var color = color;
-    var offset = vec3.fromValues(-(rows-1)*xexpansion, restHeight,-(rows-1)*zexpansion);
-    var sphere = sphere;
 }
+
+HCPLayer.LayerType = {
+  A: 'A',
+  B: 'B'
+};
 
 export {HCPLayer};

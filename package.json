@@ -4,7 +4,7 @@
   "description": "An open-source lattice structure and unit cell simulation.",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode development --config webpack.config.js --open",
+    "start": "webpack-dev-server --config './webpack.config.js'",
     "build": "webpack --mode production"
   },
   "repository": {

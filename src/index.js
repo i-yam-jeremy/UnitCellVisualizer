@@ -189,4 +189,6 @@ $(document).ready(() => {
   $('#color').click(color);
 
   webGLStart();
+
+  goToCrystal(6); // For faster development and testing of HCP.
 });

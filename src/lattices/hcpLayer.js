@@ -34,15 +34,29 @@ class HCPLayer {
     MV.popMatrix();
   }
 
+  _drawHexagon(MV, prog, offset, radius) {
+    let pos = vec3.fromValues(0,0,0);
+    this._drawSphere(MV, prog, vec3.add(pos, offset, vec3.fromValues(0, this.curHeight, 0)));
+    for (let i = 0; i < 6; i++) {
+      const internalOffset = vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), this.curHeight, radius*Math.sin(2*Math.PI*i/6));
+      this._drawSphere(MV, prog, vec3.add(pos, offset, internalOffset));
+    }
+  }
+
   draw(MV, prog) {
     gl.uniform1f(prog.getHandle("alpha"), 1.0);
     gl.uniform3fv(prog.getHandle("kdFront"), this.color);
 
-    this._drawSphere(MV, prog, vec3.fromValues(0, this.curHeight, 0));
     const radius = 2.0;
-    for (let i = 0; i < 6; i++) {
-      this._drawSphere(MV, prog,
-        vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), this.curHeight, radius*Math.sin(2*Math.PI*i/6)));
+
+    const layerOffset = this.layerType === HCPLayer.LayerType.A ?
+      vec3.fromValues(0.5*radius*Math.cos(2*Math.PI*1/4), 0, 0.5*radius*Math.sin(2*Math.PI*1/4)):
+      vec3.fromValues(0,0,0);
+    let pos = vec3.fromValues(0,0,0);
+
+    for (let i = 0; i < 3; i++) {
+      const hexagonCenter = vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3));
+      this._drawHexagon(MV, prog, vec3.add(pos, hexagonCenter, layerOffset), radius);
     }
   }
 
@@ -50,6 +64,10 @@ class HCPLayer {
     return this.atRest;
   }
 
+  rest() {
+    this.atRest = true;
+    this.curHeight = this.restHeight;
+  }
 
 }
 

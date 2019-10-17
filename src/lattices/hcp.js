@@ -31,12 +31,11 @@ function HCP(eighth, sixth, half, sphere, colors) {
     this.getCellLayers = function() {
         if(layers == null) {
             layers = new Array();
-            // FIXME layers don't quite line up hexagonally (look at https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Flampx.tugraz.at%2F~hadley%2Fss1%2Fcrystalstructure%2Fstructures%2Fhcp%2Fabab.png&f=1&nofb=1 and compare)
             layers.push(new HCPLayer(HCPLayer.LayerType.A, -3, colors["grey"], sphere));
-            layers.push(new HCPLayer(HCPLayer.LayerType.B, -1, colors["green"], sphere));
-            /*layers.push(new HCPLayer(5, 0.0, 1.0, 1.0, colors["grey"], sphere));
-            layers.push(new HCPLayer(4, 1.5, 1.0, 1.0, colors["green"], sphere));
-            layers.push(new HCPLayer(5, 3.0, 1.0, 1.0, colors["grey"], sphere));*/
+            layers.push(new HCPLayer(HCPLayer.LayerType.B, -1.5, colors["green"], sphere));
+            layers.push(new HCPLayer(HCPLayer.LayerType.A,  0, colors["grey"], sphere));
+            layers.push(new HCPLayer(HCPLayer.LayerType.B,  1.5, colors["green"], sphere));
+            layers.push(new HCPLayer(HCPLayer.LayerType.A,  3, colors["grey"], sphere));
         }
 
         return layers;

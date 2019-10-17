@@ -1,4 +1,4 @@
-import {vec3} from '../gl-matrix';
+import {vec3, mat4} from '../gl-matrix';
 import {HCPLayer} from './hcpLayer.js';
 import {UnitCell, UnitCellPos} from './unitCell.js';
 
@@ -15,6 +15,8 @@ function HCP(eighth, sixth, half, sphere, colors) {
     this.sixth = sixth;
     this.sphere = sphere;
     this.colors = colors;
+    this.expansion = 3.0;
+    this.frame = 0;
 
     this.draw = function(MV, prog) {
       /*MV.pushMatrix();
@@ -23,10 +25,11 @@ function HCP(eighth, sixth, half, sphere, colors) {
       gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
       sixth.draw(prog);
       MV.popMatrix();*/
+
       gl.uniform1f(prog.getHandle("alpha"), 1.0);
       gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
 
-      const radius = 2.0;
+      const radius = 2.0*this.expansion;
 
       const layerOffset = vec3.fromValues(0,0,0);
       let pos = vec3.fromValues(0,0,0);
@@ -41,13 +44,12 @@ function HCP(eighth, sixth, half, sphere, colors) {
       MV.pushMatrix();
       MV.translate(pos);
       MV.rotate(rotY, vec3.fromValues(0, 1, 0));
-      MV.rotate(rotZ, vec3.fromValues(0, 0, 1)); // FIXME
+      MV.rotate(rotZ, vec3.fromValues(0, 0, 1));
+      MV.translate(vec3.fromValues(-0.33*this.expansion, 0.33*this.expansion, 0));
       gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
       sixth.draw(prog);
       MV.popMatrix();
     }
-
-    // TODO find out how to rotate on local level (just turn sixth over, not with the whole bottom half flipped and facing the other way)
 
     this._drawSphere = function(MV, prog, pos) {
       this._drawSixth(MV, prog, 0, 0, pos);

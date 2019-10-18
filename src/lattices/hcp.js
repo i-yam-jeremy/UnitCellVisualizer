@@ -15,28 +15,30 @@ function HCP(eighth, sixth, half, sphere, colors) {
     this.sixth = sixth;
     this.sphere = sphere;
     this.colors = colors;
-    this.expansion = 3.0;
+    this.expansion = 1.0;
     this.frame = 0;
 
-    this.draw = function(MV, prog) {
-      /*MV.pushMatrix();
-      MV.rotate(240, vec3.fromValues(0, 1, 0));
-      gl.uniform3fv(prog.getHandle("kdFront"), colors['grey']);
-      gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-      sixth.draw(prog);
-      MV.popMatrix();*/
+    this.draw = function(MV, prog, _pos, alpha, center, bounds, ndx, color, expansion) {
+      this.expansion = expansion;
 
       gl.uniform1f(prog.getHandle("alpha"), 1.0);
-      gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
 
       const radius = 2.0*this.expansion;
+      const layerHeight = 1.5*expansion;
 
-      const layerOffset = vec3.fromValues(0,0,0);
-      let pos = vec3.fromValues(0,0,0);
+      for (let layerIndex = 0; layerIndex < 5; layerIndex++) {
+        const layerOffset = layerIndex%2 == 1 ?
+          vec3.fromValues(0.5*radius*Math.cos(2*Math.PI*1/4), (layerIndex-2)*layerHeight, 0.5*radius*Math.sin(2*Math.PI*1/4)):
+          vec3.fromValues(0,0,0);
+        let pos = vec3.fromValues(0,0,0);
 
-      for (let i = 0; i < 3; i++) {
-        const hexagonCenter = vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3));
-        this._drawHexagon(MV, prog, vec3.add(pos, hexagonCenter, layerOffset), radius);
+        const color = layerIndex%2 == 1 ? colors["grey"] : colors["green"];
+        gl.uniform3fv(prog.getHandle("kdFront"), color);
+
+        for (let i = 0; i < 3; i++) {
+          const hexagonCenter = vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3));
+          this._drawHexagon(MV, prog, vec3.add(pos, hexagonCenter, layerOffset), radius);
+        }
       }
     }
 
@@ -45,7 +47,7 @@ function HCP(eighth, sixth, half, sphere, colors) {
       MV.translate(pos);
       MV.rotate(rotY, vec3.fromValues(0, 1, 0));
       MV.rotate(rotZ, vec3.fromValues(0, 0, 1));
-      MV.translate(vec3.fromValues(-0.33*this.expansion, 0.33*this.expansion, 0));
+      MV.translate(vec3.fromValues(-0.33*(this.expansion-1), 0.33*(this.expansion-1), 0));
       gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
       sixth.draw(prog);
       MV.popMatrix();
@@ -78,8 +80,7 @@ function HCP(eighth, sixth, half, sphere, colors) {
         if(layers == null) {
             layers = new Array();
             layers.push(new HCPLayer(HCPLayer.LayerType.A, 7, colors["grey"], sphere));
-            /*layers.push(new HCPLayer(HCPLayer.LayerType.A, -3, colors["grey"], sphere));
-            layers.push(new HCPLayer(HCPLayer.LayerType.B, -1.5, colors["green"], sphere));
+            /*layers.push(new HCPLayer(HCPLayer.LayerType.B, -1.5, colors["green"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.A,  0, colors["grey"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.B,  1.5, colors["green"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.A,  3, colors["grey"], sphere));*/

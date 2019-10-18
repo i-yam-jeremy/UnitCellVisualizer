@@ -177,7 +177,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         MV.scale(scale);
 
         //this is one unit cell (ie what shows up when translucency is toggled)
-        unit.draw(MV, prog, vec3.fromValues(0,0,0), alpha, true, vec3.fromValues(2,2,2), vec3.fromValues(2,2,2), Scene.color);
+        unit.draw(MV, prog, vec3.fromValues(0,0,0), alpha, true, vec3.fromValues(2,2,2), vec3.fromValues(2,2,2), Scene.color, expansion);
 
         //used for expanding/contracting
         for (var i = 0; i < cells.length; i++) {
@@ -190,7 +190,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
             vec3.scale(v, v, expansion); // Adjust cell positioning by any expansion
 
             //this is the whole model as it appears on the screen
-            unit.draw(MV, prog, v, alpha, false, bounds, ndx, Scene.color);
+            unit.draw(MV, prog, v, alpha, false, bounds, ndx, Scene.color, expansion);
         }
 
         MV.popMatrix();
@@ -360,9 +360,9 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     }
 
     var type = type;
-    var rows = 5;
-    var cols = 5;
-    var height = 5;
+    var rows = type === CrystalType.HCP ? 0 : 5;
+    var cols = type === CrystalType.HCP ? 0 : 5;
+    var height = type === CrystalType.HCP ? 0 : 5;
     var scale = .1;
     var expansion = 1.0;
     var inspctExp = 0;

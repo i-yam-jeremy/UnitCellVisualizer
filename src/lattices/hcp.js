@@ -24,15 +24,15 @@ function HCP(eighth, sixth, half, sphere, colors) {
       gl.uniform1f(prog.getHandle("alpha"), 1.0);
 
       const radius = 2.0*this.expansion;
-      const layerHeight = 1.5*expansion;
+      const layerHeight = 1.5*this.expansion;
 
       for (let layerIndex = 0; layerIndex < 5; layerIndex++) {
-        const layerOffset = layerIndex%2 == 1 ?
+        const layerOffset = layerIndex%2 === 1 ?
           vec3.fromValues(0.5*radius*Math.cos(2*Math.PI*1/4), (layerIndex-2)*layerHeight, 0.5*radius*Math.sin(2*Math.PI*1/4)):
-          vec3.fromValues(0,0,0);
+          vec3.fromValues(0,(layerIndex-2)*layerHeight,0);
         let pos = vec3.fromValues(0,0,0);
 
-        const color = layerIndex%2 == 1 ? colors["grey"] : colors["green"];
+        const color = layerIndex%2 === 0 ? colors["grey"] : colors["green"];
         gl.uniform3fv(prog.getHandle("kdFront"), color);
 
         for (let i = 0; i < 3; i++) {

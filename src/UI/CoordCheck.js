@@ -1,4 +1,6 @@
 // checks that students determined a lattice's coordination number on their own
+import {CrystalType} from './crystal.js';
+import {Scene} from './scene.js';
 
 function CoordCheck(dispSelector) {
 

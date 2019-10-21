@@ -1,4 +1,5 @@
 import * as $ from 'jquery';
+import {Scene} from './scene.js';
 
 var User = {
 
@@ -59,7 +60,7 @@ var User = {
 
         $(document).keydown(function(e) {
 
-            shift = e.shiftKey;
+            window.shift = e.shiftKey;
 
             // deactivated key controls while I sort out the new UI
             switch(e.which) {

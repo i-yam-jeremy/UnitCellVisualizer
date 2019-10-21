@@ -1,3 +1,4 @@
+import {vec3} from '../gl-matrix';
 import {FaceCenteredLayer} from './faceCenteredLayer.js';
 import {UnitCell, UnitCellPos} from './unitCell.js';
 

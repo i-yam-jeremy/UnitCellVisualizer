@@ -23,23 +23,41 @@ function HCP(eighth, sixth, half, sphere, colors) {
 
       gl.uniform1f(prog.getHandle("alpha"), 1.0);
 
-      const radius = 2.0*this.expansion;
-      const layerHeight = 1.5*this.expansion;
-
-      for (let layerIndex = 0; layerIndex < 5; layerIndex++) {
-        const layerOffset = layerIndex%2 === 1 ?
-          vec3.fromValues(0.5*radius*Math.cos(2*Math.PI*1/4), (layerIndex-2)*layerHeight, 0.5*radius*Math.sin(2*Math.PI*1/4)):
-          vec3.fromValues(0,(layerIndex-2)*layerHeight,0);
-        let pos = vec3.fromValues(0,0,0);
-
-        const color = layerIndex%2 === 0 ? colors["grey"] : colors["green"];
-        gl.uniform3fv(prog.getHandle("kdFront"), color);
-
-        for (let i = 0; i < 3; i++) {
-          const hexagonCenter = vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3));
-          this._drawHexagon(MV, prog, vec3.add(pos, hexagonCenter, layerOffset), radius);
-        }
+      this._drawUnitCell(MV, prog, vec3.fromValues(0,0,0));
+      for (let i = 0; i < 6; i++) {
+        this._drawUnitCell(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),0,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
       }
+
+
+      this._drawUnitCell(MV, prog, vec3.fromValues(0,3,0));
+      for (let i = 0; i < 6; i++) {
+        this._drawUnitCell(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),3,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
+      }
+    }
+
+    this._drawUnitCell = function(MV, prog, pos) {
+      MV.pushMatrix();
+      MV.translate(pos);
+
+      gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
+      for (let i = 0; i < 3; i++) {
+        const radius = 1.0;
+        this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3)));
+      }
+
+      gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
+      for (let i = 0; i < 6; i++) {
+        const radius = 2.0;
+        this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+      }
+      for (let i = 0; i < 6; i++) {
+        const radius = 2.0;
+        this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+      }
+      this._drawHalfSphere(MV, prog, 180, vec3.fromValues(0, 1.5, 0));
+      this._drawHalfSphere(MV, prog, 0, vec3.fromValues(0, -1.5, 0));
+
+      MV.popMatrix();
     }
 
     this._drawSixth = function(MV, prog, rotY, rotZ, pos) {
@@ -53,27 +71,15 @@ function HCP(eighth, sixth, half, sphere, colors) {
       MV.popMatrix();
     }
 
-    this._drawSphere = function(MV, prog, pos) {
-      this._drawSixth(MV, prog, 0, 0, pos);
-      this._drawSixth(MV, prog, 120, 0, pos);
-      this._drawSixth(MV, prog, 240, 0, pos);
-      this._drawSixth(MV, prog, 0, 180, pos);
-      this._drawSixth(MV, prog, 120, 180, pos);
-      this._drawSixth(MV, prog, 240, 180, pos);
-      /*MV.pushMatrix();
-      MV.translate(pos);
-      gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-      sphere.draw(prog);
-      MV.popMatrix();*/
+    this._drawHalfSphere = function(MV, prog, rotZ, pos) {
+      this._drawSixth(MV, prog, 0, rotZ, pos);
+      this._drawSixth(MV, prog, 120, rotZ, pos);
+      this._drawSixth(MV, prog, 240, rotZ, pos);
     }
 
-    this._drawHexagon = function(MV, prog, offset, radius) {
-      let pos = vec3.fromValues(0,0,0);
-      this._drawSphere(MV, prog, vec3.add(pos, offset, vec3.fromValues(0, 0, 0)));
-      for (let i = 0; i < 6; i++) {
-        const internalOffset = vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 0, radius*Math.sin(2*Math.PI*i/6));
-        this._drawSphere(MV, prog, vec3.add(pos, offset, internalOffset));
-      }
+    this._drawSphere = function(MV, prog, pos) {
+      this._drawHalfSphere(MV, prog, 0, pos);
+      this._drawHalfSphere(MV, prog, 180, pos);
     }
 
     this.getCellLayers = function() {

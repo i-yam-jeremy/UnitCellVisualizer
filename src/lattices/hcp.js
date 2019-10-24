@@ -25,13 +25,13 @@ function HCP(eighth, sixth, half, sphere, colors) {
 
       this._drawUnitCell(MV, prog, vec3.fromValues(0,0,0));
       for (let i = 0; i < 6; i++) {
-        this._drawUnitCell(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),0,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
+        this._drawUnitCell(MV, prog, vec3.fromValues(expansion*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),0,expansion*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
       }
 
 
-      this._drawUnitCell(MV, prog, vec3.fromValues(0,3,0));
+      this._drawUnitCell(MV, prog, vec3.fromValues(0,expansion*3,0));
       for (let i = 0; i < 6; i++) {
-        this._drawUnitCell(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),3,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
+        this._drawUnitCell(MV, prog, vec3.fromValues(expansion*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),expansion*3,expansion*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
       }
     }
 
@@ -65,7 +65,6 @@ function HCP(eighth, sixth, half, sphere, colors) {
       MV.translate(pos);
       MV.rotate(rotY, vec3.fromValues(0, 1, 0));
       MV.rotate(rotZ, vec3.fromValues(0, 0, 1));
-      MV.translate(vec3.fromValues(-0.33*(this.expansion-1), 0.33*(this.expansion-1), 0));
       gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
       sixth.draw(prog);
       MV.popMatrix();

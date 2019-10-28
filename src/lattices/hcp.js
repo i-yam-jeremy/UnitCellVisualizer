@@ -23,19 +23,19 @@ function HCP(eighth, sixth, half, sphere, colors) {
 
       gl.uniform1f(prog.getHandle("alpha"), 1.0);
 
-      this._drawUnitCell(MV, prog, vec3.fromValues(0,0,0));
+      this._drawUnitCell(MV, prog, -1, 0, vec3.fromValues(0,0,0));
       for (let i = 0; i < 6; i++) {
-        this._drawUnitCell(MV, prog, vec3.fromValues(expansion*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),0,expansion*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
+        this._drawUnitCell(MV, prog, i, 0, vec3.fromValues(expansion*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),0,expansion*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
       }
 
 
-      this._drawUnitCell(MV, prog, vec3.fromValues(0,expansion*3,0));
+      this._drawUnitCell(MV, prog, -1, 1, vec3.fromValues(0,expansion*3,0));
       for (let i = 0; i < 6; i++) {
-        this._drawUnitCell(MV, prog, vec3.fromValues(expansion*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),expansion*3,expansion*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
+        this._drawUnitCell(MV, prog, i, 1, vec3.fromValues(expansion*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),expansion*3,expansion*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
       }
     }
 
-    this._drawUnitCell = function(MV, prog, pos) {
+    this._drawUnitCell = function(MV, prog, horizontalSixthIndex, level, pos) {
       MV.pushMatrix();
       MV.translate(pos);
 
@@ -47,15 +47,69 @@ function HCP(eighth, sixth, half, sphere, colors) {
 
       gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
       for (let i = 0; i < 6; i++) {
+        if (horizontalSixthIndex != -1 && (i+4)%6 == horizontalSixthIndex || (i+5)%6 == horizontalSixthIndex) {
+          continue;
+        }
         const radius = 2.0;
-        this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+        if ((i+3)%6 != horizontalSixthIndex && (i+6)%6 != horizontalSixthIndex) {
+          this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+          if (level == 1) {
+            this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+          }
+        }
+        else if ((i+3)%6 == horizontalSixthIndex && horizontalSixthIndex%2 == 0) {
+          this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+          if (level == 1) {
+            this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+          }
+          this._drawSixth(MV, prog, -60*i + 30, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+          if (level == 1) {
+            this._drawSixth(MV, prog, -60*i + -90, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+          }
+        }
+        else if ((i+6)%6 == horizontalSixthIndex && horizontalSixthIndex%2 == 1) {
+          this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+          if (level == 1) {
+            this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+          }
+        }
       }
       for (let i = 0; i < 6; i++) {
+        if (horizontalSixthIndex != -1 && (i+4)%6 == horizontalSixthIndex || (i+5)%6 == horizontalSixthIndex) {
+          continue;
+        }
         const radius = 2.0;
-        this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+        if ((i+3)%6 != horizontalSixthIndex && (i+6)%6 != horizontalSixthIndex) {
+          this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+          if (level == 0) {
+            this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+          }
+        }
+        else if ((i+3)%6 == horizontalSixthIndex && horizontalSixthIndex%2 == 0) {
+          this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+          if (level == 0) {
+            this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+          }
+          this._drawSixth(MV, prog, -60*i + -90, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+          if (level == 0) {
+            this._drawSixth(MV, prog, -60*i + 30, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+          }
+        }
+        else if ((i+6)%6 == horizontalSixthIndex && horizontalSixthIndex%2 == 1) {
+          this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+          if (level == 0) {
+            this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+          }
+        }
       }
       this._drawHalfSphere(MV, prog, 180, vec3.fromValues(0, 1.5, 0));
+      if (level == 1) {
+        this._drawHalfSphere(MV, prog, 0, vec3.fromValues(0, 1.5, 0));
+      }
       this._drawHalfSphere(MV, prog, 0, vec3.fromValues(0, -1.5, 0));
+      if (level == 0) {
+        this._drawHalfSphere(MV, prog, 180, vec3.fromValues(0, -1.5, 0));
+      }
 
       MV.popMatrix();
     }

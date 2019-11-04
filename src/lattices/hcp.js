@@ -8,6 +8,26 @@ import {UnitCell, UnitCellPos} from './unitCell.js';
  * and open the template in the editor.
  */
 
+/*
+  ring2Mask[i][j] represents the jth sixths on the top and bottom of the
+    unit cell with indexInRing=i in ring 2.
+  Iff ring2Mask[i][j] is 1, the sixth should be drawn.
+*/
+const ring2Mask = [
+  [0, 0, 0, 0, 1, 1],
+  [1, 0, 0, 0, 1, 1],
+  [1, 0, 0, 0, 0, 1],
+  [1, 1, 0, 0, 0, 1],
+  [1, 1, 0, 0, 0, 0],
+  [1, 1, 1, 0, 0, 0],
+  [0, 1, 1, 0, 0, 0],
+  [0, 1, 1, 1, 0, 0],
+  [0, 0, 1, 1, 0, 0],
+  [0, 0, 1, 1, 1, 0],
+  [0, 0, 0, 1, 1, 0],
+  [0, 0, 0, 1, 1, 1],
+];
+
 function HCP(eighth, sixth, half, sphere, colors) {
 
     this.prototype = new UnitCell(eighth, half, sphere, colors);
@@ -23,14 +43,16 @@ function HCP(eighth, sixth, half, sphere, colors) {
 
       //gl.uniform1f(prog.getHandle("alpha"), 1.0);
 
-      const horizontalSixthIndex = ndx.x;
-      const level = ndx.y;
-      this._drawUnitCell(MV, prog, horizontalSixthIndex, level, pos);
+      const indexInRing = ndx[0];
+      const level = ndx[1];
+      const ring = ndx[2];
+      this._drawUnitCell(MV, prog, indexInRing, level, ring, pos);
     }
 
-    this._drawUnitCell = function(MV, prog, horizontalSixthIndex, level, pos) {
+    this._drawUnitCell = function(MV, prog, indexInRing, level, ring, pos) {
       MV.pushMatrix();
       MV.translate(pos);
+
 
       gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
       for (let i = 0; i < 3; i++) {
@@ -40,10 +62,12 @@ function HCP(eighth, sixth, half, sphere, colors) {
 
       gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
       for (let i = 0; i < 6; i++) {
+        if (ring === 2 && ring2Mask[indexInRing][i] !== 1) continue;
         const radius = 2.0;
         this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
       }
       for (let i = 0; i < 6; i++) {
+        if (ring === 2 && ring2Mask[indexInRing][i] !== 1) continue;
         const radius = 2.0;
         this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
       }

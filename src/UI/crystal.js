@@ -297,8 +297,8 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
 
         if (type === CrystalType.HCP) {
           /*
-           ndx: [horizontalSixthIndex, level, ring]
-            - horizontalSixthIndex: the index in the ring, used to calculate rotation
+           ndx: [indexInRing, level, ring]
+            - indexInRing: the index in the ring
             - level: the height level
             - ring: the ring (innermost is 0, outermost is 2)
             */

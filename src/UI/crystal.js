@@ -296,7 +296,12 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         }
 
         if (type === CrystalType.HCP) {
-          // ndx: [horizontalSixthIndex, level, 0]
+          /*
+           ndx: [horizontalSixthIndex, level, ring]
+            - horizontalSixthIndex: the index in the ring, used to calculate rotation
+            - level: the height level
+            - ring: the ring (innermost is 0, outermost is 2)
+            */
           cells.push(new Cell(
             vec3.fromValues(1, 1, 1),
             vec4.fromValues(0, 0, 0, 1),
@@ -306,10 +311,17 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
             cells.push(new Cell(
               vec3.fromValues(1, 1, 1),
               vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),0,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1),
-              vec3.fromValues(i, 0, 0)));
+              vec3.fromValues(i, 0, 1)));
+          }
+          for (let i = 0; i < 12; i++) {
+            const scale = (i % 2 == 0) ? 2 : 1.73;
+            cells.push(new Cell(
+              vec3.fromValues(1, 1, 1),
+              vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/12),0,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/12), 1),
+              vec3.fromValues(i, 0, 2)));
           }
 
-          cells.push(new Cell(
+          /*cells.push(new Cell(
             vec3.fromValues(1, 1, 1),
             vec4.fromValues(0, 3, 0, 1),
             vec3.fromValues(-1, 1, 0)));
@@ -319,7 +331,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
               vec3.fromValues(1, 1, 1),
               vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),3,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1),
               vec3.fromValues(i, 1, 0)));
-          }
+          }*/
         }
     };
 

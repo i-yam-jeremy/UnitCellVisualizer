@@ -55,24 +55,32 @@ function HCP(eighth, sixth, half, sphere, colors) {
 
 
       gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
-      for (let i = 0; i < 3; i++) {
-        const radius = 1.0;
-        this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3)));
+      if (level !== -1 && level !== 2) {
+        for (let i = 0; i < 3; i++) {
+          const radius = 1.0;
+          this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3)));
+        }
       }
 
       gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
-      for (let i = 0; i < 6; i++) {
-        if (ring === 2 && ring2Mask[indexInRing][i] !== 1) continue;
-        const radius = 2.0;
-        this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+      if (level !== -1 && level !== 2) {
+        for (let i = 0; i < 6; i++) {
+          if (ring === 2 && ring2Mask[indexInRing][i] !== 1) continue;
+          const radius = 2.0;
+          this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+        }
+        for (let i = 0; i < 6; i++) {
+          if (ring === 2 && ring2Mask[indexInRing][i] !== 1) continue;
+          const radius = 2.0;
+          this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+        }
       }
-      for (let i = 0; i < 6; i++) {
-        if (ring === 2 && ring2Mask[indexInRing][i] !== 1) continue;
-        const radius = 2.0;
-        this._drawSixth(MV, prog, -60*i + 30, 0, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), -1.5, radius*Math.sin(2*Math.PI*i/6)));
+      if (level !== 2) {
+        this._drawHalfSphere(MV, prog, 180, vec3.fromValues(0, 1.5, 0));
       }
-      this._drawHalfSphere(MV, prog, 180, vec3.fromValues(0, 1.5, 0));
-      this._drawHalfSphere(MV, prog, 0, vec3.fromValues(0, -1.5, 0));
+      if (level !== -1) {
+        this._drawHalfSphere(MV, prog, 0, vec3.fromValues(0, -1.5, 0));
+      }
 
       MV.popMatrix();
     }

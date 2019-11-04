@@ -302,36 +302,26 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
             - level: the height level
             - ring: the ring (innermost is 0, outermost is 2)
             */
-          cells.push(new Cell(
-            vec3.fromValues(1, 1, 1),
-            vec4.fromValues(0, 0, 0, 1),
-            vec3.fromValues(-1, 0, 0)));
-
-          for (let i = 0; i < 6; i++) {
+          for (let level = -1; level <= 2; level++) {
             cells.push(new Cell(
               vec3.fromValues(1, 1, 1),
-              vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),0,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1),
-              vec3.fromValues(i, 0, 1)));
+              vec4.fromValues(0, level*3, 0, 1),
+              vec3.fromValues(-1, level, 0)));
+
+            for (let i = 0; i < 6; i++) {
+              cells.push(new Cell(
+                vec3.fromValues(1, 1, 1),
+                vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),level*3,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1),
+                vec3.fromValues(i, level, 1)));
+            }
+            for (let i = 0; i < 12; i++) {
+              const scale = (i % 2 == 0) ? 2 : 1.73;
+              cells.push(new Cell(
+                vec3.fromValues(1, 1, 1),
+                vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/12),level*3,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/12), 1),
+                vec3.fromValues(i, level, 2)));
+            }
           }
-          for (let i = 0; i < 12; i++) {
-            const scale = (i % 2 == 0) ? 2 : 1.73;
-            cells.push(new Cell(
-              vec3.fromValues(1, 1, 1),
-              vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/12),0,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/12), 1),
-              vec3.fromValues(i, 0, 2)));
-          }
-
-          /*cells.push(new Cell(
-            vec3.fromValues(1, 1, 1),
-            vec4.fromValues(0, 3, 0, 1),
-            vec3.fromValues(-1, 1, 0)));
-
-          for (let i = 0; i < 6; i++) {
-            cells.push(new Cell(
-              vec3.fromValues(1, 1, 1),
-              vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),3,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1),
-              vec3.fromValues(i, 1, 0)));
-          }*/
         }
     };
 

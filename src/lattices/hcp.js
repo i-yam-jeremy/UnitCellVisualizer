@@ -18,12 +18,15 @@ function HCP(eighth, sixth, half, sphere, colors) {
     this.expansion = 1.0;
     this.frame = 0;
 
-    this.draw = function(MV, prog, _pos, alpha, center, bounds, ndx, color, expansion) {
+    this.draw = function(MV, prog, pos, alpha, center, bounds, ndx, color, expansion) {
       this.expansion = expansion;
 
-      gl.uniform1f(prog.getHandle("alpha"), 1.0);
+      //gl.uniform1f(prog.getHandle("alpha"), 1.0);
 
-      this._drawUnitCell(MV, prog, -1, 0, vec3.fromValues(0,0,0));
+      const horizontalSixthIndex = ndx.x;
+      const level = ndx.y;
+      this._drawUnitCell(MV, prog, horizontalSixthIndex, level, pos);
+      /*this._drawUnitCell(MV, prog, -1, 0, vec3.fromValues(0,0,0));
       for (let i = 0; i < 6; i++) {
         this._drawUnitCell(MV, prog, i, 0, vec3.fromValues(expansion*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),0,expansion*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
       }
@@ -32,7 +35,7 @@ function HCP(eighth, sixth, half, sphere, colors) {
       this._drawUnitCell(MV, prog, -1, 1, vec3.fromValues(0,expansion*3,0));
       for (let i = 0; i < 6; i++) {
         this._drawUnitCell(MV, prog, i, 1, vec3.fromValues(expansion*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),expansion*3,expansion*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6)));
-      }
+      }*/
     }
 
     this._drawUnitCell = function(MV, prog, horizontalSixthIndex, level, pos) {

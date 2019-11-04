@@ -294,6 +294,33 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
                 }
             }
         }
+
+        if (type === CrystalType.HCP) {
+          // ndx: [horizontalSixthIndex, level, 0]
+          cells.push(new Cell(
+            vec3.fromValues(1, 1, 1),
+            vec4.fromValues(0, 0, 0, 1),
+            vec3.fromValues(-1, 0, 0)));
+
+          for (let i = 0; i < 6; i++) {
+            cells.push(new Cell(
+              vec3.fromValues(1, 1, 1),
+              vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),0,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1),
+              vec3.fromValues(i, 0, 0)));
+          }
+
+          cells.push(new Cell(
+            vec3.fromValues(1, 1, 1),
+            vec4.fromValues(0, 3, 0, 1),
+            vec3.fromValues(-1, 1, 0)));
+
+          for (let i = 0; i < 6; i++) {
+            cells.push(new Cell(
+              vec3.fromValues(1, 1, 1),
+              vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6),3,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1),
+              vec3.fromValues(i, 1, 0)));
+          }
+        }
     };
 
     this.calcCellDistance = function(m, v) {

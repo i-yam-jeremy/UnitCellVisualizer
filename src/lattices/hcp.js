@@ -37,12 +37,9 @@ function HCP(eighth, sixth, half, sphere, colors) {
     this.sixth = sixth;
     this.sphere = sphere;
     this.colors = colors;
-    this.expansion = 1.0;
     this.frame = 0;
 
-    this.draw = function(MV, prog, pos, alpha, center, bounds, ndx, color, expansion) {
-      this.expansion = expansion;
-
+    this.draw = function(MV, prog, pos, alpha, center, bounds, ndx, color) {
       const indexInRing = ndx[0];
       const level = ndx[1];
       const ring = ndx[2];

@@ -190,7 +190,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
             vec3.scale(v, v, expansion); // Adjust cell positioning by any expansion
 
             //this is the whole model as it appears on the screen
-            unit.draw(MV, prog, v, alpha, false, bounds, ndx, Scene.color, expansion);
+            unit.draw(MV, prog, v, alpha, false, bounds, ndx, Scene.color);
         }
 
         MV.popMatrix();

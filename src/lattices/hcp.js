@@ -1,6 +1,8 @@
 import {vec3, mat4} from '../gl-matrix';
 import {HCPLayer} from './hcpLayer.js';
 import {UnitCell, UnitCellPos} from './unitCell.js';
+import {Scene} from '../UI';
+import {HCPHighlightType} from './hcpHighlightType.js';
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -41,11 +43,27 @@ function HCP(eighth, sixth, half, sphere, colors) {
     this.draw = function(MV, prog, pos, alpha, center, bounds, ndx, color, expansion) {
       this.expansion = expansion;
 
-      //gl.uniform1f(prog.getHandle("alpha"), 1.0);
-
       const indexInRing = ndx[0];
       const level = ndx[1];
       const ring = ndx[2];
+
+      if (Scene.hcpHighlightType === HCPHighlightType.HORIZONTAL) {
+        if (level === 1 && (ring === 0 || (ring === 1 && indexInRing === 2))) {
+          gl.uniform1f(prog.getHandle("alpha"), 1.0);
+        }
+        else {
+          gl.uniform1f(prog.getHandle("alpha"), 0.25);
+        }
+      }
+      else if (Scene.hcpHighlightType === HCPHighlightType.VERTICAL) {
+        if (ring === 0 && (level === 0 || level === 1)) {
+          gl.uniform1f(prog.getHandle("alpha"), 1.0);
+        }
+        else {
+          gl.uniform1f(prog.getHandle("alpha"), 0.25);
+        }
+      }
+
       this._drawUnitCell(MV, prog, indexInRing, level, ring, pos);
     }
 

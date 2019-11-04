@@ -2,6 +2,7 @@ import {Shape} from '../graphics';
 import {CoordCheck} from './CoordCheck.js';
 import {Crystal, CrystalType} from './crystal.js';
 import {vec3} from '../gl-matrix';
+import {HCPHighlightType} from '../lattices/hcpHighlightType.js';
 
 let Scene = {
 
@@ -157,6 +158,10 @@ let Scene = {
         //this.crystals[this.whichCrystal].setDrawLayers();
     },
 
+    setHCPHighlightType : function(hcpHighlightType) {
+      this.hcpHighlightType = hcpHighlightType;
+    },
+
     whichCrystal : 0,
     eighth : new Shape(),
     sixth : new Shape(),
@@ -166,7 +171,8 @@ let Scene = {
     colors : {},
     isCoord : false,
     coordCheck : null,
-    color : 0
+    color : 0,
+    hcpHighlightType: HCPHighlightType.NONE,
 };
 
 export {Scene};

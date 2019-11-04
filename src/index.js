@@ -4,6 +4,7 @@ import {Camera, MatrixStack, Program, Shape} from './graphics';
 import * as Lattices from './lattices';
 import {Scene, User} from './UI';
 import {initGL} from './webgl-utils.js';
+import {HCPHighlightType} from './lattices/hcpHighlightType.js';
 
 var gl;
 var prog;
@@ -187,6 +188,10 @@ $(document).ready(() => {
   $('#displaySelector').change(() => showDisplay($('#displaySelector').val()));
   $('#layer').click(layer);
   $('#color').click(color);
+
+  $('#hcpHighlightTypeHorizontal').change(() => Scene.setHCPHighlightType(HCPHighlightType.HORIZONTAL));
+  $('#hcpHighlightTypeVertical').change(() => Scene.setHCPHighlightType(HCPHighlightType.VERTICAL));
+  $('#hcpHighlightTypeNone').change(() => Scene.setHCPHighlightType(HCPHighlightType.NONE));
 
   webGLStart();
 

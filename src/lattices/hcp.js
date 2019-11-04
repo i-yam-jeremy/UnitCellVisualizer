@@ -63,12 +63,14 @@ function HCP(eighth, sixth, half, sphere, colors) {
       }
 
       gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
-      if (level !== -1 && level !== 2) {
+      if (level !== 2) {
         for (let i = 0; i < 6; i++) {
           if (ring === 2 && ring2Mask[indexInRing][i] !== 1) continue;
           const radius = 2.0;
           this._drawSixth(MV, prog, -60*i + 150, 180, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
         }
+      }
+      if (level !== -1) {
         for (let i = 0; i < 6; i++) {
           if (ring === 2 && ring2Mask[indexInRing][i] !== 1) continue;
           const radius = 2.0;

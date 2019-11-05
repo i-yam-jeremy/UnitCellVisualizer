@@ -42,7 +42,7 @@
             <div id="container">
                 <center>
                     <canvas id="canvas" width="900px" height="675"></canvas>
-                    <div style="position: absolute; float: right; top: 33px; right: 30px; background-color: #ccc; border: 1px solid #444; border-radius: 5px;">
+                    <div id="hcpHighlightTypeSelector" style="position: absolute; float: right; top: 33px; right: 30px; background-color: #ccc; border: 1px solid #444; border-radius: 5px;">
                       <label style="display: flex; justify-content: space-between;">
                         <input id="hcpHighlightTypeHorizontal" type="radio" name="hcp-highlight-type" value="horizontal">
                         <img width="100" src="resources/hcp-horizontal-icon.png">
@@ -57,6 +57,41 @@
                           <input id="hcpHighlightTypeNone" type="radio" name="hcp-highlight-type" value="vertical">
                           <p style="padding: 10px; font-family: Arial; font-size: 20px;">None</p>
                       </label>
+                    </div>
+
+                    <div id="hcpRingAndLevelSelector" style="position: absolute; float: right; bottom: 130px; right: 30px; background-color: #ccc; border: 1px solid #444; border-radius: 5px; padding: 10px;">
+                      <div>
+                        <p><label>
+                          <input id="hcpShowRing-0" type="checkbox" checked>
+                          Ring 0
+                        </label></p>
+                        <p><label>
+                          <input id="hcpShowRing-1" type="checkbox" checked>
+                          Ring 1
+                        </label></p>
+                        <p><label>
+                          <input id="hcpShowRing-2" type="checkbox" checked>
+                          Ring 2
+                        </label></p>
+                      </div>
+                      <div style="border-top: 1px solid #444;">
+                        <p><label>
+                          <input id="hcpShowLevel--1" type="checkbox" checked>
+                          Level -1
+                        </label></p>
+                        <p><label>
+                          <input id="hcpShowLevel-0" type="checkbox" checked>
+                          Level 0
+                        </label></p>
+                        <p><label>
+                          <input id="hcpShowLevel-1" type="checkbox" checked>
+                          Level 1
+                        </label></p>
+                        <p><label>
+                          <input id="hcpShowLevel-2" type="checkbox" checked>
+                          Level 2
+                        </label></p>
+                      </div>
                     </div>
 
                     <div id="legendText">

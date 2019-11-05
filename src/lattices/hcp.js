@@ -44,6 +44,10 @@ function HCP(eighth, sixth, half, sphere, colors) {
       const level = ndx[1];
       const ring = ndx[2];
 
+      if (!Scene.hcpRingsVisible[ring] || !Scene.hcpLevelsVisible[level]) {
+        return;
+      }
+
       if (Scene.hcpHighlightType === HCPHighlightType.HORIZONTAL) {
         if (level === 1 && (ring === 0 || (ring === 1 && indexInRing === 2))) {
           gl.uniform1f(prog.getHandle("alpha"), 1.0);

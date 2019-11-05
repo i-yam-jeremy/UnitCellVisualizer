@@ -162,6 +162,14 @@ let Scene = {
       this.hcpHighlightType = hcpHighlightType;
     },
 
+    setHCPRingVisible : function(ring, visible) {
+      this.hcpRingsVisible[ring] = visible;
+    },
+
+    setHCPLevelVisible : function(level, visible) {
+      this.hcpLevelsVisible[level] = visible;
+    },
+
     whichCrystal : 0,
     eighth : new Shape(),
     sixth : new Shape(),
@@ -172,7 +180,9 @@ let Scene = {
     isCoord : false,
     coordCheck : null,
     color : 0,
-    hcpHighlightType: HCPHighlightType.NONE,
+    hcpHighlightType : HCPHighlightType.NONE,
+    hcpRingsVisible : {0: true, 1: true, 2: true},
+    hcpLevelsVisible : {'-1': true, 0: true, 1: true, 2: true},
 };
 
 export {Scene};

@@ -193,6 +193,15 @@ $(document).ready(() => {
   $('#hcpHighlightTypeVertical').change(() => Scene.setHCPHighlightType(HCPHighlightType.VERTICAL));
   $('#hcpHighlightTypeNone').change(() => Scene.setHCPHighlightType(HCPHighlightType.NONE));
 
+  $('#hcpShowRing-0').change(() => Scene.setHCPRingVisible(0, document.getElementById('hcpShowRing-0').checked));
+  $('#hcpShowRing-1').change(() => Scene.setHCPRingVisible(1, document.getElementById('hcpShowRing-1').checked));
+  $('#hcpShowRing-2').change(() => Scene.setHCPRingVisible(2, document.getElementById('hcpShowRing-2').checked));
+
+  $('#hcpShowLevel--1').change(() => Scene.setHCPLevelVisible(-1, document.getElementById('hcpShowLevel--1').checked));
+  $('#hcpShowLevel-0').change(() => Scene.setHCPLevelVisible(0, document.getElementById('hcpShowLevel-0').checked));
+  $('#hcpShowLevel-1').change(() => Scene.setHCPLevelVisible(1, document.getElementById('hcpShowLevel-1').checked));
+  $('#hcpShowLevel-2').change(() => Scene.setHCPLevelVisible(2, document.getElementById('hcpShowLevel-2').checked));
+
   webGLStart();
 
   goToCrystal(6); // For faster development and testing of HCP.

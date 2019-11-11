@@ -42,7 +42,7 @@ class HCPLayer {
     }
   }
 
-  draw(MV, prog) {
+  draw(MV, prog, expansion) {
     gl.uniform1f(prog.getHandle("alpha"), 1.0);
     gl.uniform3fv(prog.getHandle("kdFront"), this.color);
 

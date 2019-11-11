@@ -3,6 +3,7 @@ import {CoordCheck} from './CoordCheck.js';
 import {Crystal, CrystalType} from './crystal.js';
 import {vec3} from '../gl-matrix';
 import {HCPHighlightType} from '../lattices/hcpHighlightType.js';
+import {ViewMode} from './viewMode.js';
 
 let Scene = {
 
@@ -170,6 +171,10 @@ let Scene = {
       this.hcpLevelsVisible[level] = visible;
     },
 
+    setViewMode : function(viewMode) {
+      this.viewMode = viewMode;
+    },
+
     whichCrystal : 0,
     eighth : new Shape(),
     sixth : new Shape(),
@@ -183,6 +188,7 @@ let Scene = {
     hcpHighlightType : HCPHighlightType.NONE,
     hcpRingsVisible : {0: true, 1: true, 2: true},
     hcpLevelsVisible : {'-1': true, 0: true, 1: true, 2: true},
+    viewMode : ViewMode.LAYER,
 };
 
 export {Scene};

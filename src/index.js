@@ -5,6 +5,7 @@ import * as Lattices from './lattices';
 import {Scene, User} from './UI';
 import {initGL} from './webgl-utils.js';
 import {HCPHighlightType} from './lattices/hcpHighlightType.js';
+import {ViewMode} from './UI/viewMode.js';
 
 var gl;
 var prog;
@@ -201,6 +202,9 @@ $(document).ready(() => {
   $('#hcpShowLevel-0').change(() => Scene.setHCPLevelVisible(0, document.getElementById('hcpShowLevel-0').checked));
   $('#hcpShowLevel-1').change(() => Scene.setHCPLevelVisible(1, document.getElementById('hcpShowLevel-1').checked));
   $('#hcpShowLevel-2').change(() => Scene.setHCPLevelVisible(2, document.getElementById('hcpShowLevel-2').checked));
+
+  $('#unitCellViewMode').change(() => Scene.setViewMode(ViewMode.UNIT_CELL));
+  $('#layerViewMode').change(() => Scene.setViewMode(ViewMode.LAYER));
 
   webGLStart();
 

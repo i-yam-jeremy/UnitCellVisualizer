@@ -1,6 +1,7 @@
 import {vec3, vec4} from '../gl-matrix';
 import {SimpleCubic, BodyCentered, FaceCentered, SodiumChloride, CalciumFluoride, Legend, HCP, UnitCellPos} from '../lattices';
 import {Scene} from './scene.js';
+import {ViewMode} from './viewMode.js';
 
 var CrystalType = {SIMPLE : 0, BODY : 1, FACE : 2 , NaCl : 3, CaF2: 4, LEGEND : 5, HCP : 6};
 
@@ -55,7 +56,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
             this.drawCoordView(MV, prog);
         }
         // legend has no layering animation for obvious reasons
-        else if (layersDraw && type != CrystalType.LEGEND) {
+        else if (Scene.viewMode === ViewMode.LAYER && type != CrystalType.LEGEND) {
             this.drawLayers(MV, prog);
         }
         else if(drawSingle && type != CrystalType.LEGEND) {

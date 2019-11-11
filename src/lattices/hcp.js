@@ -131,10 +131,10 @@ function HCP(eighth, sixth, half, sphere, colors) {
         if(layers == null) {
             layers = new Array();
             layers.push(new HCPLayer(HCPLayer.LayerType.A, 7, colors["grey"], sphere));
-            /*layers.push(new HCPLayer(HCPLayer.LayerType.B, -1.5, colors["green"], sphere));
+            layers.push(new HCPLayer(HCPLayer.LayerType.B, -1.5, colors["green"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.A,  0, colors["grey"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.B,  1.5, colors["green"], sphere));
-            layers.push(new HCPLayer(HCPLayer.LayerType.A,  3, colors["grey"], sphere));*/
+            layers.push(new HCPLayer(HCPLayer.LayerType.A,  3, colors["grey"], sphere));
         }
 
         return layers;

@@ -54,9 +54,21 @@ class HCPLayer {
       vec3.fromValues(0,0,0);
     let pos = vec3.fromValues(0,0,0);
 
-    for (let i = 0; i < 3; i++) {
-      const hexagonCenter = vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3));
-      this._drawHexagon(MV, prog, vec3.add(pos, hexagonCenter, layerOffset), radius);
+    for (let i = 0; i < 9; i++) {
+      if (i % 2 == 0) {
+        const count = (i == 0 || i == 8) ? 1 : 7;
+        const countOffset = Math.floor(count/2);
+        for (let j = 0; j < count; j++) {
+          this._drawSphere(MV, prog, vec3.fromValues(2*(j-countOffset), this.curHeight, 1.73*(i-2)));
+        }
+      }
+      else {
+        const count = (i == 1 || i == 7) ? 4 : 6;
+        const countOffset = Math.floor(count/2);
+        for (let j = 0; j < count; j++) {
+          this._drawSphere(MV, prog, vec3.fromValues(2*(j-countOffset) + 1, this.curHeight, 1.73*(i-2)));
+        }
+      }
     }
   }
 

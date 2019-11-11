@@ -177,7 +177,9 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         MV.scale(scale);
 
         //this is one unit cell (ie what shows up when translucency is toggled)
-        unit.draw(MV, prog, vec3.fromValues(0,0,0), alpha, true, vec3.fromValues(2,2,2), vec3.fromValues(2,2,2), Scene.color, expansion);
+        if (type !== CrystalType.HCP) {
+          unit.draw(MV, prog, vec3.fromValues(0,0,0), alpha, true, vec3.fromValues(2,2,2), vec3.fromValues(2,2,2), Scene.color);
+        }
 
         //used for expanding/contracting
         for (var i = 0; i < cells.length; i++) {

@@ -38,7 +38,7 @@ class HCPLayer {
     for (let i = 0; i < 3; i++) {
       const radius = 1.0;
       let v = vec3.fromValues(pos[0],pos[1],pos[2]);
-      this._drawSphere(MV, prog, vec3.add(v, v, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3))));
+      this._drawSphere(MV, prog, vec3.add(v, v, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6))));
     }
   }
 
@@ -48,7 +48,7 @@ class HCPLayer {
 
     if (this.layerType === HCPLayer.LayerType.A) {
       MV.pushMatrix();
-      MV.translate(vec3.fromValues(0,0,-3));
+      MV.translate(vec3.fromValues(0,0,-3.5));
       for (let i = 0; i < 9; i++) {
         if (i % 2 == 0) {
           const count = (i == 0 || i == 8) ? 1 : 7;

@@ -77,7 +77,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
 
     this.updateLayerExpansion = function() {
       if (!layers) return;
-      let expan = expansion;
+      let expan = (expansion-1);
       for (let i = 0; i < layers.length; i++) {
         const layer = layers[i];
         // Assumes layer.restHeight < layer.startHeight
@@ -91,10 +91,12 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
                       console.log(expansion, layerModeMaxExpansion);
         if (inspecting && inspctExp < 0.6) {
             inspctExp += .2;
-        } else if ((Scene.viewMode === ViewMode.UNIT_CELL && expansion < 4.0) ||
-                   (Scene.viewMode === ViewMode.LAYER && expansion < layerModeMaxExpansion)) {
-                expansion += .2;
-                this.updateLayerExpansion()
+        } else if (Scene.viewMode === ViewMode.UNIT_CELL && expansion < 4.0) {
+          expansion += .2;
+          this.updateLayerExpansion()
+        } else if (Scene.viewMode === ViewMode.LAYER && expansion < layerModeMaxExpansion) {
+          expansion += .4;
+          this.updateLayerExpansion()
         }
     };
 

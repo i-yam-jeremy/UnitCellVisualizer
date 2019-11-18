@@ -3,20 +3,21 @@ import {vec3} from '../gl-matrix';
 function Layer(rows, cols, restHeight, xexpansion, zexpansion, color, sphere) {
 
     this.reset = function() {
-        curHeight = startHeight;
+        curHeight = this.startHeight;
         atRest = false;
     };
 
-    this.update = function() {
-        if (curHeight - speed > restHeight) {
-            curHeight -= speed;
-        } else {
-            curHeight = restHeight;
-            atRest = true;
-        }
+    this.update = function(t, i) {
+      this.hidden = (t === this.startHeight && i !== 0);
+      console.log('a', t, this.startHeight);
+      if (t === this.restHeight) {
+        this.atRest = true;
+      }
+      curHeight = t;
     };
 
     this.draw = function(MV, prog) {
+        if (this.hidden) return;
 
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
         gl.uniform3fv(prog.getHandle("kdFront"), color);
@@ -42,8 +43,8 @@ function Layer(rows, cols, restHeight, xexpansion, zexpansion, color, sphere) {
 
     var rows = rows;
     var cols = cols;
-    var startHeight = 7.0;
-    var restHeight = restHeight;
+    this.startHeight = 7.0;
+    this.restHeight = restHeight;
     var xexpansion = xexpansion;
     var zexpansion = zexpansion;
     var curHeight = 7.0;
@@ -52,6 +53,7 @@ function Layer(rows, cols, restHeight, xexpansion, zexpansion, color, sphere) {
     var color = color;
     var offset = vec3.fromValues(-(cols-1)*xexpansion, restHeight,-(rows-1)*zexpansion);
     var sphere = sphere;
+    this.hidden = true;
 }
 
 export {Layer};

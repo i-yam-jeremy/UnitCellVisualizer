@@ -4,21 +4,20 @@ import {vec3} from '../gl-matrix';
 function CaF2Layer(rows, cols, restHeight, xexpansion, zexpansion, sphere, atom, even, color) {
 
     this.reset = function() {
-        curHeight = startHeight;
+        curHeight = this.startHeight;
         atRest = false;
     };
 
-    this.update = function() {
-        if (curHeight - speed > restHeight) {
-            curHeight -= speed;
-
-        } else {
-            curHeight = restHeight;
-            atRest = true;
-        }
+    this.update = function(t, i) {
+      this.hidden = (t === this.startHeight && i !== 0);
+      if (t === this.restHeight) {
+        this.atRest = true;
+      }
+      curHeight = t;
     };
 
     this.draw = function(MV, prog) {
+        if (this.hidden) return;
 
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
 
@@ -79,13 +78,14 @@ function CaF2Layer(rows, cols, restHeight, xexpansion, zexpansion, sphere, atom,
 
     var rows = rows;
     var cols = cols;
-    var startHeight = 10.0;
+    this.startHeight = 10.0;
     var restHeight = restHeight;
     var xexpansion = xexpansion;
     var zexpansion = zexpansion;
     var curHeight = 10.0;
     var speed = .1;
-    var atRest = false;
+    this.restHeight = restHeight;
+    this.atRest = false;
     var color = color;
     var offset = vec3.fromValues(-(cols-1)*xexpansion, restHeight,-(rows-1)*zexpansion);
     var sphere = sphere;
@@ -96,6 +96,7 @@ function CaF2Layer(rows, cols, restHeight, xexpansion, zexpansion, sphere, atom,
     var size1 = size1;
     var size2 = size2;
     var countTimes = 0;
+    this.hidden = true;
 }
 
 export {CaF2Layer};

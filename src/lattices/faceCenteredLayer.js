@@ -8,17 +8,16 @@ function FaceCenteredLayer(rows, cols, restHeight, xexpansion, zexpansion, spher
         atRest = false;
     };
 
-    this.update = function() {
-        if (curHeight - speed > restHeight) {
-            curHeight -= speed;
-
-        } else {
-            curHeight = restHeight;
-            atRest = true;
-        }
+    this.update = function(t, i) {
+      this.hidden = (t === this.startHeight && i !== 0);
+      if (t === this.restHeight) {
+        this.atRest = true;
+      }
+      curHeight = t;
     };
 
     this.draw = function(MV, prog) {
+        if (this.hidden) return;
 
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
 
@@ -48,8 +47,8 @@ function FaceCenteredLayer(rows, cols, restHeight, xexpansion, zexpansion, spher
 
     var rows = rows;
     var cols = cols;
-    var startHeight = 10.0;
-    var restHeight = restHeight;
+    this.startHeight = 10.0;
+    this.restHeight = restHeight;
     var xexpansion = xexpansion;
     var zexpansion = zexpansion;
     var curHeight = 10.0;
@@ -65,6 +64,7 @@ function FaceCenteredLayer(rows, cols, restHeight, xexpansion, zexpansion, spher
     var size1 = size1;
     var size2 = size2;
     var countTimes = 0;
+    this.hidden = true;
 }
 
 export {FaceCenteredLayer};

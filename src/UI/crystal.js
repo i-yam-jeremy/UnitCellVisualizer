@@ -42,6 +42,12 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         }
 
         layers = unit.getCellLayers(color);
+        this.updateLayerExpansion();
+        if (layers) {
+          layerModeMaxExpansion = 1 + layers
+                                    .map(l => l.startHeight - l.restHeight)
+                                    .reduce((a,b) => a+b);
+        }
     };
 
     this.getName = function() {
@@ -69,11 +75,26 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         return this.getName();
     };
 
+    this.updateLayerExpansion = function() {
+      if (!layers) return;
+      let expan = expansion;
+      for (let i = 0; i < layers.length; i++) {
+        const layer = layers[i];
+        // Assumes layer.restHeight < layer.startHeight
+        const t = Math.min(layer.startHeight, Math.max(layer.restHeight, layer.startHeight - expan));
+        expan -= (layer.startHeight - layer.restHeight);
+        layers[i].update(t, i);
+      }
+    };
+
     this.expand = function() {
+                      console.log(expansion, layerModeMaxExpansion);
         if (inspecting && inspctExp < 0.6) {
             inspctExp += .2;
-        } else if (expansion < 4.0) {
+        } else if ((Scene.viewMode === ViewMode.UNIT_CELL && expansion < 4.0) ||
+                   (Scene.viewMode === ViewMode.LAYER && expansion < layerModeMaxExpansion)) {
                 expansion += .2;
+                this.updateLayerExpansion()
         }
     };
 
@@ -83,6 +104,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         }
         else if (expansion > 1.0) {
             expansion -= .2;
+            this.updateLayerExpansion()
         }
     };
 
@@ -219,23 +241,12 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
 
             layers[i].draw(MV, prog);
 
-            // If layer still has more to fall, drop layer further and exit loop
-            if (!layers[i].isAtRest()) {
-                layers[i].update();
-                break;
-            }
-
             //if current layer is at rest, flip the next layer
             //only for NaCl
             //may be a better way to do this logistically
             if(type == CrystalType.NaCl && layers[i].isAtRest() && i < layers.length - 1
                     && layers[i + 1].notCalledFlip() && i % 2 == 0) {
                 layers[i + 1].flip();
-            }
-
-            // If last layer has fallen and settled, switch to other model for expand/contract effects
-            if (layers[i] == layers[layers.length - 1] && layers[i].isAtRest()) {
-                this.toggleLayers();
             }
         }
 
@@ -410,6 +421,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     var colors = colors;
     var cells = new Array();
     var layers;
+    var layerModeMaxExpansion;
 }
 
 export {Crystal, CrystalType};

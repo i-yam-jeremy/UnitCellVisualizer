@@ -9,7 +9,7 @@ class HCPLayer {
     this.sphere = sphere;
     this.startHeight = 7.0;
     this.curHeight = this.startHeight;
-    this.speed = 0.05;
+    this.hidden = true;
   }
 
   reset() {
@@ -17,13 +17,12 @@ class HCPLayer {
     this.atRest = false;
   }
 
-  update() {
-    if (this.curHeight - this.speed > this.restHeight) {
-      this.curHeight -= this.speed;
-    } else {
-      this.curHeight = this.restHeight;
+  update(t, i) {
+    this.hidden = (t === this.startHeight && i !== 0);
+    if (t === this.restHeight) {
       this.atRest = true;
     }
+    this.curHeight = t;
   }
 
   _drawSphere(MV, prog, pos) {
@@ -43,6 +42,8 @@ class HCPLayer {
   }
 
   draw(MV, prog, expansion) {
+    if (this.hidden) return;
+
     gl.uniform1f(prog.getHandle("alpha"), 1.0);
     gl.uniform3fv(prog.getHandle("kdFront"), this.color);
 

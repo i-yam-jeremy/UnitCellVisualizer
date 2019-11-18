@@ -130,7 +130,7 @@ function HCP(eighth, sixth, half, sphere, colors) {
     this.getCellLayers = function() {
         if(layers == null) {
             layers = new Array();
-            layers.push(new HCPLayer(HCPLayer.LayerType.A, /*7*/-3+1.5, colors["grey"], sphere));
+            layers.push(new HCPLayer(HCPLayer.LayerType.A, -3+1.5, colors["grey"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.B, -1.5+1.5, colors["green"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.A,  0+1.5, colors["grey"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.B,  1.5+1.5, colors["green"], sphere));

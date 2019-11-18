@@ -1,5 +1,6 @@
 import {CaF2Layer} from './CaF2Layer.js';
 import {UnitCell, UnitCellPos} from './unitCell.js';
+import {vec3} from '../gl-matrix';
 
 function CalciumFluoride(eighth, half, sphere, colors) {
 

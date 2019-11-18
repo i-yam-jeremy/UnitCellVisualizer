@@ -202,8 +202,14 @@ $(document).ready(() => {
   $('#hcpShowLevel-1').change(() => Scene.setHCPLevelVisible(1, document.getElementById('hcpShowLevel-1').checked));
   $('#hcpShowLevel-2').change(() => Scene.setHCPLevelVisible(2, document.getElementById('hcpShowLevel-2').checked));
 
-  $('#unitCellViewMode').change(() => Scene.setViewMode(ViewMode.UNIT_CELL));
-  $('#layerViewMode').change(() => Scene.setViewMode(ViewMode.LAYER));
+  $('#unitCellViewMode').change(() => {
+    $('#expansionSlider').val(0);
+    Scene.setViewMode(ViewMode.UNIT_CELL);
+  });
+  $('#layerViewMode').change(() => {
+    $('#expansionSlider').val(0);
+    Scene.setViewMode(ViewMode.LAYER);
+  });
 
   webGLStart();
 

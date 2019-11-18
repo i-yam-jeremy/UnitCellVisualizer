@@ -77,7 +77,7 @@ function HCP(eighth, sixth, half, sphere, colors) {
       if (level !== -1 && level !== 2) {
         for (let i = 0; i < 3; i++) {
           const radius = 1.0;
-          this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3), 0, radius*Math.sin(2*Math.PI*i/3)));
+          this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)));
         }
       }
 
@@ -130,11 +130,11 @@ function HCP(eighth, sixth, half, sphere, colors) {
     this.getCellLayers = function() {
         if(layers == null) {
             layers = new Array();
-            layers.push(new HCPLayer(HCPLayer.LayerType.A, -3, colors["grey"], sphere));
-            layers.push(new HCPLayer(HCPLayer.LayerType.B, -1.5, colors["green"], sphere));
+            layers.push(new HCPLayer(HCPLayer.LayerType.A, -7/*-3*/, colors["grey"], sphere));
+            /*layers.push(new HCPLayer(HCPLayer.LayerType.B, -1.5, colors["green"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.A,  0, colors["grey"], sphere));
             layers.push(new HCPLayer(HCPLayer.LayerType.B,  1.5, colors["green"], sphere));
-            layers.push(new HCPLayer(HCPLayer.LayerType.A,  3, colors["grey"], sphere));
+            layers.push(new HCPLayer(HCPLayer.LayerType.A,  3, colors["grey"], sphere));*/
         }
 
         return layers;

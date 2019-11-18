@@ -53,20 +53,20 @@ a:visited { text-decoration: none; color:#414141;}
     z-index: 15;
 }
 
-#expand {
-    margin: auto;
-    position: relative;
-    top: 20px;
-    width: 100px;
-    height: 40px;
+#expansionSlider {
+  margin: auto;
+  margin-right: 30px;
+  position: relative;
+  top: 25px;
+  width: 170px;
 }
 
-#contract {
-    margin: auto;
-    position: relative;
-    top: 20px;
-    width: 100px;
-    height: 40px;
+#expansionSliderLabel {
+  color: #ccc;
+  font-size: 16px;
+  display: inline-block;
+  position: relative;
+  left: 120px;
 }
 
 #translucency {

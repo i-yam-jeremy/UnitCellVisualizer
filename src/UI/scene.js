@@ -173,6 +173,15 @@ let Scene = {
 
     setViewMode : function(viewMode) {
       this.viewMode = viewMode;
+      for (const crystal of this.crystals) {
+        crystal.resetExpansion();
+      }
+    },
+
+    onExpansionSliderChange : function(t) {
+      for (const crystal of this.crystals) {
+        crystal.setExpansion(t);
+      }
     },
 
     whichCrystal : 0,

@@ -9,7 +9,6 @@ function Layer(rows, cols, restHeight, xexpansion, zexpansion, color, sphere) {
 
     this.update = function(t, i) {
       this.hidden = (t === this.startHeight && i !== 0);
-      console.log('a', t, this.startHeight);
       if (t === this.restHeight) {
         this.atRest = true;
       }

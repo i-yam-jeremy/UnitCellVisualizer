@@ -184,8 +184,7 @@ $(document).ready(() => {
   $('#legend').click(() => goToCrystal(5));
   $('#about').click(about);
   $('#return').click(about);
-  $('#expand').click(expand);
-  $('#contract').click(contract);
+  $('#expansionSlider').on("input change", (e) => Scene.onExpansionSliderChange(e.target.value));
   $('#displaySelector').change(() => showDisplay($('#displaySelector').val()));
   $('#layer').click(layer);
   $('#color').click(color);

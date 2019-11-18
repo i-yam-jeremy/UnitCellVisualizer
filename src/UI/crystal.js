@@ -5,6 +5,8 @@ import {ViewMode} from './viewMode.js';
 
 var CrystalType = {SIMPLE : 0, BODY : 1, FACE : 2 , NaCl : 3, CaF2: 4, LEGEND : 5, HCP : 6};
 
+const MAX_UNIT_CELL_MODE_EXPANSION = 4.0;
+
 function Crystal(type, eighth, sixth, half, sphere, colors) {
 
     this.init = function() {
@@ -88,10 +90,9 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     };
 
     this.expand = function() {
-                      console.log(expansion, layerModeMaxExpansion);
         if (inspecting && inspctExp < 0.6) {
             inspctExp += .2;
-        } else if (Scene.viewMode === ViewMode.UNIT_CELL && expansion < 4.0) {
+        } else if (Scene.viewMode === ViewMode.UNIT_CELL && expansion < MAX_UNIT_CELL_MODE_EXPANSION) {
           expansion += .2;
           this.updateLayerExpansion()
         } else if (Scene.viewMode === ViewMode.LAYER && expansion < layerModeMaxExpansion) {
@@ -103,11 +104,13 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     this.contract = function() {
         if (inspecting &&inspctExp > 0.2) {
             inspctExp -= .2;
-        }
-        else if (expansion > 1.0) {
-            expansion -= .2;
-            this.updateLayerExpansion()
-        }
+        } else if (Scene.viewMode === ViewMode.UNIT_CELL && expansion > 1.0) {
+           expansion -= .2;
+           this.updateLayerExpansion()
+         } else if (Scene.viewMode === ViewMode.LAYER) {
+           expansion -= .4;
+           this.updateLayerExpansion()
+         }
     };
 
     this.activateTranslucency = function() {
@@ -157,6 +160,19 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     this.setDrawLayers = function() {
         this.toggleLayers();
         layersDraw = true;
+    };
+
+    this.resetExpansion = function() {
+      expansion = 1.0;
+    };
+
+    this.setExpansion = function(t) {
+      if (Scene.viewMode === ViewMode.LAYER) {
+        expansion = 1.0 + t*(layerModeMaxExpansion-1);
+      }
+      else if (Scene.viewMode === ViewMode.UNIT_CELL) {
+        expansion = 1.0 + t*(MAX_UNIT_CELL_MODE_EXPANSION-1);
+      }
     };
 
     this.toggleLayers = function() {

@@ -169,6 +169,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     this.setExpansion = function(t) {
       if (Scene.viewMode === ViewMode.LAYER) {
         expansion = 1.0 + t*(layerModeMaxExpansion-1);
+        this.updateLayerExpansion();
       }
       else if (Scene.viewMode === ViewMode.UNIT_CELL) {
         expansion = 1.0 + t*(MAX_UNIT_CELL_MODE_EXPANSION-1);

@@ -130,6 +130,8 @@ function changeCrystal(value) {
     if($('#displaySelector').val() == 3) {
         Scene.activateCoord($('displaySelector'), value);
     }
+
+    $('#singleViewMode').prop('disabled', (value == 6));
 }
 
 function showDisplay(value) {

@@ -58,16 +58,16 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
 
 
     this.draw = function(MV, prog) {
-        if (inspecting) {
+        if (Scene.viewMode === ViewMode.INSPECT && type != CrystalType.LEGEND) {
             this.drawInspect(MV, prog);
-        } else if(dispCoord) {
+        } else if(Scene.viewMode === ViewMode.COORD && type != CrystalType.LEGEND) {
             this.drawCoordView(MV, prog);
         }
         // legend has no layering animation for obvious reasons
         else if (Scene.viewMode === ViewMode.LAYER && type != CrystalType.LEGEND) {
             this.drawLayers(MV, prog);
         }
-        else if(drawSingle && type != CrystalType.LEGEND) {
+        else if(Scene.viewMode === ViewMode.SINGLE && type != CrystalType.LEGEND) {
             this.drawSingle(MV, prog);
         }
         else {

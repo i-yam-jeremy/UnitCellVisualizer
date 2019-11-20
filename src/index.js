@@ -217,6 +217,18 @@ $(document).ready(() => {
     $('#expansionSlider').val(0);
     Scene.setViewMode(ViewMode.LAYER);
   });
+  $('#coordViewMode').change(() => {
+    $('#expansionSlider').val(0);
+    Scene.setViewMode(ViewMode.COORD);
+  });
+  $('#inspectViewMode').change(() => {
+    $('#expansionSlider').val(0);
+    Scene.setViewMode(ViewMode.INSPECT);
+  });
+  $('#singleViewMode').change(() => {
+    $('#expansionSlider').val(0);
+    Scene.setViewMode(ViewMode.SINGLE);
+  });
 
   webGLStart();
 });

@@ -115,12 +115,6 @@ let Scene = {
         }
     },
 
-    activateCoord : function(dispSelector, crystal) {
-        for(var i = 0; i < this.crystals.length; i++) {
-            this.crystals[i].activateCoordView();
-        }
-    },
-
     toggleColor : function() {
         this.color++;
         if(this.color == 3) {

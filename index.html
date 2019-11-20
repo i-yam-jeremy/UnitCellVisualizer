@@ -103,6 +103,18 @@
                         <input id="layerViewMode" type="radio" name="view-mode" value="layer" checked>
                         Layer
                       </label></p>
+                      <p><label style="display: flex; justify-content: space-between;">
+                        <input id="coordViewMode" type="radio" name="view-mode" value="coord">
+                        Coordination
+                      </label></p>
+                      <p><label style="display: flex; justify-content: space-between;">
+                        <input id="inspectViewMode" type="radio" name="view-mode" value="inspect">
+                        Inspect
+                      </label></p>
+                      <p><label style="display: flex; justify-content: space-between;">
+                        <input id="singleViewMode" type="radio" name="view-mode" value="single">
+                        Single
+                      </label></p>
                     </div>
 
                     <div id="legendText">
@@ -117,14 +129,6 @@
                     <p id="controlButtons">
                         <div id="expansionSliderLabel">Expansion</div>
                         <input type="range" min="0" max="1" value="0" step="0.001" class="slider" id="expansionSlider">
-
-                        <select id="displaySelector">
-                            <option selected value="0">Lattice</option>
-                            <option value="1">Translucency</option>
-                            <option value="2">Inspect</option>
-                            <option value="3">Coordination</option>
-                            <option value="4">Single</option>
-                        </select>
 
                         <button id="coordCheck">Coord Check</button>
                         <button id="color">Coloring</button>

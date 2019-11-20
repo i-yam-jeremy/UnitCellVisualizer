@@ -1,5 +1,4 @@
 import {Shape} from '../graphics';
-import {CoordCheck} from './CoordCheck.js';
 import {Crystal, CrystalType} from './crystal.js';
 import {vec3} from '../gl-matrix';
 import {HCPHighlightType} from '../lattices/hcpHighlightType.js';
@@ -50,8 +49,6 @@ let Scene = {
         crystal = new Crystal(CrystalType.HCP, null, this.sixth, null, this.sphere, this.colors, dispSelector);
         crystal.init();
         this.crystals.push(crystal);
-
-        this.coordCheck = new CoordCheck(dispSelector);
     },
 
     setupColors : function() {
@@ -119,14 +116,8 @@ let Scene = {
     },
 
     activateCoord : function(dispSelector, crystal) {
-        this.coordCheck.checkCrystal(crystal);
-        if(this.coordCheck.checked(crystal)) {
-            for(var i = 0; i < this.crystals.length; i++) {
-                this.crystals[i].activateCoordView();
-            }
-        }
-        else {
-            this.goToLattice();
+        for(var i = 0; i < this.crystals.length; i++) {
+            this.crystals[i].activateCoordView();
         }
     },
 
@@ -192,7 +183,6 @@ let Scene = {
     crystals : new Array(),
     colors : {},
     isCoord : false,
-    coordCheck : null,
     color : 0,
     hcpHighlightType : HCPHighlightType.NONE,
     hcpRingsVisible : {0: true, 1: true, 2: true},

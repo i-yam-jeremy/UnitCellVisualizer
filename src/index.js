@@ -6,6 +6,7 @@ import {Scene, User} from './UI';
 import {initGL} from './webgl-utils.js';
 import {HCPHighlightType} from './lattices/hcpHighlightType.js';
 import {ViewMode} from './UI/viewMode.js';
+import {CoordCheck} from './UI/CoordCheck.js';
 
 var gl;
 var prog;
@@ -100,11 +101,9 @@ function instruct() {
     alert(instructions);
 }
 
-function layer() {
-    goToLattice();
-    Scene.toggleLayers();
+function checkCoord() {
+  CoordCheck.checkCoord($('#crystalSelector').val());
 }
-
 
 function goToCrystal(crystalType) {
     if(crystalType == 5) {
@@ -194,7 +193,7 @@ $(document).ready(() => {
   $('#return').click(about);
   $('#expansionSlider').on("input change", (e) => Scene.onExpansionSliderChange(e.target.value));
   $('#displaySelector').change(() => showDisplay($('#displaySelector').val()));
-  $('#layer').click(layer);
+  $('#coordCheck').click(checkCoord);
   $('#color').click(color);
 
   $('#hcpHighlightTypeHorizontal').change(() => Scene.setHCPHighlightType(HCPHighlightType.HORIZONTAL));

@@ -177,10 +177,26 @@ function color() {
     Scene.toggleColor();
 }
 
+function setHCPMenusVisibility(visible) {
+  if (visible) {
+    $('#hcpHighlightTypeSelector').show();
+    $('#hcpRingAndLevelSelector').show();
+  } else {
+    $('#hcpHighlightTypeSelector').hide();
+    $('#hcpRingAndLevelSelector').hide();
+  }
+}
+
 $(document).ready(() => {
+  setHCPMenusVisibility(false);
+
   $('#jokes').click(amuse);
   $('#instructions').click(instruct);
-  $('#crystalSelector').change(() => changeCrystal($('#crystalSelector').val()));
+  $('#crystalSelector').change(() => {
+    const crystalSelected = $('#crystalSelector').val();
+    setHCPMenusVisibility(crystalSelected === '6');
+    changeCrystal(crystalSelected);
+  });
   $('#legend').click(() => goToCrystal(5));
   $('#about').click(about);
   $('#return').click(about);
@@ -212,6 +228,4 @@ $(document).ready(() => {
   });
 
   webGLStart();
-
-  goToCrystal(6); // For faster development and testing of HCP.
 });

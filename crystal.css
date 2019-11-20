@@ -214,3 +214,36 @@ a:visited { text-decoration: none; color:#414141;}
     position: relative;
     bottom: 175px;
 }
+
+#hcpHighlightTypeSelector {
+  position: absolute;
+  float: right;
+  top: 33px;
+  right: 30px;
+  background-color: #ccc;
+  border: 1px solid #444;
+  border-radius: 5px;
+}
+
+#hcpRingAndLevelSelector {
+  position: absolute;
+  float: right;
+  bottom: 130px;
+  right: 30px;
+  background-color: #ccc;
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#viewModeSelector {
+  position: absolute;
+  float: left;
+  bottom: 130px;
+  left: 30px;
+  background-color: #ccc;
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+}

@@ -1,5 +1,6 @@
 import * as $ from 'jquery';
 import {Scene} from './scene.js';
+import {ViewMode} from './viewMode.js';
 
 var User = {
 
@@ -74,8 +75,12 @@ var User = {
                     break;
 
 	        case 'T'.charCodeAt(0):
-                    Scene.toggleTranslucency();
-                    dispSelector.val('1');
+                    if (Scene.viewMode === ViewMode.UNIT_CELL) {
+                      Scene.toggleTranslucency();
+                      dispSelector.val('1');
+                    } else {
+                      alert('You must be in Unit Cell view mode to toggle transluceny. Use the radio button in the bottom left of the view and select Unit Cell.');
+                    }
                     break;
 
                 case 'L'.charCodeAt(0):

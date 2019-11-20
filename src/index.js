@@ -101,10 +101,6 @@ function instruct() {
     alert(instructions);
 }
 
-function checkCoord() {
-  CoordCheck.checkCoord($('#crystalSelector').val());
-}
-
 function goToCrystal(crystalType) {
     if(crystalType == 5) {
         $('#legendText').show();
@@ -193,7 +189,6 @@ $(document).ready(() => {
   $('#return').click(about);
   $('#expansionSlider').on("input change", (e) => Scene.onExpansionSliderChange(e.target.value));
   $('#displaySelector').change(() => showDisplay($('#displaySelector').val()));
-  $('#coordCheck').click(checkCoord);
   $('#color').click(color);
 
   $('#hcpHighlightTypeHorizontal').change(() => Scene.setHCPHighlightType(HCPHighlightType.HORIZONTAL));
@@ -218,8 +213,16 @@ $(document).ready(() => {
     Scene.setViewMode(ViewMode.LAYER);
   });
   $('#coordViewMode').change(() => {
-    $('#expansionSlider').val(0);
-    Scene.setViewMode(ViewMode.COORD);
+    if (CoordCheck.checkCoord($('#crystalSelector').val())) {
+      $('#expansionSlider').val(0);
+      Scene.setViewMode(ViewMode.COORD);
+    }
+    else {
+      $('#coordViewMode').prop('checked', false);
+      $('#expansionSlider').val(0);
+      Scene.setViewMode(ViewMode.UNIT_CELL);
+      $('#unitCellViewMode').prop('checked', true);
+    }
   });
   $('#inspectViewMode').change(() => {
     $('#expansionSlider').val(0);

@@ -46,6 +46,7 @@ const CoordCheck = {
       alert('Sorry, that\'s incorrect...look closer at the lattice and try again!');
     }
 
+    return success;
   }
 };
 

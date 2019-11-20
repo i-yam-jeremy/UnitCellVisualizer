@@ -1,5 +1,6 @@
 import {Layer} from './layer.js';
 import {UnitCell, UnitCellPos} from './unitCell.js';
+import {vec3} from '../gl-matrix';
 
 function BodyCentered(eighth, half, sphere, colors) {
 

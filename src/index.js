@@ -100,14 +100,6 @@ function instruct() {
     alert(instructions);
 }
 
-function expand() {
-    Scene.expand();
-}
-
-function contract() {
-    Scene.contract();
-}
-
 function layer() {
     goToLattice();
     Scene.toggleLayers();

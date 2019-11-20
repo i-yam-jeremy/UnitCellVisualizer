@@ -107,7 +107,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         } else if (Scene.viewMode === ViewMode.UNIT_CELL && expansion > 1.0) {
            expansion -= .2;
            this.updateLayerExpansion()
-         } else if (Scene.viewMode === ViewMode.LAYER) {
+         } else if (Scene.viewMode === ViewMode.LAYER && expansion > 1.0) {
            expansion -= .4;
            this.updateLayerExpansion()
          }

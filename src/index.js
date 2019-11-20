@@ -127,29 +127,7 @@ function about() {
 
 function changeCrystal(value) {
     goToCrystal(value);
-    if($('#displaySelector').val() == 3) {
-        Scene.activateCoord($('displaySelector'), value);
-    }
-
     $('#singleViewMode').prop('disabled', (value == 6));
-}
-
-function showDisplay(value) {
-    if(value == "0") {
-        goToLattice();
-    }
-    else if(value == "1") {
-        Scene.toggleTranslucency();
-    }
-    else if(value == "2") {
-        Scene.toggleInspection();
-    }
-    else if(value == "3") {
-        Scene.activateCoord($('#displaySelector'), $('#crystalSelector').val());
-    }
-    else if(value == "4") {
-        Scene.toggleSingle();
-    }
 }
 
 function goToLattice() {
@@ -190,7 +168,6 @@ $(document).ready(() => {
   $('#about').click(about);
   $('#return').click(about);
   $('#expansionSlider').on("input change", (e) => Scene.onExpansionSliderChange(e.target.value));
-  $('#displaySelector').change(() => showDisplay($('#displaySelector').val()));
   $('#color').click(color);
 
   $('#hcpHighlightTypeHorizontal').change(() => Scene.setHCPHighlightType(HCPHighlightType.HORIZONTAL));

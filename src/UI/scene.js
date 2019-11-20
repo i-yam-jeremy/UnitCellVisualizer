@@ -65,12 +65,10 @@ let Scene = {
 
     nextCrystal : function() {
         this.whichCrystal = (this.whichCrystal + 1) % this.crystals.length;
-        this.crystals[this.whichCrystal].setDrawLayers();
     },
 
     prevCrystal: function() {
         this.whichCrystal = (this.whichCrystal == 0 ? this.crystals.length - 1 : this.whichCrystal - 1);
-        this.crystals[this.whichCrystal].setDrawLayers();
     },
 
     getCrystal : function() {
@@ -97,34 +95,10 @@ let Scene = {
         }
     },
 
-    toggleTranslucency : function() {
-        for (var i = 0; i < this.crystals.length; i++) {
-            this.crystals[i].activateTranslucency();
-        }
-    },
-
-    toggleLayers : function() {
-        for (var i = 0; i < this.crystals.length; i++) {
-            this.crystals[i].toggleLayers();
-        }
-    },
-
-    toggleInspection : function() {
-        for (var i = 0; i < this.crystals.length; i++) {
-            this.crystals[i].activateInspection();
-        }
-    },
-
     toggleColor : function() {
         this.color++;
         if(this.color == 3) {
             this.color = 0;
-        }
-    },
-
-    toggleSingle: function() {
-        for (var i = 0; i < this.crystals.length; i++) {
-            this.crystals[i].activateSingle();
         }
     },
 
@@ -141,7 +115,6 @@ let Scene = {
     goToCrystal : function(crystalType) {
         this.whichCrystal = crystalType;
         this.color = 0;
-        //this.crystals[this.whichCrystal].setDrawLayers();
     },
 
     setHCPHighlightType : function(hcpHighlightType) {

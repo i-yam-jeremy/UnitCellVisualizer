@@ -113,55 +113,6 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
          }
     };
 
-    this.activateTranslucency = function() {
-        // legend has no translucency view
-        if(type != CrystalType.LEGEND) {
-            translucent = true;
-            layersDraw = false;
-            inspecting = false;
-            dispCoord = false;
-            drawSingle = false;
-        }
-    };
-
-    this.activateInspection = function() {
-        // legend has no inspection view
-        if(type != CrystalType.LEGEND) {
-            inspctExp = 0.0;
-            inspecting = true;
-            translucent = false;
-            layersDraw = false;
-            dispCoord = false;
-            drawSingle = false;
-        }
-    };
-
-    this.activateCoordView = function() {
-        // legend has no coordination view
-        if(type != CrystalType.LEGEND) {
-            dispCoord = true;
-            translucent = false;
-            layersDraw = false;
-            inspecting = false;
-            drawSingle = false;
-        }
-    };
-
-    this.activateSingle = function() {
-        if(type != CrystalType.LEGEND) {
-            dispCoord = false;
-            translucent = false;
-            layersDraw = false;
-            inspecting = false;
-            drawSingle = true;
-        }
-    }
-
-    this.setDrawLayers = function() {
-        this.toggleLayers();
-        layersDraw = true;
-    };
-
     this.resetExpansion = function() {
       expansion = 1.0;
     };
@@ -174,24 +125,6 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
       else if (Scene.viewMode === ViewMode.UNIT_CELL) {
         expansion = 1.0 + t*(MAX_UNIT_CELL_MODE_EXPANSION-1);
       }
-    };
-
-    this.toggleLayers = function() {
-        // legend has no layers to toggle on/off
-         if (type != CrystalType.LEGEND) {
-             dispCoord = false;
-             translucent = false;
-             inspecting = false;
-             drawSingle = false;
-             layersDraw = !layersDraw;
-
-             for (var i = 0; i < layers.length; i++) {
-                 layers[i].reset();
-             }
-
-             expansion = 1.0;
-             inspctExp = 1.0;
-         }
     };
 
     var Cell = function(bounds, pos, ndx) {
@@ -429,10 +362,6 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     var expansion = 1.0;
     var inspctExp = 0;
     var translucent = false;
-    var layersDraw = true;
-    var inspecting = false;
-    var dispCoord = false;
-    var drawSingle = false;
     var unit;
     var eighth = eighth;
     var half = half;

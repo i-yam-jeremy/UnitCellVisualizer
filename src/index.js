@@ -89,13 +89,8 @@ var instructions = "mouse : rotate view\n"
                  + "shift (command on mac) + scroll: expand/contract\n"
                  + "'e' : expand\n"
                  + "'c' : contract\n"
-                 + "'i' : inspect unit cell makeup\n"
-                 + "'t' : translucent view\n"
-                 + "'r' : coordination view\n"
-                 + "'s' : single cell view\n"
+                 + "'t' : toggle translucency\n"
                  + "'n' : toggle cell coloring\n"
-                 + "'l' : toggle layer animation\n"
-                 + "shift + 'l' : lattice view\n";
 
 function instruct() {
     alert(instructions);
@@ -128,12 +123,6 @@ function about() {
 function changeCrystal(value) {
     goToCrystal(value);
     $('#singleViewMode').prop('disabled', (value == 6));
-}
-
-function goToLattice() {
-    Scene.goToLattice();
-    // change display selector back to lattice
-    $('#displaySelector').val('0');
 }
 
 function amuse() {

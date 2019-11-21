@@ -95,16 +95,14 @@ let Scene = {
         }
     },
 
+    toggleTranslucency : function() {
+      this.translucent = !this.translucent;
+    },
+
     toggleColor : function() {
         this.color++;
         if(this.color == 3) {
             this.color = 0;
-        }
-    },
-
-    goToLattice : function() {
-        for(var i = 0; i < this.crystals.length; i++) {
-            this.crystals[i].goToLattice();
         }
     },
 
@@ -155,6 +153,7 @@ let Scene = {
     hcpRingsVisible : {0: true, 1: true, 2: true},
     hcpLevelsVisible : {'-1': true, 0: true, 1: true, 2: true},
     viewMode : ViewMode.LAYER,
+    translucent: false,
 };
 
 export {Scene};

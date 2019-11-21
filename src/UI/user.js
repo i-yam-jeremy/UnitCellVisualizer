@@ -77,38 +77,13 @@ var User = {
 	        case 'T'.charCodeAt(0):
                     if (Scene.viewMode === ViewMode.UNIT_CELL) {
                       Scene.toggleTranslucency();
-                      dispSelector.val('1');
                     } else {
                       alert('You must be in Unit Cell view mode to toggle transluceny. Use the radio button in the bottom left of the view and select Unit Cell.');
                     }
                     break;
 
-                case 'L'.charCodeAt(0):
-
-                    if(!shift) {
-                        Scene.toggleLayers();
-                    }
-
-                    Scene.goToLattice();
-                    dispSelector.val('0');
-                    break;
-
-                case 'I'.charCodeAt(0):
-                    Scene.toggleInspection();
-                    dispSelector.val('2');
-                    break;
-
-                case 'R'.charCodeAt(0) :
-                    Scene.activateCoord(dispSelector, crystalSelector.val());
-                    dispSelector.val('3');
-                    break;
-
                 case 'N'.charCodeAt(0):
                     Scene.toggleColor();
-                    break;
-
-                case 'S'.charCodeAt(0):
-                    Scene.toggleSingle();
                     break;
 
                 case 17:

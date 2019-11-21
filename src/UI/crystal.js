@@ -140,7 +140,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         this.sortCells(MV.top());
 
         let alpha;
-        if (translucent) {
+        if (Scene.translucent) {
             alpha = .25;
         } else {
             alpha = 1.0;
@@ -345,15 +345,6 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         unit.drawCoord(MV, prog, scale);
     }
 
-    this.goToLattice = function() {
-        if(type != CrystalType.LEGEND) {
-            dispCoord = false;
-            translucent = false;
-            inspecting = false;
-            drawSingle = false;
-        }
-    }
-
     var type = type;
     var rows = type === CrystalType.HCP ? 0 : 5;
     var cols = type === CrystalType.HCP ? 0 : 5;
@@ -361,7 +352,6 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     var scale = .1;
     var expansion = 1.0;
     var inspctExp = 0;
-    var translucent = false;
     var unit;
     var eighth = eighth;
     var half = half;

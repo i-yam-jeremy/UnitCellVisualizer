@@ -150,38 +150,6 @@ function FaceCentered(eighth, half, sphere, colors) {
         MV.popMatrix();
     };
 
-    this.drawInspect = function(MV, prog, scale, inspctExp) {
-        gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
-        MV.pushMatrix();
-        MV.scale(scale);
-
-        MV.pushMatrix();
-        MV.translate(vec3.fromValues(-6, 0, 0));
-        gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-        sphere.draw(prog);
-        MV.popMatrix();
-
-        MV.pushMatrix();
-        MV.translate(vec3.fromValues(-2, 0, 0));
-        gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-        sphere.draw(prog);
-        MV.popMatrix();
-
-        MV.pushMatrix();
-        MV.translate(vec3.fromValues(2, 0, 0));
-        gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-        sphere.draw(prog);
-        MV.popMatrix();
-
-        MV.pushMatrix();
-        MV.translate(vec3.fromValues(6, 0, 0));
-        gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-        sphere.draw(prog);
-        MV.popMatrix();
-
-        MV.popMatrix();
-    }
-
     this.drawCoord = function(MV, prog, scale) {
         MV.pushMatrix();
         MV.scale(scale);

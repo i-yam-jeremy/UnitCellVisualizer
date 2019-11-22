@@ -192,10 +192,6 @@ $(document).ready(() => {
       $('#unitCellViewMode').prop('checked', true);
     }
   });
-  $('#inspectViewMode').change(() => {
-    $('#expansionSlider').val(0);
-    Scene.setViewMode(ViewMode.INSPECT);
-  });
   $('#singleViewMode').change(() => {
     $('#expansionSlider').val(0);
     Scene.setViewMode(ViewMode.SINGLE);

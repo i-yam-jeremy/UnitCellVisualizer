@@ -242,37 +242,6 @@ function CalciumFluoride(eighth, half, sphere, colors) {
         }
     }
 
-    this.drawInspect = function(MV, prog, scale, inspctExp) {
-        // todo - fix inspect view to use expansion
-        MV.pushMatrix();
-        MV.scale(.47);
-        MV.scale(scale);
-
-        for(var i = -6.5; i < 7; i += 4) {
-
-            gl.uniform3fv(prog.getHandle("kdFront"), colors["white"]);
-            MV.pushMatrix();
-            MV.translate(vec3.fromValues(-4, i, 0));
-            MV.scale(.8);
-            gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-            sphere.draw(prog);
-            MV.popMatrix();
-
-            gl.uniform3fv(prog.getHandle("kdFront"), colors["orange"]);
-            MV.pushMatrix();
-            MV.translate(vec3.fromValues(0, i, 0));
-            MV.scale(1.2);
-            gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-            sphere.draw(prog);
-            MV.translate(vec3.fromValues(4, 0, 0));
-            gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-            sphere.draw(prog);
-            MV.popMatrix();
-        }
-
-        MV.popMatrix();
-    }
-
     this.drawCoord = function(MV, prog, scale) {
 
         MV.pushMatrix();

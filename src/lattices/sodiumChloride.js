@@ -290,48 +290,6 @@ function SodiumChloride(eighth, half, sphere, colors) {
         this.drawClAtom(MV, prog);
     }
 
-    this.drawInspect = function(MV, prog, scale, inspctExp) {
-        // todo - fix to use inspect expansion
-        var eps = .01;
-
-        gl.uniform1f(prog.getHandle("alpha"), 1.0);
-        gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
-
-        MV.pushMatrix();
-        MV.scale(0.51);
-
-        for(var i = -6.5; i < 7; i+=4) {
-
-            MV.pushMatrix();
-            MV.scale(scale);
-            MV.translate(vec3.fromValues(-1.5, i, 0));
-            MV.scale(1.3);
-            gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-
-            //make the last sphere dark green
-            if(i >= 5.5 - eps && i <= 5.5 + eps) {
-                gl.uniform3fv(prog.getHandle("kdFront"), colors["forestGreen"]);
-            }
-            sphere.draw(prog);
-            MV.popMatrix();
-        }
-
-        gl.uniform3fv(prog.getHandle("kdFront"), colors["purple"]);
-
-        for(var i = -6.5; i < 7; i+=4) {
-
-            MV.pushMatrix();
-            MV.scale(scale);
-            MV.translate(vec3.fromValues(1.5, i, 0));
-            MV.scale(0.7);
-            gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-            sphere.draw(prog);
-            MV.popMatrix();
-        }
-
-        MV.popMatrix();
-    }
-
     this.drawCoord = function(MV, prog, scale) {
         MV.pushMatrix();
         MV.scale(scale);

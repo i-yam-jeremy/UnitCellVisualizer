@@ -140,10 +140,6 @@ function HCP(eighth, sixth, half, sphere, colors) {
         return layers;
     }
 
-    this.drawInspect = function() {
-      // TODO
-    }
-
     var layers = null;
     this.name = "HCP";
 }

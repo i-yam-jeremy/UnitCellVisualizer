@@ -72,15 +72,6 @@ function SimpleCubic(eighth, half, sphere, colors) {
         MV.popMatrix();
     };
 
-    this.drawInspect = function(MV, prog, scale, inspctExp) {
-        gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
-        MV.pushMatrix();
-        MV.scale(scale);
-        gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-        sphere.draw(prog);
-        MV.popMatrix();
-    }
-
     this.drawCoord = function(MV, prog, scale) {
         MV.pushMatrix();
         MV.scale(scale);

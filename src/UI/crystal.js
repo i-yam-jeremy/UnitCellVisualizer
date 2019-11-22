@@ -58,9 +58,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
 
 
     this.draw = function(MV, prog) {
-        if (Scene.viewMode === ViewMode.INSPECT && type != CrystalType.LEGEND) {
-            this.drawInspect(MV, prog);
-        } else if(Scene.viewMode === ViewMode.COORD && type != CrystalType.LEGEND) {
+        if(Scene.viewMode === ViewMode.COORD && type != CrystalType.LEGEND) {
             this.drawCoordView(MV, prog);
         }
         // legend has no layering animation for obvious reasons
@@ -90,9 +88,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     };
 
     this.expand = function() {
-        if (inspecting && inspctExp < 0.6) {
-            inspctExp += .2;
-        } else if (Scene.viewMode === ViewMode.UNIT_CELL && expansion < MAX_UNIT_CELL_MODE_EXPANSION) {
+        if (Scene.viewMode === ViewMode.UNIT_CELL && expansion < MAX_UNIT_CELL_MODE_EXPANSION) {
           expansion += .2;
           this.updateLayerExpansion()
         } else if (Scene.viewMode === ViewMode.LAYER && expansion < layerModeMaxExpansion) {
@@ -102,9 +98,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     };
 
     this.contract = function() {
-        if (inspecting &&inspctExp > 0.2) {
-            inspctExp -= .2;
-        } else if (Scene.viewMode === ViewMode.UNIT_CELL && expansion > 1.0) {
+        if (Scene.viewMode === ViewMode.UNIT_CELL && expansion > 1.0) {
            expansion -= .2;
            this.updateLayerExpansion()
          } else if (Scene.viewMode === ViewMode.LAYER && expansion > 1.0) {
@@ -203,11 +197,6 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         }
 
         MV.popMatrix();
-    };
-
-    this.drawInspect = function(MV, prog) {
-        gl.uniform1f(prog.getHandle("alpha"), 1.0);
-        unit.drawInspect(MV, prog, scale, inspctExp);
     };
 
     this.drawSingle = function(MV, prog) {
@@ -351,7 +340,6 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     var height = type === CrystalType.HCP ? 0 : 5;
     var scale = .1;
     var expansion = 1.0;
-    var inspctExp = 0;
     var unit;
     var eighth = eighth;
     var half = half;

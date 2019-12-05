@@ -127,6 +127,30 @@ function HCP(eighth, sixth, half, sphere, colors) {
       this._drawHalfSphere(MV, prog, 180, pos);
     }
 
+    this.drawCoord = function(MV, prog, scale) {
+      MV.pushMatrix();
+      MV.scale(scale);
+      gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
+      for (let i = 0; i < 6; i++) {
+        const radius = 2.0;
+        this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/6), 1.5, radius*Math.sin(2*Math.PI*i/6)));
+      }
+
+      for (let i = 0; i < 3; i++) {
+        const radius = 1.0;
+        this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)));
+      }
+
+      for (let i = 0; i < 3; i++) {
+        const radius = 1.0;
+        this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 3, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)));
+      }
+
+      gl.uniform3fv(prog.getHandle("kdFront"), colors["red"]);
+      this._drawSphere(MV, prog, vec3.fromValues(0, 1.5, 0));
+      MV.popMatrix();
+    }
+
     this.getCellLayers = function() {
         if(layers == null) {
             layers = new Array();

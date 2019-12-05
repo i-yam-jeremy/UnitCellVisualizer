@@ -1,5 +1,6 @@
 import {vec3, vec4} from '../gl-matrix';
 import {SimpleCubic, BodyCentered, FaceCentered, SodiumChloride, CalciumFluoride, Legend, HCP, UnitCellPos} from '../lattices';
+import {NaClLayer} from '../lattices/NaClLayer.js';
 import {Scene} from './scene.js';
 import {ViewMode} from './viewMode.js';
 
@@ -47,7 +48,14 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
         this.updateLayerExpansion();
         if (layers) {
           layerModeMaxExpansion = 1 + layers
-                                    .map(l => l.startHeight - l.restHeight)
+                                    .map(l => {
+                                      if (l instanceof NaClLayer) {
+                                        return l.splitAmt + (l.startHeight - l.restHeight);
+                                      }
+                                      else {
+                                        return l.startHeight - l.restHeight;
+                                      }
+                                    })
                                     .reduce((a,b) => a+b);
         }
     };
@@ -81,9 +89,18 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
       for (let i = 0; i < layers.length; i++) {
         const layer = layers[i];
         // Assumes layer.restHeight < layer.startHeight
-        const t = Math.min(layer.startHeight, Math.max(layer.restHeight, layer.startHeight - expan));
-        expan -= (layer.startHeight - layer.restHeight);
-        layers[i].update(t, i);
+        if (layer instanceof NaClLayer) {
+          const height = Math.min(layer.startHeight, Math.max(layer.restHeight, layer.startHeight - expan));
+          expan -= (layer.startHeight - layer.restHeight);
+          const split = Math.min(layer.splitAmt, Math.max(0, layer.splitAmt - expan));
+          layers[i].update(height, split, i);
+          expan -= layer.splitAmt;
+        }
+        else {
+          const t = Math.min(layer.startHeight, Math.max(layer.restHeight, layer.startHeight - expan));
+          expan -= (layer.startHeight - layer.restHeight);
+          layers[i].update(t, i);
+        }
       }
     };
 

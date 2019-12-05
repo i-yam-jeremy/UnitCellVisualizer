@@ -10,22 +10,17 @@ function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1
         atRest = false;
     };
 
-    this.update = function() {
-        if (curHeight - speed > restHeight) {
-            curHeight -= speed;
-
-        } else {
-            curHeight = restHeight;
-            if(currSplitAmt > 0) {
-                currSplitAmt -= speed;
-            } else {
-                currSplitAmt = 0;
-                atRest = true;
-            }
-        }
+    this.update = function(height, split, i) {
+      this.hidden = (height === this.startHeight && i !== 0);
+      if (height === this.restHeight && split === 0) {
+        this.atRest = true;
+      }
+      curHeight = height;
+      currSplitAmt = split;
     };
 
     this.draw = function(MV, prog) {
+        if (this.hidden) return;
 
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
 
@@ -77,10 +72,12 @@ function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1
     var rows = rows;
     var cols = cols;
     var startHeight = 10.0;
+    this.startHeight = startHeight;
     var restHeight = restHeight;
+    this.restHeight = restHeight;
     var xexpansion = xexpansion;
     var zexpansion = zexpansion;
-    var curHeight = 10.0;
+    var curHeight = startHeight;
     var speed = .1;
     var atRest = false;
     var color = color;
@@ -94,7 +91,9 @@ function NaClLayer(rows, cols, restHeight, xexpansion, zexpansion, color1, size1
     var size2 = size2;
     var countTimes = 0;
     var splitAmt = 10;
-    var currSplitAmt = 10;
+    this.splitAmt = splitAmt;
+    var currSplitAmt = splitAmt;
+    this.hidden = false;
 }
 
 export {NaClLayer};

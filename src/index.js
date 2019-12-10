@@ -198,4 +198,6 @@ $(document).ready(() => {
   });
 
   webGLStart();
+
+  goToCrystal(2); // For development/fixing FCC
 });

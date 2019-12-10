@@ -199,13 +199,11 @@ function FaceCentered(eighth, half, sphere, colors) {
             var s = 2;
             layers = new Array();
 
-            layers.push(new FaceCenteredLayer(7, 7, -6, .7, .7, sphere, true, colors["grey"], colors["green"]));
-            layers.push(new FaceCenteredLayer(7, 7, -4, .7, .7, sphere, false, colors["green"], colors["green"]));
-            layers.push(new FaceCenteredLayer(7, 7, -2, .7, .7, sphere, true, colors["grey"], colors["green"]));
-            layers.push(new FaceCenteredLayer(7, 7, 0, .7, .7, sphere, false, colors["green"], colors["green"]));
-            layers.push(new FaceCenteredLayer(7, 7, 2, .7, .7, sphere, true, colors["grey"], colors["green"]));
-            layers.push(new FaceCenteredLayer(7, 7, 4, .7, .7, sphere, false, colors["green"], colors["green"]));
-            layers.push(new FaceCenteredLayer(7, 7, 6, .7, .7, sphere, true, colors["grey"], colors["green"]));
+            const c = [colors["grey"], colors["red"], colors["blue"]];
+            const totalLayerCount = 7;
+            for (let i = 1; i < totalLayerCount; i++) {
+              layers.push(new FaceCenteredLayer((i-totalLayerCount/2)*Math.sqrt(3), sphere, totalLayerCount, i, c[i%3]));
+            }
         }
 
         return layers;

@@ -35,7 +35,7 @@ class HCPLayer {
 
   _drawSphereTriplet(MV, prog, pos) {
     for (let i = 0; i < 3; i++) {
-      const radius = 1.0;
+      const radius = 1.15;
       let v = vec3.fromValues(pos[0],pos[1],pos[2]);
       this._drawSphere(MV, prog, vec3.add(v, v, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6))));
     }

@@ -76,7 +76,7 @@ function HCP(eighth, sixth, half, sphere, colors) {
       gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
       if (level !== -1 && level !== 2) {
         for (let i = 0; i < 3; i++) {
-          const radius = 1.0;
+          const radius = 1.15;
           this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)));
         }
       }

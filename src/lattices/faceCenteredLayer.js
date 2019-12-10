@@ -16,7 +16,19 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
       curHeight = t;
     };
 
+    let logged = false;
+
     this._drawSphere = function(MV, prog, pos) {
+      const centerOfRotation = vec3.fromValues(0,restHeight,0);
+      let actualPos = vec3.fromValues(pos[0]+layerOffset[0], restHeight, pos[2]+layerOffset[2]);
+      vec3.rotateZ(actualPos, actualPos, centerOfRotation, Math.PI/4);
+      //vec3.rotateX(actualPos, actualPos, centerOfRotation, -Math.PI/4);
+      if (actualPos[1] > 3.5 || actualPos[1] < -3.5 || actualPos[0] > 4 || actualPos[0] < -4) return;
+      if (!logged) {
+        console.log(actualPos, pos);
+        logged = true;
+      }
+
       MV.pushMatrix();
       MV.translate(pos);
       gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
@@ -38,16 +50,10 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
         gl.uniform3fv(prog.getHandle("kdFront"), color);
 
-        const layerTypeOffsets = [
-          vec3.fromValues(-1,0,-0.5),
-          vec3.fromValues(0,0,0),
-          vec3.fromValues(0,0,-1)
-        ];
-
         MV.pushMatrix();
         MV.rotate(45, vec3.fromValues(0, 0, 1));
-        MV.rotate(45, vec3.fromValues(1, 0, 0));
-        MV.translate(layerTypeOffsets[layerIndex%3]);
+        /*MV.rotate(45, vec3.fromValues(1, 0, 0));*/
+        MV.translate(layerOffset);
 
         this._drawSphereTriplet(MV, prog, vec3.fromValues(0, curHeight, 0));
         for (let i = 0; i < 6; i++) {
@@ -60,10 +66,17 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
         MV.popMatrix();
     };
 
+    const layerTypeOffsets = [
+      vec3.fromValues(-1,0,-0.5),
+      vec3.fromValues(0,0,0),
+      vec3.fromValues(0,0,-1)
+    ];
+
     this.isAtRest = function() { return atRest; };
 
     this.startHeight = 10.0;
     this.restHeight = restHeight;
+    var layerOffset = layerTypeOffsets[layerIndex%3];
     var curHeight = 10.0;
     var speed = .1;
     var atRest = false;

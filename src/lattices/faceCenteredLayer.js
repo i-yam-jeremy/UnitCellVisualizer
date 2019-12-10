@@ -35,58 +35,28 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
     this.draw = function(MV, prog) {
         if (this.hidden) return;
 
-        MV.pushMatrix();
-        MV.rotate(45, vec3.fromValues(0, 0, 1));
-        MV.rotate(-45, vec3.fromValues(1, 0, 0));
-
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
         gl.uniform3fv(prog.getHandle("kdFront"), color);
 
-        if (layerType === FaceCenteredLayer.LayerType.A) {
-          MV.pushMatrix();
-          MV.translate(vec3.fromValues(0,0,-3.5));
-          for (let i = 0; i < 9; i++) {
-            if (i % 2 == 0) {
-              const count = (i == 0 || i == 8) ? 1 : 7;
-              const countOffset = Math.floor(count/2);
-              for (let j = 0; j < count; j++) {
-                this._drawSphere(MV, prog, vec3.fromValues(2*(j-countOffset), curHeight, 1.73*(i-2)));
-              }
-            }
-            else {
-              const count = (i == 1 || i == 7) ? 4 : 6;
-              const countOffset = Math.floor(count/2);
-              for (let j = 0; j < count; j++) {
-                this._drawSphere(MV, prog, vec3.fromValues(2*(j-countOffset) + 1, curHeight, 1.73*(i-2)));
-              }
-            }
-          }
-          MV.popMatrix();
-        }
-        else if (layerType === FaceCenteredLayer.LayerType.B) {
-          this._drawSphereTriplet(MV, prog, vec3.fromValues(0, curHeight, 0));
-          for (let i = 0; i < 6; i++) {
-            this._drawSphereTriplet(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6), curHeight,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1));
-          }
-          for (let i = 0; i < 12; i++) {
-            const scale = (i % 2 == 0) ? 2 : 1.73;
-            this._drawSphereTriplet(MV, prog, vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/12), curHeight,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/12), 1));
-          }
-        }
-        else { // Type C
-          MV.pushMatrix();
-          MV.translate(vec3.fromValues(0,0,-1));
-          this._drawSphereTriplet(MV, prog, vec3.fromValues(0, curHeight, 0));
-          for (let i = 0; i < 6; i++) {
-            this._drawSphereTriplet(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6), curHeight,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1));
-          }
-          for (let i = 0; i < 12; i++) {
-            const scale = (i % 2 == 0) ? 2 : 1.73;
-            this._drawSphereTriplet(MV, prog, vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/12), curHeight,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/12), 1));
-          }
-          MV.popMatrix();
-        }
+        const layerTypeOffsets = [
+          vec3.fromValues(-1,0,-0.5),
+          vec3.fromValues(0,0,0),
+          vec3.fromValues(0,0,-1)
+        ];
 
+        MV.pushMatrix();
+        MV.rotate(45, vec3.fromValues(0, 0, 1));
+        MV.rotate(45, vec3.fromValues(1, 0, 0));
+        MV.translate(layerTypeOffsets[layerIndex%3]);
+
+        this._drawSphereTriplet(MV, prog, vec3.fromValues(0, curHeight, 0));
+        for (let i = 0; i < 6; i++) {
+          this._drawSphereTriplet(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6), curHeight,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1));
+        }
+        for (let i = 0; i < 12; i++) {
+          const scale = (i % 2 == 0) ? 2 : 1.73;
+          this._drawSphereTriplet(MV, prog, vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/12), curHeight,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/12), 1));
+        }
         MV.popMatrix();
     };
 
@@ -94,7 +64,6 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
 
     this.startHeight = 10.0;
     this.restHeight = restHeight;
-    var layerType = FaceCenteredLayer.LayerType[['A', 'B', 'C'][layerIndex%3]];
     var curHeight = 10.0;
     var speed = .1;
     var atRest = false;
@@ -108,11 +77,5 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
     var countTimes = 0;
     this.hidden = true;
 }
-
-FaceCenteredLayer.LayerType = {
-  A: 'A',
-  B: 'B',
-  C: 'C'
-};
 
 export {FaceCenteredLayer};

@@ -24,42 +24,71 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
       MV.popMatrix();
     };
 
+    this._drawSphereTriplet = function(MV, prog, pos) {
+      for (let i = 0; i < 3; i++) {
+        const radius = 1.15;
+        let v = vec3.fromValues(pos[0],pos[1],pos[2]);
+        this._drawSphere(MV, prog, vec3.add(v, v, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6))));
+      }
+    };
+
     this.draw = function(MV, prog) {
         if (this.hidden) return;
 
-        MV.pushMatrix();
-
+        gl.uniform1f(prog.getHandle("alpha"), 1.0);
         gl.uniform3fv(prog.getHandle("kdFront"), color);
 
-        for (let j = 0; j < 2; j++) {
-          const triangleSideLength = 2*layerIndex - 3*j;
-          const triangleVertexToCenterLength = (triangleSideLength/2) / Math.cos(Math.PI/6);
-          for (let i = 0; i < 3; i++) {
-            const radius = 2.0*triangleVertexToCenterLength;
-            const pos = vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), curHeight, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6));
-            const nextPos = vec3.fromValues(radius*Math.cos(2*Math.PI*(i+1)/3 + Math.PI/6), curHeight, radius*Math.sin(2*Math.PI*(i+1)/3 + Math.PI/6));
-            this._drawSphere(MV, prog, pos);
-
-            const dirToNextPos = vec3.fromValues(0,0,0);
-            vec3.subtract(dirToNextPos, nextPos, pos);
-
-            for (let i = 0; i < triangleSideLength; i++) {
-              let v = vec3.fromValues(0,0,0);
-              const p = vec3.add(v, pos, vec3.scale(v, dirToNextPos, i/(triangleSideLength)));
-              this._drawSphere(MV, prog, p);
+        if (layerType === FaceCenteredLayer.LayerType.A) {
+          MV.pushMatrix();
+          MV.translate(vec3.fromValues(0,0,-3.5));
+          for (let i = 0; i < 9; i++) {
+            if (i % 2 == 0) {
+              const count = (i == 0 || i == 8) ? 1 : 7;
+              const countOffset = Math.floor(count/2);
+              for (let j = 0; j < count; j++) {
+                this._drawSphere(MV, prog, vec3.fromValues(2*(j-countOffset), curHeight, 1.73*(i-2)));
+              }
+            }
+            else {
+              const count = (i == 1 || i == 7) ? 4 : 6;
+              const countOffset = Math.floor(count/2);
+              for (let j = 0; j < count; j++) {
+                this._drawSphere(MV, prog, vec3.fromValues(2*(j-countOffset) + 1, curHeight, 1.73*(i-2)));
+              }
             }
           }
+          MV.popMatrix();
         }
-
-        gl.uniform1f(prog.getHandle("alpha"), 1.0);
-
-        MV.popMatrix();
+        else if (layerType === FaceCenteredLayer.LayerType.B) {
+          this._drawSphereTriplet(MV, prog, vec3.fromValues(0, curHeight, 0));
+          for (let i = 0; i < 6; i++) {
+            this._drawSphereTriplet(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6), curHeight,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1));
+          }
+          for (let i = 0; i < 12; i++) {
+            const scale = (i % 2 == 0) ? 2 : 1.73;
+            this._drawSphereTriplet(MV, prog, vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/12), curHeight,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/12), 1));
+          }
+        }
+        else { // Type C
+          MV.pushMatrix();
+          MV.translate(vec3.fromValues(0,0,-1));
+          this._drawSphereTriplet(MV, prog, vec3.fromValues(0, curHeight, 0));
+          for (let i = 0; i < 6; i++) {
+            this._drawSphereTriplet(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6), curHeight,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1));
+          }
+          for (let i = 0; i < 12; i++) {
+            const scale = (i % 2 == 0) ? 2 : 1.73;
+            this._drawSphereTriplet(MV, prog, vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/12), curHeight,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/12), 1));
+          }
+          MV.popMatrix();
+        }
     };
 
     this.isAtRest = function() { return atRest; };
 
     this.startHeight = 10.0;
     this.restHeight = restHeight;
+    var layerType = FaceCenteredLayer.LayerType[['A', 'B', 'C'][layerIndex%3]];
     var curHeight = 10.0;
     var speed = .1;
     var atRest = false;
@@ -73,5 +102,11 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
     var countTimes = 0;
     this.hidden = true;
 }
+
+FaceCenteredLayer.LayerType = {
+  A: 'A',
+  B: 'B',
+  C: 'C'
+};
 
 export {FaceCenteredLayer};

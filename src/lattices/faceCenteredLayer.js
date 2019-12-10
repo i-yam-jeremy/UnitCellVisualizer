@@ -35,6 +35,10 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
     this.draw = function(MV, prog) {
         if (this.hidden) return;
 
+        MV.pushMatrix();
+        MV.rotate(45, vec3.fromValues(0, 0, 1));
+        MV.rotate(-45, vec3.fromValues(1, 0, 0));
+
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
         gl.uniform3fv(prog.getHandle("kdFront"), color);
 
@@ -82,6 +86,8 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
           }
           MV.popMatrix();
         }
+
+        MV.popMatrix();
     };
 
     this.isAtRest = function() { return atRest; };

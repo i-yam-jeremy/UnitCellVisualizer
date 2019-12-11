@@ -21,9 +21,9 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
     this._drawSphere = function(MV, prog, pos) {
       const centerOfRotation = vec3.fromValues(0,0,0);
       let actualPos = vec3.fromValues(pos[0], restHeight, pos[2]);
+      vec3.add(actualPos, actualPos, layerOffset);
       vec3.rotateZ(actualPos, actualPos, centerOfRotation, Math.PI/4);
       //vec3.rotateX(actualPos, actualPos, centerOfRotation, Math.PI/4);
-      vec3.add(actualPos, actualPos, layerOffset);
       if (actualPos[0] > 5 || actualPos[0] < -5 ||
           actualPos[1] > 5 || actualPos[1] < -5 ||
           actualPos[2] > 5 || actualPos[2] < -5)

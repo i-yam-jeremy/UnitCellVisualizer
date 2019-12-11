@@ -20,20 +20,21 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
 
     this._drawSphere = function(MV, prog, pos) {
       const centerOfRotation = vec3.fromValues(0,0,0);
-      let actualPos = vec3.fromValues(pos[0]+layerOffset[0], restHeight, pos[2]+layerOffset[2]);
+      let actualPos = vec3.fromValues(pos[0], restHeight, pos[2]);
       vec3.rotateZ(actualPos, actualPos, centerOfRotation, Math.PI/4);
-      vec3.rotateX(actualPos, actualPos, centerOfRotation, Math.PI/4);
-      if (actualPos[0] > 3.5 || actualPos[0] < -3.5 ||
-          actualPos[1] > 4 || actualPos[1] < -4 ||
-          actualPos[2] > 4 || actualPos[2] < -4)
-          gl.uniform1f(prog.getHandle("alpha"), 0.25);
+      //vec3.rotateX(actualPos, actualPos, centerOfRotation, Math.PI/4);
+      vec3.add(actualPos, actualPos, layerOffset);
+      if (actualPos[0] > 5 || actualPos[0] < -5 ||
+          actualPos[1] > 5 || actualPos[1] < -5 ||
+          actualPos[2] > 5 || actualPos[2] < -5)
+          return;//gl.uniform1f(prog.getHandle("alpha"), 0.25);
       /*if (logged < 30) {
         console.log('FCC', actualPos, pos);
         logged++;
       }*/
 
       MV.pushMatrix();
-      MV.translate(pos);
+      MV.translate(actualPos);
       gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
       sphere.draw(prog);
       MV.popMatrix();
@@ -56,9 +57,9 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
         gl.uniform3fv(prog.getHandle("kdFront"), color);
 
         MV.pushMatrix();
-        MV.rotate(45, vec3.fromValues(0, 0, 1));
+        /*MV.rotate(45, vec3.fromValues(0, 0, 1));
         MV.rotate(45, vec3.fromValues(1, 0, 0));
-        MV.translate(layerOffset);
+        MV.translate(layerOffset);*/
 
         for (let y = 0; y < 20; y++) {
           for (let x = 0; x < 20; x++) {

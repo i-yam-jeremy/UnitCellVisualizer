@@ -1,7 +1,7 @@
 import {vec3} from '../gl-matrix';
 
 //FCC cell layering
-function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, color) {
+function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, color, expan) {
 
     this.reset = function() {
         curHeight = startHeight;
@@ -23,10 +23,10 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
       let actualPos = vec3.fromValues(pos[0], restHeight, pos[2]);
       vec3.add(actualPos, actualPos, layerOffset);
       vec3.rotateZ(actualPos, actualPos, centerOfRotation, Math.PI/4);
-      //vec3.rotateX(actualPos, actualPos, centerOfRotation, Math.PI/4);
-      if (actualPos[0] > 5 || actualPos[0] < -5 ||
-          actualPos[1] > 5 || actualPos[1] < -5 ||
-          actualPos[2] > 5 || actualPos[2] < -5)
+      vec3.rotateX(actualPos, actualPos, centerOfRotation, Math.PI/4);
+      if (actualPos[0] > window.AAA || actualPos[0] < -window.AAA ||
+          actualPos[1] > window.AAA || actualPos[1] < -window.AAA ||
+          actualPos[2] > window.AAA || actualPos[2] < -window.AAA)
           return;//gl.uniform1f(prog.getHandle("alpha"), 0.25);
       /*if (logged < 30) {
         console.log('FCC', actualPos, pos);
@@ -34,7 +34,7 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
       }*/
 
       MV.pushMatrix();
-      MV.translate(actualPos);
+      MV.translate(vec3.add(pos, pos, layerOffset));
       gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
       sphere.draw(prog);
       MV.popMatrix();
@@ -96,8 +96,8 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
     };
 
     const layerTypeOffsets = [
-      vec3.fromValues(-1,0,-0.5),
-      vec3.fromValues(0,0,0),
+      vec3.fromValues(-2.5,0,-1.5),
+      vec3.fromValues(-0.5,0,-0.5),
       vec3.fromValues(0,0,-1)
     ];
 

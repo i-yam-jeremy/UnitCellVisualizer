@@ -59,7 +59,7 @@ var User = {
             }
         }
 
-        window.AAA = 8;
+        window.AAA = 5;
 
         $(document).keydown(function(e) {
 

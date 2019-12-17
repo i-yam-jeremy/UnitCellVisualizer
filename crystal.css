@@ -162,14 +162,22 @@ a:visited { text-decoration: none; color:#414141;}
     height: 40px;
 }
 
+#simulation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+
 #legendText {
-    width: 960px;
+    /*width: 960px;*/
     height: 0px;
     margin: auto;
     margin-top: 26px;
     line-height: 22vh;
     top: 50vh;
-    position: relative;
+    right: calc(50% - 31.5px);
+    position: absolute;
     z-index: 10;
     float: top;
 }

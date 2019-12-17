@@ -215,6 +215,4 @@ $(document).ready(() => {
   let canvas = document.getElementById('canvas');
   onResize(canvas);
   window.addEventListener('resize', () => onResize(canvas));
-
-  goToCrystal(2); // For development/fixing FCC
 });

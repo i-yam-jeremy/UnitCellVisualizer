@@ -49,7 +49,7 @@ function HCP(eighth, sixth, half, sphere, colors) {
       }
 
       if (Scene.hcpHighlightType === HCPHighlightType.HORIZONTAL) {
-        if (level === 1 && (ring === 0 || (ring === 1 && indexInRing === 2))) {
+        if (level === 0 && (ring === 0 || (ring === 1 && indexInRing === 2))) {
           gl.uniform1f(prog.getHandle("alpha"), 1.0);
         }
         else {

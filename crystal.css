@@ -2,6 +2,21 @@ body {
     background: #424242;
 }
 
+button {
+  background-color: #ddd;
+  border: 0.1em solid black;
+  border-radius: 0.5em;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #aaa;
+}
+
+button:active {
+  background-color: #888;
+}
+
 #navigation {
     position: relative;
     top: 20px;
@@ -35,7 +50,8 @@ a:visited { text-decoration: none; color:#414141;}
     height: 840px;
     margin: auto;
     margin-top: 26px;
-    border: 2px solid #A6A6A6;
+    border: 0.1em solid #A6A6A6;
+    border-radius: 0.5em;
     background: #585858;
     position: relative;
 }

@@ -299,6 +299,13 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
 
     this.calcCellDistance = function(m, v) {
 
+       if (type === CrystalType.HCP) {
+         // When too zoomed in, HCP cell sorting is incorrect,
+         // so this scales down the points to allow it to be more accurate 
+         const s = 0.1;
+         v = vec4.fromValues(v[0]*s, v[1]*s, v[2]*s, 1);
+       }
+
         var v2 = vec3.create();
 
         v2[0] = m[0]*v[0] + m[4]*v[1] + m[8]*v[2] + m[12]*v[3];

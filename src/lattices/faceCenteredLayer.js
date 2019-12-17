@@ -51,15 +51,17 @@ let layers = [
 ];
 
 const planeNormal = vec3.fromValues(1,1,1);
-for (const pos of allSpheres) {
-  for (let i = 0; i < 10; i++) {
-    const pointOnPlane = vec3.fromValues(2.8*i - 1.4*3,-1.4*3,-1.4*3);
-    const d = -vec3.dot(planeNormal, pointOnPlane);
+for (let i = 0; i < 10; i++) {
+  const pointOnPlane = vec3.fromValues(2.8*(i+1) - 1.4*3,-1.4*3,-1.4*3);
+  const d = -vec3.dot(planeNormal, pointOnPlane);
+  for (const pos of allSpheres) {
     if (Math.abs(vec3.dot(planeNormal, pos) - d) < 0.01) {
       layers[9-i].push(pos);
     }
   }
 }
+
+console.log(layers);
 
 //FCC cell layering
 function FaceCenteredLayer(sphere, totalLayerCount, layerIndex, color, expan) {

@@ -1,7 +1,29 @@
 import {vec3} from '../gl-matrix';
 
-const layers = [
+function v(x, y, z) {
+  return vec3.fromValues(1.4*x,1.4*y,1.4*z);
+}
 
+const allSpheres = [];
+for (let y = 0; y < 4; y++) {
+  for (let x = 0; x < 4; x++) {
+    for (let z = 0; z < 4; z++) {
+      allSpheres.push(v(2*x, 2*y, 2*z));
+    }
+  }
+}
+
+const layers = [
+  [v(5,0,0)],
+  [v(3,0,0), v(4,1,0), v(5,2,0), v(5,1,1), v(5,0,2), v(4,0,1)],
+  [v(1,0,0), v(2,1,0), v(3,2,0), v(4,3,0), v(5,4,0), v(5,3,1), v(5,2,2), v(5,1,3), v(5,0,4)],
+  [v(-1,0,0), v(0,1,0), v(1,2,0), v(2,3,0), v(3,4,0), v(4,5,0), v(5,6,0), v(5,5,1), v(5,4,2), v(5,3,3), v(5,2,4), v(5,1,5), v(5,0,6)],
+  [v(-1,2,0), v(0,3,0), v(1,4,0), v(2,5,0), v(3,6,0), v(5,6,2), v(5,5,3), v(5,4,4), v(5,3,5), v(5,2,6)],
+  [v(-1,4,0), v(0,5,0), v(1,6,0), v(5,6,4), v(5,5,5), v(5,4,6)],
+  [v(-1,4,0)],
+  [],
+  [],
+  []
 ];
 
 //FCC cell layering
@@ -23,19 +45,8 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
     let logged = 0;
 
     this._drawSphere = function(MV, prog, pos) {
-      const centerOfRotation = vec3.fromValues(0,0,0);
-      let actualPos = vec3.fromValues(pos[0], restHeight, pos[2]);
-      vec3.add(actualPos, actualPos, layerOffset);
-      if (layerIndex == 0) vec3.rotateY(actualPos, actualPos, centerOfRotation, Math.PI/6);
-      //vec3.rotateZ(actualPos, actualPos, centerOfRotation, Math.PI/4);
-      //vec3.rotateX(actualPos, actualPos, centerOfRotation, Math.PI/4);
-      //if (actualPos[0] > window.AAA || actualPos[0] < -window.AAA ||
-      //    actualPos[1] > window.AAA || actualPos[1] < -window.AAA ||
-      //    actualPos[2] > window.AAA || actualPos[2] < -window.AAA)
-      //    return;//gl.uniform1f(prog.getHandle("alpha"), 0.25);
-
       MV.pushMatrix();
-      MV.translate(actualPos);
+      MV.translate(pos);
       gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
       sphere.draw(prog);
       MV.popMatrix();
@@ -43,70 +54,21 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
       gl.uniform1f(prog.getHandle("alpha"), 1.0);
     };
 
-    this._drawSphereTriplet = function(MV, prog, pos) {
-      for (let i = 0; i < 3; i++) {
-        const radius = 1.15;
-        let v = vec3.fromValues(pos[0],pos[1],pos[2]);
-        this._drawSphere(MV, prog, vec3.add(v, v, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6))));
-      }
-    };
-
     this.draw = function(MV, prog) {
-        if (this.hidden) return;
+        //if (this.hidden) return;
 
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
         gl.uniform3fv(prog.getHandle("kdFront"), color);
 
-        MV.pushMatrix();
-        /*MV.rotate(45, vec3.fromValues(0, 0, 1));
-        MV.rotate(45, vec3.fromValues(1, 0, 0));
-        MV.translate(layerOffset);*/
-
-        for (let y = 0; y < 3; y++) {
-          for (let x = 0; x < 3; x++) {
-            this._drawSphere(MV, prog, vec3.fromValues(1.73*(x-2), curHeight, 2*(y-2) - x%2));
-          }
+        for (const pos of layers[layerIndex]) {
+          this._drawSphere(MV, prog, pos);
         }
-
-        /*MV.popMatrix();
-
-        MV.pushMatrix();
-        MV.translate(layerOffset);
-        for (let x = 0; x < 10; x++) {
-          this._drawSphere(MV, prog, vec3.fromValues(2*x, 0, 0));
-        }
-        for (let y = 0; y < 10; y++) {
-          this._drawSphere(MV, prog, vec3.fromValues(0, 2*y, 0));
-        }
-        for (let z = 0; z < 10; z++) {
-          this._drawSphere(MV, prog, vec3.fromValues(0, 0, 2*z));
-        }*/
-        /*this._drawSphereTriplet(MV, prog, vec3.fromValues(0, curHeight, 0));
-        for (let i = 0; i < 6; i++) {
-          this._drawSphereTriplet(MV, prog, vec3.fromValues(3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/6), curHeight,3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/6), 1));
-        }
-        for (let i = 0; i < 12; i++) {
-          const scale = (i % 2 == 0) ? 2 : 1.73;
-          this._drawSphereTriplet(MV, prog, vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/12), curHeight,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/12), 1));
-        }
-        for (let i = 0; i < 24; i++) {
-          const scale = 2 * ((i % 2 == 0) ? 2 : 1.73);
-          this._drawSphereTriplet(MV, prog, vec3.fromValues(scale*3.46*Math.cos(1*Math.PI/2 + 2*Math.PI*i/24), curHeight,scale*3.46*Math.sin(1*Math.PI/2 + 2*Math.PI*i/24), 1));
-        }*/
-        MV.popMatrix();
     };
-
-    const layerTypeOffsets = [
-      vec3.fromValues(Math.sqrt(3)/2,0,0),
-      vec3.fromValues(0,0,0),
-      vec3.fromValues(0,0,0),//vec3.fromValues(1,0,-Math.sqrt(3)/2)
-    ];
 
     this.isAtRest = function() { return atRest; };
 
     this.startHeight = 10.0;
     this.restHeight = restHeight;
-    var layerOffset = layerTypeOffsets[layerIndex%3];
     var curHeight = 10.0;
     var speed = .1;
     var atRest = false;

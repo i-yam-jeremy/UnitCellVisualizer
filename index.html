@@ -89,30 +89,32 @@
           <input type="range" min="0" max="1" value="0" step="0.001" class="slider" id="expansionSlider">
         </div>
 
-        <select id="crystalSelector">
-            <option value="-1" disabled>--- Select a Lattice ---</option>
-            <option value="0" selected>Simple Cubic</option>
-            <option value="1">Body-Centered Cubic</option>
-            <option value="2">Face-Centered Cubic</option>
-            <option value="3">Sodium Chloride</option>
-            <option value="4">Calcium Fluoride</option>
-            <option value="6">HCP</option>
-        </select>
+        <div id="controlContainer">
+          <p><h5>Lattice Structures</h5></p>
+          <select id="crystalSelector">
+              <option value="-1" disabled>--- Select a Lattice ---</option>
+              <option value="0" selected>Simple Cubic</option>
+              <option value="1">Body-Centered Cubic</option>
+              <option value="2">Face-Centered Cubic</option>
+              <option value="3">Sodium Chloride</option>
+              <option value="4">Calcium Fluoride</option>
+              <option value="6">HCP</option>
+          </select>
+          <center>
+              <p>
+                <button id="jokes">Amuse me</button>
+                <button id="instructions">Key Controls</button>
+              </p>
+              <p>
+                <button id="legend">Legend</button>
+                <button id="about">About...</button>
+              </p>
+          </center>
+        </div>
         <div id="simulation" style="display: none;">
 
              <div id="navigation">
                 <p>Lattice Structures</p>
-            </div>
-
-            <div id="cells">
-                <center>
-
-                    <button id="jokes">Amuse me</button>
-                    <button id="instructions">Key Controls</button>
-
-                    <button id="legend">Legend</button>
-                    <button id="about">About...</button>
-                </center>
             </div>
 
             <div id="container">

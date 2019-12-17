@@ -59,8 +59,6 @@ var User = {
             }
         }
 
-        window.AAA = 5;
-
         $(document).keydown(function(e) {
 
             window.shift = e.shiftKey;
@@ -75,7 +73,7 @@ var User = {
 	        case 'C'.charCodeAt(0): // right
                     Scene.contract();
                     break;
-                    
+
 	        case 'T'.charCodeAt(0):
                     if (Scene.viewMode === ViewMode.UNIT_CELL) {
                       Scene.toggleTranslucency();

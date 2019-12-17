@@ -65,7 +65,7 @@ function FaceCentered(eighth, half, sphere, colors) {
             this.drawHalf(MV, prog, 90, vec3.fromValues(0, 0, 1.0));
         }
 
-        if (bounds[1] != UnitCellPos.MIN) {
+        /*if (bounds[1] != UnitCellPos.MIN) {
 
             if (bounds[2] != UnitCellPos.MIN) {
                 gl.uniform3fv(prog.getHandle("kdFront"), this.whichColor(center,alpha,x,y,z, 8, this.type.eighth));  // 8
@@ -100,7 +100,7 @@ function FaceCentered(eighth, half, sphere, colors) {
                 if (bounds[0] != UnitCellPos.MAX) { this.drawEighth(MV, prog, 270); }
             }
             MV.popMatrix();
-        }
+        }*/
 
         MV.popMatrix();
 

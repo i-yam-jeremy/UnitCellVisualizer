@@ -1,26 +1,50 @@
 import {vec3} from '../gl-matrix';
 
 function v(x, y, z) {
-  return vec3.fromValues(1.4*x,1.4*y,1.4*z);
+  return vec3.fromValues(1.4*x - 1.4*3, 1.4*y - 1.4*3, 1.4*z - 1.4*3);
 }
 
 const allSpheres = [];
-for (let y = 0; y < 4; y++) {
+/*for (let y = 0; y < 4; y++) {
   for (let x = 0; x < 4; x++) {
+    for (let z = 0; z < 4; z++) {
+      allSpheres.push(v(2*x, 2*y, 2*z));
+    }
+  }
+}*/
+
+for (let y = 0; y < 3; y++) {
+  for (let x = 0; x < 3; x++) {
     for (let z = 0; z < 4; z++) {
       allSpheres.push(v(2*x, 2*y, 2*z));
     }
   }
 }
 
+for (let y = 0; y < 4; y++) {
+  for (let x = 0; x < 3; x++) {
+    for (let z = 0; z < 3; z++) {
+      allSpheres.push(v(2*x, 2*y-1, 2*z+1));
+    }
+  }
+}
+
+for (let y = 0; y < 3; y++) {
+  for (let x = 0; x < 4; x++) {
+    for (let z = 0; z < 3; z++) {
+      allSpheres.push(v(2*x-1, 2*y, 2*z+1));
+    }
+  }
+}
+
 const layers = [
-  [v(5,0,0)],
-  [v(3,0,0), v(4,1,0), v(5,2,0), v(5,1,1), v(5,0,2), v(4,0,1)],
-  [v(1,0,0), v(2,1,0), v(3,2,0), v(4,3,0), v(5,4,0), v(5,3,1), v(5,2,2), v(5,1,3), v(5,0,4)],
-  [v(-1,0,0), v(0,1,0), v(1,2,0), v(2,3,0), v(3,4,0), v(4,5,0), v(5,6,0), v(5,5,1), v(5,4,2), v(5,3,3), v(5,2,4), v(5,1,5), v(5,0,6)],
-  [v(-1,2,0), v(0,3,0), v(1,4,0), v(2,5,0), v(3,6,0), v(5,6,2), v(5,5,3), v(5,4,4), v(5,3,5), v(5,2,6)],
-  [v(-1,4,0), v(0,5,0), v(1,6,0), v(5,6,4), v(5,5,5), v(5,4,6)],
-  [v(-1,4,0)],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
   [],
   [],
   []
@@ -60,7 +84,7 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
         gl.uniform3fv(prog.getHandle("kdFront"), color);
 
-        for (const pos of layers[layerIndex]) {
+        for (const pos of /*layers[layerIndex]*/allSpheres) {
           this._drawSphere(MV, prog, pos);
         }
     };

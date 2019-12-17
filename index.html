@@ -12,6 +12,7 @@
 
     <body>
 
+      <div id="simulation">
         <canvas id="canvas" width="900px" height="675"></canvas>
         <div id="hcpHighlightTypeSelector">
           <label style="display: flex; justify-content: space-between;">
@@ -111,7 +112,16 @@
               </p>
           </center>
         </div>
-        <div id="simulation" style="display: none;">
+      </div>
+      <div id="legendText">
+          <center>
+              <p id="Ca"><strong>Calcium</strong></p>
+              <p id="F"><strong>Fluoride</strong></p>
+              <p id="Na"><strong>Sodium</strong></p>
+              <p id="Cl"><strong>Chloride</strong></p>
+          </center>
+      </div>
+        <div id="simulation2" style="display: none;">
 
              <div id="navigation">
                 <p>Lattice Structures</p>
@@ -120,7 +130,7 @@
             <div id="container">
                 <center>
 
-                    <div id="legendText">
+                    <div id="legendText2">
                         <center>
                             <p id="Ca"><strong>Calcium</strong></p>
                             <p id="F"><strong>Fluoride</strong></p>

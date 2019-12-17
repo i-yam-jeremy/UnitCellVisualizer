@@ -151,6 +151,7 @@ function onResize(canvas) {
 
 $(document).ready(() => {
   setHCPMenusVisibility(false);
+  $('#aboutText').hide();
 
   $('#jokes').click(amuse);
   $('#instructions').click(instruct);
@@ -163,7 +164,7 @@ $(document).ready(() => {
   $('#about').click(about);
   $('#return').click(about);
   $('#expansionSlider').on("input change", (e) => Scene.onExpansionSliderChange(e.target.value));
-  $('#color').click(color);
+  /*$('#color').click(color);*/
 
   $('#hcpHighlightTypeHorizontal').change(() => Scene.setHCPHighlightType(HCPHighlightType.HORIZONTAL));
   $('#hcpHighlightTypeVertical').change(() => Scene.setHCPHighlightType(HCPHighlightType.VERTICAL));

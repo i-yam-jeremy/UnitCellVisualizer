@@ -113,10 +113,11 @@ a:visited { text-decoration: none; color:#414141;}
 
 #crystalType {
     font-size: 40px;
-    color: #A6A6A6;
     margin: 0;
-    position: relative;
+    position: absolute;
+    text-align: center;
     top: 30px;
+    width: 100%;
 }
 
 #controlButtons {

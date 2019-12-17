@@ -1,20 +1,7 @@
 body {
     background: #424242;
-}
-
-button {
-  background-color: #ddd;
-  border: 0.1em solid black;
-  border-radius: 0.5em;
-  transition: 0.3s;
-}
-
-button:hover {
-  background-color: #aaa;
-}
-
-button:active {
-  background-color: #888;
+    padding: 0;
+    margin: 0;
 }
 
 #navigation {
@@ -111,11 +98,14 @@ a:visited { text-decoration: none; color:#414141;}
 }
 
 #canvas {
-    position: relative;
-    top: 30px;
-    margin: auto;
-    border: 4px solid #424242;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
     color: #FFFFFF;
+    width: 100%;
+    height: 100%;
 }
 
 #crystalType {

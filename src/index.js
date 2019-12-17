@@ -143,8 +143,17 @@ function setHCPMenusVisibility(visible) {
   }
 }
 
+function onResize(canvas) {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
 $(document).ready(() => {
   setHCPMenusVisibility(false);
+
+  let canvas = document.getElementById('canvas');
+  onResize(canvas);
+  window.addEventListener('resize', () => onResize(canvas));
 
   $('#jokes').click(amuse);
   $('#instructions').click(instruct);

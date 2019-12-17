@@ -167,29 +167,23 @@ a:visited { text-decoration: none; color:#414141;}
     height: 0px;
     margin: auto;
     margin-top: 26px;
+    line-height: 22vh;
+    top: 50vh;
     position: relative;
-    z-index: 20;
+    z-index: 10;
     float: top;
 }
 
-#Ca {
-    position: relative;
-    bottom: 525px;
+#legendText center {
+  position: relative;
+  top: -40vh;
+  display: flex;
+  flex-direction: column;
 }
 
-#F {
-    position: relative;
-    bottom: 425px;
-}
-
-#Na {
-    position: relative;
-    bottom: 300px;
-}
-
-#Cl {
-    position: relative;
-    bottom: 175px;
+#legendText center p {
+  padding: 0;
+  margin: 0;
 }
 
 #hcpHighlightTypeSelector {

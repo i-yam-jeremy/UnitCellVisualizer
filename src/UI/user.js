@@ -75,13 +75,7 @@ var User = {
 	        case 'C'.charCodeAt(0): // right
                     Scene.contract();
                     break;
-          case 'A'.charCodeAt(0):
-                    window.AAA += 0.1;
-                    break;
-          case 'S'.charCodeAt(0):
-                    window.AAA -= 0.1;
-                    break;
-
+                    
 	        case 'T'.charCodeAt(0):
                     if (Scene.viewMode === ViewMode.UNIT_CELL) {
                       Scene.toggleTranslucency();

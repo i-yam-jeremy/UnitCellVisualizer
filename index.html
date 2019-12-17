@@ -13,6 +13,86 @@
     <body>
 
         <canvas id="canvas" width="900px" height="675"></canvas>
+        <div id="hcpHighlightTypeSelector">
+          <label style="display: flex; justify-content: space-between;">
+            <input id="hcpHighlightTypeHorizontal" type="radio" name="hcp-highlight-type" value="horizontal">
+            <img width="100" src="resources/hcp-horizontal-icon.png">
+          </label>
+
+          <label style="display: flex; justify-content: space-between;">
+            <input id="hcpHighlightTypeVertical" type="radio" name="hcp-highlight-type" value="vertical">
+            <img width="60" src="resources/hcp-vertical-icon.png">
+          </label>
+
+          <label style="display: flex; justify-content: space-between;">
+              <input id="hcpHighlightTypeNone" type="radio" name="hcp-highlight-type" value="vertical" checked>
+              <p style="padding: 10px; font-family: Arial; font-size: 20px;">None</p>
+          </label>
+        </div>
+
+        <div id="hcpRingAndLevelSelector">
+          <div>
+            <p><label>
+              <input id="hcpShowRing-0" type="checkbox" checked>
+              Ring 0
+            </label></p>
+            <p><label>
+              <input id="hcpShowRing-1" type="checkbox" checked>
+              Ring 1
+            </label></p>
+            <p><label>
+              <input id="hcpShowRing-2" type="checkbox" checked>
+              Ring 2
+            </label></p>
+          </div>
+          <div style="border-top: 1px solid #444;">
+            <p><label>
+              <input id="hcpShowLevel--1" type="checkbox" checked>
+              Level -1
+            </label></p>
+            <p><label>
+              <input id="hcpShowLevel-0" type="checkbox" checked>
+              Level 0
+            </label></p>
+            <p><label>
+              <input id="hcpShowLevel-1" type="checkbox" checked>
+              Level 1
+            </label></p>
+            <p><label>
+              <input id="hcpShowLevel-2" type="checkbox" checked>
+              Level 2
+            </label></p>
+          </div>
+        </div>
+
+        <div id="viewModeSelector">
+          <p><label style="display: flex; justify-content: space-between;">
+            <input id="unitCellViewMode" type="radio" name="view-mode" value="unitCell">
+            Unit Cell
+          </label></p>
+          <p><label style="display: flex; justify-content: space-between;">
+            <input id="layerViewMode" type="radio" name="view-mode" value="layer" checked>
+            Layer
+          </label></p>
+          <p><label style="display: flex; justify-content: space-between;">
+            <input id="coordViewMode" type="radio" name="view-mode" value="coord">
+            Coordination
+          </label></p>
+          <p><label style="display: flex; justify-content: space-between;">
+            <input id="singleViewMode" type="radio" name="view-mode" value="single">
+            Single
+          </label></p>
+        </div>
+
+        <select id="crystalSelector">
+            <option value="-1" disabled>--- Select a Lattice ---</option>
+            <option value="0" selected>Simple Cubic</option>
+            <option value="1">Body-Centered Cubic</option>
+            <option value="2">Face-Centered Cubic</option>
+            <option value="3">Sodium Chloride</option>
+            <option value="4">Calcium Fluoride</option>
+            <option value="6">HCP</option>
+        </select>
         <div id="simulation" style="display: none;">
 
              <div id="navigation">
@@ -25,16 +105,6 @@
                     <button id="jokes">Amuse me</button>
                     <button id="instructions">Key Controls</button>
 
-                    <select id="crystalSelector">
-                        <option value="-1" disabled>--- Select a Lattice ---</option>
-                        <option value="0" selected>Simple Cubic</option>
-                        <option value="1">Body-Centered Cubic</option>
-                        <option value="2">Face-Centered Cubic</option>
-                        <option value="3">Sodium Chloride</option>
-                        <option value="4">Calcium Fluoride</option>
-                        <option value="6">HCP</option>
-                    </select>
-
                     <button id="legend">Legend</button>
                     <button id="about">About...</button>
                 </center>
@@ -42,76 +112,6 @@
 
             <div id="container">
                 <center>
-                    <div id="hcpHighlightTypeSelector">
-                      <label style="display: flex; justify-content: space-between;">
-                        <input id="hcpHighlightTypeHorizontal" type="radio" name="hcp-highlight-type" value="horizontal">
-                        <img width="100" src="resources/hcp-horizontal-icon.png">
-                      </label>
-
-                      <label style="display: flex; justify-content: space-between;">
-                        <input id="hcpHighlightTypeVertical" type="radio" name="hcp-highlight-type" value="vertical">
-                        <img width="60" src="resources/hcp-vertical-icon.png">
-                      </label>
-
-                      <label style="display: flex; justify-content: space-between;">
-                          <input id="hcpHighlightTypeNone" type="radio" name="hcp-highlight-type" value="vertical" checked>
-                          <p style="padding: 10px; font-family: Arial; font-size: 20px;">None</p>
-                      </label>
-                    </div>
-
-                    <div id="hcpRingAndLevelSelector">
-                      <div>
-                        <p><label>
-                          <input id="hcpShowRing-0" type="checkbox" checked>
-                          Ring 0
-                        </label></p>
-                        <p><label>
-                          <input id="hcpShowRing-1" type="checkbox" checked>
-                          Ring 1
-                        </label></p>
-                        <p><label>
-                          <input id="hcpShowRing-2" type="checkbox" checked>
-                          Ring 2
-                        </label></p>
-                      </div>
-                      <div style="border-top: 1px solid #444;">
-                        <p><label>
-                          <input id="hcpShowLevel--1" type="checkbox" checked>
-                          Level -1
-                        </label></p>
-                        <p><label>
-                          <input id="hcpShowLevel-0" type="checkbox" checked>
-                          Level 0
-                        </label></p>
-                        <p><label>
-                          <input id="hcpShowLevel-1" type="checkbox" checked>
-                          Level 1
-                        </label></p>
-                        <p><label>
-                          <input id="hcpShowLevel-2" type="checkbox" checked>
-                          Level 2
-                        </label></p>
-                      </div>
-                    </div>
-
-                    <div id="viewModeSelector">
-                      <p><label style="display: flex; justify-content: space-between;">
-                        <input id="unitCellViewMode" type="radio" name="view-mode" value="unitCell">
-                        Unit Cell
-                      </label></p>
-                      <p><label style="display: flex; justify-content: space-between;">
-                        <input id="layerViewMode" type="radio" name="view-mode" value="layer" checked>
-                        Layer
-                      </label></p>
-                      <p><label style="display: flex; justify-content: space-between;">
-                        <input id="coordViewMode" type="radio" name="view-mode" value="coord">
-                        Coordination
-                      </label></p>
-                      <p><label style="display: flex; justify-content: space-between;">
-                        <input id="singleViewMode" type="radio" name="view-mode" value="single">
-                        Single
-                      </label></p>
-                    </div>
 
                     <div id="legendText">
                         <center>

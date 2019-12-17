@@ -3,6 +3,7 @@ body {
     padding: 0;
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
 }
 
 #navigation {
@@ -118,11 +119,6 @@ a:visited { text-decoration: none; color:#414141;}
     text-align: center;
     top: 30px;
     width: 100vw;
-}
-
-#simulation {
-  width: 100%;
-  height: 100%;
 }
 
 #controlButtons {

@@ -163,6 +163,7 @@ $(document).ready(() => {
   $('#legend').click(() => goToCrystal(5));
   $('#about').click(about);
   $('#return').click(about);
+  $('#closeAbout').click(about);
   $('#expansionSlider').on("input change", (e) => Scene.onExpansionSliderChange(e.target.value));
   /*$('#color').click(color);*/
 

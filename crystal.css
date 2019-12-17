@@ -154,6 +154,25 @@ a:visited { text-decoration: none; color:#414141;}
     height: 40px;
 }
 
+#closeAbout {
+  font-size: 3em;
+  padding: 0.5em;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: none;
+  border: none;
+}
+
+#closeAbout:hover {
+  color: #ccc;
+}
+
+#closeAbout:active {
+  color: #aaa;
+}
+
 #return {
     margin: auto;
     position: relative;

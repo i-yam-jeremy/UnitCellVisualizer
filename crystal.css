@@ -57,20 +57,22 @@ a:visited { text-decoration: none; color:#414141;}
     z-index: 15;
 }
 
+#expansionSliderContainer {
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  margin-bottom: 0.75em;
+}
+
 #expansionSlider {
   margin: auto;
-  margin-right: 30px;
-  position: relative;
-  top: 25px;
-  width: 170px;
+  width: 20em;
 }
 
 #expansionSliderLabel {
-  color: #ccc;
-  font-size: 16px;
-  display: inline-block;
-  position: relative;
-  left: 120px;
+  font-size: 1.5em;
+  text-align: center;
+  padding-bottom: 0.75em;
 }
 
 #about {
@@ -198,8 +200,10 @@ a:visited { text-decoration: none; color:#414141;}
   top: 0;
   right: 0;
   background-color: #ccc;
-  border: 1px solid #444;
-  border-radius: 5px;
+  border: 0.1em solid #444;
+  border-top: none;
+  border-right: none;
+  border-bottom-left-radius: 5px;
 }
 
 #hcpRingAndLevelSelector {

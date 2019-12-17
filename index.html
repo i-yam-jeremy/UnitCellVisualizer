@@ -84,6 +84,11 @@
           </label></p>
         </div>
 
+        <div id="expansionSliderContainer">
+          <div id="expansionSliderLabel">Expansion</div>
+          <input type="range" min="0" max="1" value="0" step="0.001" class="slider" id="expansionSlider">
+        </div>
+
         <select id="crystalSelector">
             <option value="-1" disabled>--- Select a Lattice ---</option>
             <option value="0" selected>Simple Cubic</option>
@@ -123,8 +128,6 @@
                     </div>
                     <p id="crystalType">Simple Cubic</p>
                     <p id="controlButtons">
-                        <div id="expansionSliderLabel">Expansion</div>
-                        <input type="range" min="0" max="1" value="0" step="0.001" class="slider" id="expansionSlider">
 
                         <button id="color">Coloring</button>
                     </p>

@@ -156,7 +156,7 @@ $(document).ready(() => {
   $('#instructions').click(instruct);
   $('#crystalSelector').change(() => {
     const crystalSelected = $('#crystalSelector').val();
-    setHCPMenusVisibility(crystalSelected === '6');
+    setHCPMenusVisibility(crystalSelected === '6' && Scene.viewMode == ViewMode.UNIT_CELL);
     changeCrystal(crystalSelected);
   });
   $('#legend').click(() => goToCrystal(5));
@@ -181,26 +181,31 @@ $(document).ready(() => {
   $('#unitCellViewMode').change(() => {
     $('#expansionSlider').val(0);
     Scene.setViewMode(ViewMode.UNIT_CELL);
+    setHCPMenusVisibility(Scene.whichCrystal === '6' && Scene.viewMode === ViewMode.UNIT_CELL);
   });
   $('#layerViewMode').change(() => {
     $('#expansionSlider').val(0);
     Scene.setViewMode(ViewMode.LAYER);
+    setHCPMenusVisibility(Scene.whichCrystal === '6' && Scene.viewMode === ViewMode.UNIT_CELL);
   });
   $('#coordViewMode').change(() => {
     if (CoordCheck.checkCoord($('#crystalSelector').val())) {
       $('#expansionSlider').val(0);
       Scene.setViewMode(ViewMode.COORD);
+      setHCPMenusVisibility(Scene.whichCrystal === '6' && Scene.viewMode === ViewMode.UNIT_CELL);
     }
     else {
       $('#coordViewMode').prop('checked', false);
       $('#expansionSlider').val(0);
       Scene.setViewMode(ViewMode.UNIT_CELL);
+      setHCPMenusVisibility(Scene.whichCrystal === '6' && Scene.viewMode === ViewMode.UNIT_CELL);
       $('#unitCellViewMode').prop('checked', true);
     }
   });
   $('#singleViewMode').change(() => {
     $('#expansionSlider').val(0);
     Scene.setViewMode(ViewMode.SINGLE);
+    setHCPMenusVisibility(Scene.whichCrystal === '6' && Scene.viewMode === ViewMode.UNIT_CELL);
   });
 
   webGLStart();

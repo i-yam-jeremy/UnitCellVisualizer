@@ -200,9 +200,9 @@ function FaceCentered(eighth, half, sphere, colors) {
             layers = new Array();
 
             const c = [colors["grey"], colors["red"], colors["blue"]];
-            const totalLayerCount = 10;
+            const totalLayerCount = 13;
             for (let i = 0; i < totalLayerCount; i++) {
-              layers.push(new FaceCenteredLayer((i-totalLayerCount/2)*Math.sqrt(3), sphere, totalLayerCount, i, c[i%3]));
+              layers.push(new FaceCenteredLayer((i-totalLayerCount/2)*Math.sqrt(4 - 4/3), sphere, totalLayerCount, i, c[i%3]));
             }
         }
 

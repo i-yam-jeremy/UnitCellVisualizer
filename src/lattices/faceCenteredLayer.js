@@ -1,5 +1,9 @@
 import {vec3} from '../gl-matrix';
 
+const layers = [
+
+];
+
 //FCC cell layering
 function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, color, expan) {
 
@@ -22,16 +26,13 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
       const centerOfRotation = vec3.fromValues(0,0,0);
       let actualPos = vec3.fromValues(pos[0], restHeight, pos[2]);
       vec3.add(actualPos, actualPos, layerOffset);
-      vec3.rotateZ(actualPos, actualPos, centerOfRotation, Math.PI/4);
-      vec3.rotateX(actualPos, actualPos, centerOfRotation, Math.PI/4);
-      if (actualPos[0] > window.AAA || actualPos[0] < -window.AAA ||
-          actualPos[1] > window.AAA || actualPos[1] < -window.AAA ||
-          actualPos[2] > window.AAA+1 || actualPos[2] < -window.AAA+1)
-          return;//gl.uniform1f(prog.getHandle("alpha"), 0.25);
-      /*if (logged < 30) {
-        console.log('FCC', actualPos, pos);
-        logged++;
-      }*/
+      if (layerIndex == 0) vec3.rotateY(actualPos, actualPos, centerOfRotation, Math.PI/6);
+      //vec3.rotateZ(actualPos, actualPos, centerOfRotation, Math.PI/4);
+      //vec3.rotateX(actualPos, actualPos, centerOfRotation, Math.PI/4);
+      //if (actualPos[0] > window.AAA || actualPos[0] < -window.AAA ||
+      //    actualPos[1] > window.AAA || actualPos[1] < -window.AAA ||
+      //    actualPos[2] > window.AAA || actualPos[2] < -window.AAA)
+      //    return;//gl.uniform1f(prog.getHandle("alpha"), 0.25);
 
       MV.pushMatrix();
       MV.translate(actualPos);
@@ -61,9 +62,9 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
         MV.rotate(45, vec3.fromValues(1, 0, 0));
         MV.translate(layerOffset);*/
 
-        for (let y = 0; y < 20; y++) {
-          for (let x = 0; x < 20; x++) {
-            this._drawSphere(MV, prog, vec3.fromValues(1.73*(x-10), curHeight, 2*(y-10) - x%2));
+        for (let y = 0; y < 3; y++) {
+          for (let x = 0; x < 3; x++) {
+            this._drawSphere(MV, prog, vec3.fromValues(1.73*(x-2), curHeight, 2*(y-2) - x%2));
           }
         }
 
@@ -96,9 +97,9 @@ function FaceCenteredLayer(restHeight, sphere, totalLayerCount, layerIndex, colo
     };
 
     const layerTypeOffsets = [
-      vec3.fromValues(-1,0,0.66),
+      vec3.fromValues(Math.sqrt(3)/2,0,0),
       vec3.fromValues(0,0,0),
-      vec3.fromValues(1,0,-0.66)
+      vec3.fromValues(0,0,0),//vec3.fromValues(1,0,-Math.sqrt(3)/2)
     ];
 
     this.isAtRest = function() { return atRest; };

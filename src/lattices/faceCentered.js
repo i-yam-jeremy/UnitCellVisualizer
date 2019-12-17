@@ -7,7 +7,6 @@ function FaceCentered(eighth, half, sphere, colors) {
     this.prototype = new UnitCell(eighth, half, sphere, colors);
 
     this.draw = function(MV, prog, pos, alpha, center, bounds, ndx, color) {
-
         this.color = color;
 
         if (center && alpha < 1.0) {
@@ -20,6 +19,15 @@ function FaceCentered(eighth, half, sphere, colors) {
         var x = ndx[0];
         var y = ndx[1];
         var z = ndx[2];
+
+        const planeNormal = vec3.fromValues(1,1,1);
+        for (let i = 0; i < 14; i++) {
+          const pointOnPlane = vec3.fromValues(i,0,0);
+          const d = vec3.dot(planeNormal, pointOnPlane);
+          if (Math.abs(vec3.dot(planeNormal, ndx) - d) < 0.0001) {
+            this.layerOffset = i;
+          }
+        }
 
         gl.uniform3fv(prog.getHandle("kdFront"), this.whichColor(center,alpha,x,y,z, 12, this.type.half));           // 12
 
@@ -108,22 +116,19 @@ function FaceCentered(eighth, half, sphere, colors) {
     }
 
     this.whichColor = function(center, alpha, x, y, z, id, shape) {
-
-        if(this.color == 0) {
-            if (shape === this.type.half) {
-                if(!center && alpha < 1.0) {
-                    return colors["grey"];
-                }
-                return colors["green"];
+          if (!center && alpha < 1.0) return colors["grey"];
+          // 1 is topmost layer
+          const layerMap = [[1], [2,4,5,9,11,14], [3,6,8,10,12,13], [7]];
+          let layerOffsetIndex;
+          for (let i = 0; i < layerMap.length; i++) {
+            if (layerMap[i].indexOf(id) != -1) {
+              layerOffsetIndex = i;
+              break;
             }
-            else if(shape === this.type.eighth) {
-                return colors["grey"];
-            }
-        }
+          }
+          return layerColors[Math.abs(this.layerOffset-layerOffsetIndex)%3];
 
-        else {
-            return colors["grey"];
-        }
+        return colors["grey"];
     }
 
     this.drawEighth = function(MV, prog, rot) {
@@ -263,6 +268,7 @@ function FaceCentered(eighth, half, sphere, colors) {
     this.scale = 0.71;
     this.color = false;
     var layers = null;
+    var layerColors = [colors["grey"], colors["red"], colors["blue"]];
     this.type = {eighth : 0, half: 1};
 }
 

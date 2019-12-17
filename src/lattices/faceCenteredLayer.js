@@ -92,6 +92,7 @@ function FaceCenteredLayer(sphere, totalLayerCount, layerIndex, color, expan) {
         gl.uniform3fv(prog.getHandle("kdFront"), color);
 
         MV.pushMatrix();
+        MV.translate(vec3.fromValues(1.4, 1.4, 0));
         MV.translate(vec3.fromValues(curHeight, curHeight, curHeight));
         for (const pos of spherePositionsByLayer[layerIndex]) {
           this._drawSphere(MV, prog, pos);

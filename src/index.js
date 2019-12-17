@@ -144,16 +144,13 @@ function setHCPMenusVisibility(visible) {
 }
 
 function onResize(canvas) {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = gl.viewportWidth = window.innerWidth;
+  canvas.height = gl.viewportHeight = window.innerHeight;
+  camera.setAspect(window.innerWidth / window.innerHeight);
 }
 
 $(document).ready(() => {
   setHCPMenusVisibility(false);
-
-  let canvas = document.getElementById('canvas');
-  onResize(canvas);
-  window.addEventListener('resize', () => onResize(canvas));
 
   $('#jokes').click(amuse);
   $('#instructions').click(instruct);
@@ -207,6 +204,10 @@ $(document).ready(() => {
   });
 
   webGLStart();
+
+  let canvas = document.getElementById('canvas');
+  onResize(canvas);
+  window.addEventListener('resize', () => onResize(canvas));
 
   goToCrystal(2); // For development/fixing FCC
 });

@@ -4,6 +4,8 @@ import {vec3} from '../gl-matrix';
 import {HCPHighlightType} from '../lattices/hcpHighlightType.js';
 import {ViewMode} from './viewMode.js';
 
+import * as $ from 'jquery';
+
 let Scene = {
 
     load : function(resourceDir, dispSelector) {
@@ -87,12 +89,14 @@ let Scene = {
         for (var i = 0; i < this.crystals.length; i++) {
             this.crystals[i].expand();
         }
+        $('#expansionSlider').val(this.crystals[this.whichCrystal].getExpansionParameter());
     },
 
     contract : function() {
         for (var i = 0; i < this.crystals.length; i++) {
             this.crystals[i].contract();
         }
+        $('#expansionSlider').val(this.crystals[this.whichCrystal].getExpansionParameter());
     },
 
     toggleTranslucency : function() {

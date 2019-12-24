@@ -105,37 +105,32 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     };
 
     this.expand = function() {
-        if (Scene.viewMode === ViewMode.UNIT_CELL && expansion < MAX_UNIT_CELL_MODE_EXPANSION) {
-          expansion += .2;
-          this.updateLayerExpansion()
-        } else if (Scene.viewMode === ViewMode.LAYER && expansion < layerModeMaxExpansion) {
-          expansion += .4;
-          this.updateLayerExpansion()
-        }
+      this.setExpansion(Math.min(expansionParameter+0.05, 1));
     };
 
     this.contract = function() {
-        if (Scene.viewMode === ViewMode.UNIT_CELL && expansion > 1.0) {
-           expansion -= .2;
-           this.updateLayerExpansion()
-         } else if (Scene.viewMode === ViewMode.LAYER && expansion > 1.0) {
-           expansion -= .4;
-           this.updateLayerExpansion()
-         }
+      this.setExpansion(Math.max(expansionParameter-0.05, 0));
     };
 
     this.resetExpansion = function() {
       expansion = 1.0;
+      expansionParameter = 0.0;
     };
 
     this.setExpansion = function(t) {
       if (Scene.viewMode === ViewMode.LAYER) {
+        expansionParameter = t;
         expansion = 1.0 + t*(layerModeMaxExpansion-1);
         this.updateLayerExpansion();
       }
       else if (Scene.viewMode === ViewMode.UNIT_CELL) {
+        expansionParameter = t;
         expansion = 1.0 + t*(MAX_UNIT_CELL_MODE_EXPANSION-1);
       }
+    };
+
+    this.getExpansionParameter = function() {
+      return expansionParameter;
     };
 
     var Cell = function(bounds, pos, ndx) {
@@ -301,7 +296,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
 
        if (type === CrystalType.HCP) {
          // When too zoomed in, HCP cell sorting is incorrect,
-         // so this scales down the points to allow it to be more accurate 
+         // so this scales down the points to allow it to be more accurate
          const s = 0.1;
          v = vec4.fromValues(v[0]*s, v[1]*s, v[2]*s, 1);
        }
@@ -364,6 +359,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
     var height = type === CrystalType.HCP ? 0 : 5;
     var scale = .1;
     var expansion = 1.0;
+    var expansionParameter = 0;
     var unit;
     var eighth = eighth;
     var half = half;

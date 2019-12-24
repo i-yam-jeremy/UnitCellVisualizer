@@ -246,51 +246,6 @@ function FaceCentered(eighth, half, sphere, colors) {
         this._drawSphere(MV, prog, vec3.fromValues(0, 1.3, 0), "blue");
 
         this._drawSphere(MV, prog, vec3.fromValues(1.3, 1.3, 1.3), "grey");
-
-        /*// draw top & bottom
-        for(var layer = 0; layer < 2; layer++) {
-            MV.pushMatrix();
-            if(layer == 0) {
-                MV.translate(vec3.fromValues(0, -1.3, 0));
-            }
-            else {
-                MV.translate(vec3.fromValues(0, 1.3, 0));
-            }
-
-            gl.uniform3fv(prog.getHandle("kdFront"), colors["grey"]);
-            for(var i = -1.3; i < 2; i += 2.6) {
-                for(var j = -1.3; j < 2; j += 2.6) {
-                    MV.pushMatrix();
-                    MV.translate(vec3.fromValues(i, 0, j));
-                    gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-                    sphere.draw(prog);
-                    MV.popMatrix();
-                }
-            }
-            gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-            gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
-            sphere.draw(prog);
-            MV.popMatrix();
-        }
-
-        // draw middle
-        gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
-        for(var i = 0; i < 2; i ++) {
-            for(var j = -1.3; j < 2; j += 2.6) {
-                MV.pushMatrix();
-                if(i == 0) {
-                    MV.translate(vec3.fromValues(0, 0, j));
-                }
-                else {
-                    MV.translate(vec3.fromValues(j, 0, 0));
-                }
-                gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-                sphere.draw(prog);
-                MV.popMatrix();
-            }
-        }
-
-        MV.popMatrix();*/
     }
 
     this.name = "Face-Centered Cubic";

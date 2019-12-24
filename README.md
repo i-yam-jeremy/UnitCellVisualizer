@@ -22,3 +22,7 @@ Keystroke controls.
 Incorporated Sodium Chloride and Calcium Fluoride options. Updated UI to use
 buttons on the screen, and dropdowns. Refactoring of code to make it easier to
 add more lattices in the future.
+- Jeremy Berchtold: Added HCP lattice. Improved UI/UX by using fullscreen
+viewport with overlays. Reduced number of key commands and replaced with visual
+controls to improve ease of use. Fixed FCC coloring to show layering along 111
+ plane.

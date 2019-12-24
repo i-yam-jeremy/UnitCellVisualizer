@@ -214,11 +214,40 @@ function FaceCentered(eighth, half, sphere, colors) {
         return layers;
     }
 
+    this._drawSphere = function(MV, prog, pos, colorName) {
+      gl.uniform3fv(prog.getHandle("kdFront"), colors[colorName]);
+      MV.pushMatrix();
+      MV.translate(pos);
+      gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
+      sphere.draw(prog);
+      MV.popMatrix();
+
+      gl.uniform1f(prog.getHandle("alpha"), 1.0);
+    };
+
     this.drawSingle = function(MV, prog, scale) {
         MV.pushMatrix();
         MV.scale(scale);
 
-        // draw top & bottom
+        this._drawSphere(MV, prog, vec3.fromValues(-1.3, -1.3, -1.3), "grey");
+
+        this._drawSphere(MV, prog, vec3.fromValues(-1.3, -1.3, 1.3), "red");
+        this._drawSphere(MV, prog, vec3.fromValues(1.3, -1.3, -1.3), "red");
+        this._drawSphere(MV, prog, vec3.fromValues(-1.3, 1.3, -1.3), "red");
+        this._drawSphere(MV, prog, vec3.fromValues(0, 0, -1.3), "red");
+        this._drawSphere(MV, prog, vec3.fromValues(-1.3, 0, 0), "red");
+        this._drawSphere(MV, prog, vec3.fromValues(0, -1.3, 0), "red");
+
+        this._drawSphere(MV, prog, vec3.fromValues(1.3, -1.3, 1.3), "blue");
+        this._drawSphere(MV, prog, vec3.fromValues(-1.3, 1.3, 1.3), "blue");
+        this._drawSphere(MV, prog, vec3.fromValues(1.3, 1.3, -1.3), "blue");
+        this._drawSphere(MV, prog, vec3.fromValues(1.3, 0, 0), "blue");
+        this._drawSphere(MV, prog, vec3.fromValues(0, 0, 1.3), "blue");
+        this._drawSphere(MV, prog, vec3.fromValues(0, 1.3, 0), "blue");
+
+        this._drawSphere(MV, prog, vec3.fromValues(1.3, 1.3, 1.3), "grey");
+
+        /*// draw top & bottom
         for(var layer = 0; layer < 2; layer++) {
             MV.pushMatrix();
             if(layer == 0) {
@@ -261,7 +290,7 @@ function FaceCentered(eighth, half, sphere, colors) {
             }
         }
 
-        MV.popMatrix();
+        MV.popMatrix();*/
     }
 
     this.name = "Face-Centered Cubic";

@@ -36,8 +36,6 @@ function HCP(eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, co
 
     this.sixth = sixth;
     this.sphere = sphere;
-    this.hcpLargeFraction = hcpLargeFraction;
-    this.hcpSmallFraction = hcpSmallFraction;
     this.colors = colors;
     this.frame = 0;
 
@@ -79,7 +77,9 @@ function HCP(eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, co
       if (level !== -1 && level !== 2) {
         for (let i = 0; i < 3; i++) {
           const radius = 1.15;
-          this._drawSphere(MV, prog, vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)));
+          this._drawLargeSphereFraction(MV, prog,
+            vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)),
+            -120*i + 60);
         }
       }
 
@@ -124,9 +124,14 @@ function HCP(eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, co
       this._drawSixth(MV, prog, 240, rotZ, pos);
     }
 
-    this._drawSphere = function(MV, prog, pos) {
-      this._drawHalfSphere(MV, prog, 0, pos);
-      this._drawHalfSphere(MV, prog, 180, pos);
+    this._drawLargeSphereFraction = function(MV, prog, pos, rotY) {
+      MV.pushMatrix();
+      MV.translate(pos);
+      MV.rotate(rotY, vec3.fromValues(0, 1, 0));
+      MV.rotate(90, vec3.fromValues(1, 0, 0));
+      gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
+      hcpLargeFraction.draw(prog);
+      MV.popMatrix();
     }
 
     this.drawCoord = function(MV, prog, scale) {

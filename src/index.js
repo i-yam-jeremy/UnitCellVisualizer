@@ -6,7 +6,6 @@ import {Scene, User} from './UI';
 import {initGL} from './webgl-utils.js';
 import {HCPHighlightType} from './lattices/hcpHighlightType.js';
 import {ViewMode} from './UI/viewMode.js';
-import {CoordCheck} from './UI/CoordCheck.js';
 
 var gl;
 var prog;
@@ -191,18 +190,9 @@ $(document).ready(() => {
     setHCPMenusVisibility(Scene.whichCrystal === '6' && Scene.viewMode === ViewMode.UNIT_CELL);
   });
   $('#coordViewMode').change(() => {
-    if (CoordCheck.checkCoord($('#crystalSelector').val())) {
-      $('#expansionSlider').val(0);
-      Scene.setViewMode(ViewMode.COORD);
-      setHCPMenusVisibility(Scene.whichCrystal === '6' && Scene.viewMode === ViewMode.UNIT_CELL);
-    }
-    else {
-      $('#coordViewMode').prop('checked', false);
-      $('#expansionSlider').val(0);
-      Scene.setViewMode(ViewMode.UNIT_CELL);
-      setHCPMenusVisibility(Scene.whichCrystal === '6' && Scene.viewMode === ViewMode.UNIT_CELL);
-      $('#unitCellViewMode').prop('checked', true);
-    }
+    $('#expansionSlider').val(0);
+    Scene.setViewMode(ViewMode.COORD);
+    setHCPMenusVisibility(Scene.whichCrystal === '6' && Scene.viewMode === ViewMode.UNIT_CELL);
   });
   $('#singleViewMode').change(() => {
     $('#expansionSlider').val(0);

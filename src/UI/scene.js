@@ -19,36 +19,40 @@ let Scene = {
 
         this.sixth.loadMesh(resourceDir + "sixth.obj");
 
+        this.hcpLargeFraction.loadMesh(resourceDir + "hcp-large-fraction.obj");
+        this.hcpSmallFraction.loadMesh(resourceDir + "hcp-small-fraction.obj");
+
         // Setup colors
         this.setupColors();
 
         var crystal;
 
-        crystal = new Crystal(CrystalType.SIMPLE, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
+        crystal = new Crystal(CrystalType.SIMPLE, this.eighth, null, this.half, this.sphere, null, null, this.colors);
         crystal.init();
         this.crystals.push(crystal);
 
-        crystal = new Crystal(CrystalType.BODY, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
+        crystal = new Crystal(CrystalType.BODY, this.eighth, null, this.half, this.sphere, null, null, this.colors);
         crystal.init();
         this.crystals.push(crystal);
 
-        crystal = new Crystal(CrystalType.FACE, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
+        crystal = new Crystal(CrystalType.FACE, this.eighth, null, this.half, this.sphere, null, null, this.colors);
         crystal.init();
         this.crystals.push(crystal);
 
-        crystal = new Crystal(CrystalType.NaCl, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
+        crystal = new Crystal(CrystalType.NaCl, this.eighth, null, this.half, this.sphere, null, null, this.colors);
         crystal.init();
         this.crystals.push(crystal);
 
-        crystal = new Crystal(CrystalType.CaF2, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
+        crystal = new Crystal(CrystalType.CaF2, this.eighth, null, this.half, this.sphere, null, null, this.colors);
         crystal.init();
         this.crystals.push(crystal);
 
-        crystal = new Crystal(CrystalType.LEGEND, this.eighth, null, this.half, this.sphere, this.colors, dispSelector);
+        crystal = new Crystal(CrystalType.LEGEND, this.eighth, null, this.half, this.sphere, null, null, this.colors);
         crystal.init();
         this.crystals.push(crystal);
 
-        crystal = new Crystal(CrystalType.HCP, null, this.sixth, null, this.sphere, this.colors, dispSelector);
+        crystal = new Crystal(CrystalType.HCP, null, this.sixth, null, this.sphere, this.hcpLargeFraction,
+           this.hcpSmallFraction, this.colors, dispSelector);
         crystal.init();
         this.crystals.push(crystal);
     },
@@ -149,6 +153,8 @@ let Scene = {
     sixth : new Shape(),
     half : new Shape(),
     sphere : new Shape(),
+    hcpLargeFraction: new Shape(),
+    hcpSmallFraction: new Shape(),
     crystals : new Array(),
     colors : {},
     isCoord : false,

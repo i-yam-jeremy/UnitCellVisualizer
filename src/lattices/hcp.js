@@ -30,12 +30,14 @@ const ring2Mask = [
   [0, 0, 0, 1, 1, 1],
 ];
 
-function HCP(eighth, sixth, half, sphere, colors) {
+function HCP(eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, colors) {
 
     this.prototype = new UnitCell(eighth, half, sphere, colors);
 
     this.sixth = sixth;
     this.sphere = sphere;
+    this.hcpLargeFraction = hcpLargeFraction;
+    this.hcpSmallFraction = hcpSmallFraction;
     this.colors = colors;
     this.frame = 0;
 

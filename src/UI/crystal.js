@@ -8,7 +8,7 @@ var CrystalType = {SIMPLE : 0, BODY : 1, FACE : 2 , NaCl : 3, CaF2: 4, LEGEND : 
 
 const MAX_UNIT_CELL_MODE_EXPANSION = 4.0;
 
-function Crystal(type, eighth, sixth, half, sphere, colors) {
+function Crystal(type, eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, colors) {
 
     this.init = function() {
         this.initCellPositions();
@@ -40,7 +40,7 @@ function Crystal(type, eighth, sixth, half, sphere, colors) {
             break;
 
             case CrystalType.HCP:
-                unit = new HCP(eighth, sixth, half, sphere, colors);
+                unit = new HCP(eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, colors);
             break;
         }
 

@@ -80,6 +80,9 @@ function HCP(eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, co
           this._drawLargeSphereFraction(MV, prog,
             vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)),
             -120*i + 60);
+          this._drawSmallSphereFraction(MV, prog,
+            vec3.fromValues(2*radius*Math.cos(2*Math.PI*(i+0.5)/3 + Math.PI/6), 0, 2*radius*Math.sin(2*Math.PI*(i+0.5)/3 + Math.PI/6)),
+            -120*(i+0.5) + 60);
         }
       }
 
@@ -131,6 +134,16 @@ function HCP(eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, co
       MV.rotate(90, vec3.fromValues(1, 0, 0));
       gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
       hcpLargeFraction.draw(prog);
+      MV.popMatrix();
+    }
+
+    this._drawSmallSphereFraction = function(MV, prog, pos, rotY) {
+      MV.pushMatrix();
+      MV.translate(pos);
+      MV.rotate(rotY, vec3.fromValues(0, 1, 0));
+      MV.rotate(-90, vec3.fromValues(1, 0, 0));
+      gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
+      hcpSmallFraction.draw(prog);
       MV.popMatrix();
     }
 

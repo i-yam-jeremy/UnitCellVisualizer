@@ -75,14 +75,23 @@ function HCP(eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, co
 
       gl.uniform3fv(prog.getHandle("kdFront"), colors["green"]);
       if (level !== -1 && level !== 2) {
-        for (let i = 0; i < 3; i++) {
-          const radius = 1.15;
-          this._drawLargeSphereFraction(MV, prog,
-            vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)),
-            -120*i + 60);
-          this._drawSmallSphereFraction(MV, prog,
-            vec3.fromValues(2*radius*Math.cos(2*Math.PI*(i+0.5)/3 + Math.PI/6), 0, 2*radius*Math.sin(2*Math.PI*(i+0.5)/3 + Math.PI/6)),
-            -120*(i+0.5) + 60);
+        if (ring == 2) {
+          for (let i = 0; i < 3; i++) {
+            const radius = 1.15;
+            this._drawSphere(MV, prog,
+              vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)));
+          }
+        }
+        else {
+          for (let i = 0; i < 3; i++) {
+            const radius = 1.15;
+            this._drawLargeSphereFraction(MV, prog,
+              vec3.fromValues(radius*Math.cos(2*Math.PI*i/3 + Math.PI/6), 0, radius*Math.sin(2*Math.PI*i/3 + Math.PI/6)),
+              -120*i + 60);
+            this._drawSmallSphereFraction(MV, prog,
+              vec3.fromValues(2*radius*Math.cos(2*Math.PI*(i+0.5)/3 + Math.PI/6), 0, 2*radius*Math.sin(2*Math.PI*(i+0.5)/3 + Math.PI/6)),
+              -120*(i+0.5) + 60);
+          }
         }
       }
 
@@ -125,6 +134,11 @@ function HCP(eighth, sixth, half, sphere, hcpLargeFraction, hcpSmallFraction, co
       this._drawSixth(MV, prog, 0, rotZ, pos);
       this._drawSixth(MV, prog, 120, rotZ, pos);
       this._drawSixth(MV, prog, 240, rotZ, pos);
+    }
+
+    this._drawSphere = function(MV, prog, pos) {
+      this._drawHalfSphere(MV, prog, 0, pos);
+      this._drawHalfSphere(MV, prog, 180, pos);
     }
 
     this._drawLargeSphereFraction = function(MV, prog, pos, rotY) {

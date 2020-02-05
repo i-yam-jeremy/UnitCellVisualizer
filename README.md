@@ -26,3 +26,13 @@ add more lattices in the future.
 viewport with overlays. Reduced number of key commands and replaced with visual
 controls to improve ease of use. Fixed FCC coloring to show layering along 111
  plane.
+
+### Installation
+```
+git clone https://github.com/i-yam-jeremy/UnitCellVisualizer.git
+cd UnitCellVisualizer
+npm install
+npm run-script build
+```
+
+The files `index.html`, `crystal.css`, and `dist/main.js` are the only files needed for the built project. Simply serve these on a web server.

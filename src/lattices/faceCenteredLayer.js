@@ -1,66 +1,119 @@
-//FCC cell layering
-function FaceCenteredLayer(rows, cols, restHeight, xexpansion, zexpansion, sphere, even, color, color2) {
+import {vec3} from '../gl-matrix';
 
-    this.reset = function() {
-        curHeight = startHeight;
-        atRest = false;
+const spherePositionsByLayer = (() => {
+  function v(x, y, z) {
+    return vec3.fromValues(1.4*x - 1.4*3, 1.4*y - 1.4*3, 1.4*z - 1.4*3);
+  }
+
+  let allSpheres = [];
+  for (let y = 0; y < 4; y++) {
+    for (let x = 0; x < 4; x++) {
+      for (let z = 0; z < 4; z++) {
+        allSpheres.push(v(2*x-1, 2*y-1, 2*z));
+      }
+    }
+  }
+
+  for (let y = 0; y < 3; y++) {
+    for (let x = 0; x < 3; x++) {
+      for (let z = 0; z < 4; z++) {
+        allSpheres.push(v(2*x, 2*y, 2*z));
+      }
+    }
+  }
+
+  for (let y = 0; y < 4; y++) {
+    for (let x = 0; x < 3; x++) {
+      for (let z = 0; z < 3; z++) {
+        allSpheres.push(v(2*x, 2*y-1, 2*z+1));
+      }
+    }
+  }
+
+  for (let y = 0; y < 3; y++) {
+    for (let x = 0; x < 4; x++) {
+      for (let z = 0; z < 3; z++) {
+        allSpheres.push(v(2*x-1, 2*y, 2*z+1));
+      }
+    }
+  }
+
+  let layers = [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ];
+
+  const planeNormal = vec3.fromValues(1,1,1);
+  for (let i = 0; i < 10; i++) {
+    const pointOnPlane = vec3.fromValues(2.8*(i+1) - 1.4*3,-1.4*3,-1.4*3);
+    const d = -vec3.dot(planeNormal, pointOnPlane);
+    for (const pos of allSpheres) {
+      if (Math.abs(vec3.dot(planeNormal, pos) - d) < 0.01) {
+        layers[9-i].push(pos);
+      }
+    }
+  }
+
+  return layers;
+})();
+
+//FCC cell layering
+function FaceCenteredLayer(sphere, totalLayerCount, layerIndex, color, expan) {
+
+    this.update = function(t, i) {
+      this.hidden = (t === this.startHeight && i !== 0);
+      curHeight = t;
     };
 
-    this.update = function() {
-        if (curHeight - speed > restHeight) {
-            curHeight -= speed;
-            
-        } else {
-            curHeight = restHeight;
-            atRest = true;
-        }
+    let logged = 0;
+
+    this._drawSphere = function(MV, prog, pos) {
+      MV.pushMatrix();
+      MV.translate(pos);
+      gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
+      sphere.draw(prog);
+      MV.popMatrix();
+
+      gl.uniform1f(prog.getHandle("alpha"), 1.0);
     };
 
     this.draw = function(MV, prog) {
+        if (this.hidden) return;
 
         gl.uniform1f(prog.getHandle("alpha"), 1.0);
-            
-        for(var i = 0; i < rows; i++) {
-            for(var j = 0; j < cols; j++) {
-                var modVal = (even ? 0 : 1);
+        gl.uniform3fv(prog.getHandle("kdFront"), color);
 
-                //different layers decide whether even atoms are rendered or odd atoms
-                if((i + j) % 2 == modVal) {
-                    var rowColor = color;
-                    if(i % 2 !== 0) {
-                        rowColor = color2;
-                    }
-                    var pos = vec3.fromValues(offset[0] + j*2*xexpansion, curHeight*xexpansion, offset[2] + i*2*zexpansion);
-                    MV.pushMatrix();
-                    MV.translate(pos);
-                    gl.uniform3fv(prog.getHandle("kdFront"), rowColor);
-                    gl.uniformMatrix4fv(prog.getHandle("MV"), false, MV.top());
-                    sphere.draw(prog);
-                    MV.popMatrix();
-                }
-            }
+        MV.pushMatrix();
+        MV.translate(vec3.fromValues(1.4, 1.4, 0));
+        MV.translate(vec3.fromValues(curHeight, curHeight, curHeight));
+        for (const pos of spherePositionsByLayer[layerIndex]) {
+          this._drawSphere(MV, prog, pos);
         }
+        MV.popMatrix();
     };
-    
-    this.isAtRest = function() { return atRest; };
 
-    var rows = rows;
-    var cols = cols;
-    var startHeight = 10.0;
-    var restHeight = restHeight;
-    var xexpansion = xexpansion;
-    var zexpansion = zexpansion;
+    this.startHeight = 10.0;
+    this.restHeight = 0;
     var curHeight = 10.0;
     var speed = .1;
     var atRest = false;
     var color = color;
-    var offset = vec3.fromValues(-(cols-1)*xexpansion, restHeight,-(rows-1)*zexpansion);
+    var offset = vec3.fromValues(0, 0 ,0);
     var sphere = sphere;
     var flip = false;
     var calledFlip = false;
-    var color1 = color1;
-    var color2 = color2;
     var size1 = size1;
     var size2 = size2;
     var countTimes = 0;
+    this.hidden = true;
 }
+
+export {FaceCenteredLayer};

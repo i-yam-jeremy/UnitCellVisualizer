@@ -3,3 +3,5 @@ function assert(condition, message) {
         alert(message);
     }
 }
+
+export {assert};

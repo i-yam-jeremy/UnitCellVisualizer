@@ -12,14 +12,14 @@ var vertexShaderSrc =
 	"fragNor = (MV * vec4(vertNor, 0.0)).xyz;}";
 
 
-var fragmentShaderSrc = 
+var fragmentShaderSrc =
     "precision mediump float;"+
     "varying vec3 fragPos;"+
     "varying vec3 fragNor;"+
     "uniform vec3 kdFront;"+
     "uniform vec3 kdBack;"+
     "uniform float alpha;"+
-    "void main() {"+   
+    "void main() {"+
 	"vec3 lightPos = vec3(0.0, 0.0, 0.0);"+
     "vec3 n = normalize(fragNor);"+
     "vec3 l = normalize(lightPos - fragPos);"+
@@ -31,3 +31,5 @@ var fragmentShaderSrc =
     "vec3 diffuse = ln * kd;"+
 	"vec3 color = diffuse;"+
 	"gl_FragColor = vec4(color, alpha);}";
+
+export {vertexShaderSrc, fragmentShaderSrc};

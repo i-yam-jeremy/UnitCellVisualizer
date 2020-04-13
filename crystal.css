@@ -1,5 +1,9 @@
 body {
     background: #424242;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
 }
 
 #navigation {
@@ -35,7 +39,8 @@ a:visited { text-decoration: none; color:#414141;}
     height: 840px;
     margin: auto;
     margin-top: 26px;
-    border: 2px solid #A6A6A6;
+    border: 0.1em solid #A6A6A6;
+    border-radius: 0.5em;
     background: #585858;
     position: relative;
 }
@@ -53,52 +58,22 @@ a:visited { text-decoration: none; color:#414141;}
     z-index: 15;
 }
 
-#expand {
-    margin: auto;
-    position: relative;
-    top: 20px;
-    width: 100px;
-    height: 40px;
+#expansionSliderContainer {
+  position: absolute;
+  bottom: 0;
+  right: calc(50% - 10em);
+  margin-bottom: 0.75em;
 }
 
-#contract {
-    margin: auto;
-    position: relative;
-    top: 20px;
-    width: 100px;
-    height: 40px;
+#expansionSlider {
+  margin: auto;
+  width: 20em;
 }
 
-#translucency {
-    margin: auto;
-    position: relative;
-    top: 20px;
-    width: 100px;
-    height: 40px;
-}
-
-#inspect {
-    margin: auto;
-    position: relative;
-    top: 20px;
-    width: 100px;
-    height: 40px;
-}
-
-#layer {
-    margin: auto;
-    position: relative;
-    top: 20px;
-    width: 100px;
-    height: 40px;
-}
-
-#coordination {
-    margin: auto;
-    position: relative;
-    top: 20px;
-    width: 100px;
-    height: 40px;
+#expansionSliderLabel {
+  font-size: 1.5em;
+  text-align: center;
+  padding-bottom: 0.75em;
 }
 
 #about {
@@ -122,24 +97,28 @@ a:visited { text-decoration: none; color:#414141;}
   cursor: pointer;
   background: #FFFFFF;
   width: 600px;
-  height: 1000px;
+  height: 1200px;
   border: 4px solid #424242;
 }
 
 #canvas {
-    position: relative;
-    top: 30px;
-    margin: auto;
-    border: 4px solid #424242;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
     color: #FFFFFF;
+    width: 100%;
+    height: 100%;
 }
 
 #crystalType {
     font-size: 40px;
-    color: #A6A6A6;
     margin: 0;
-    position: relative;
+    position: absolute;
+    text-align: center;
     top: 30px;
+    width: 100vw;
 }
 
 #controlButtons {
@@ -148,8 +127,6 @@ a:visited { text-decoration: none; color:#414141;}
 }
 
 #crystalSelector {
-    position: relative;
-    top: 20px;
     width: 160px;
     height: 20px;
 }
@@ -177,6 +154,25 @@ a:visited { text-decoration: none; color:#414141;}
     height: 40px;
 }
 
+#closeAbout {
+  font-size: 3em;
+  padding: 0.5em;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: none;
+  border: none;
+}
+
+#closeAbout:hover {
+  color: #ccc;
+}
+
+#closeAbout:active {
+  color: #aaa;
+}
+
 #return {
     margin: auto;
     position: relative;
@@ -185,32 +181,93 @@ a:visited { text-decoration: none; color:#414141;}
     height: 40px;
 }
 
+#simulation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+
 #legendText {
-    width: 960px;
+    /*width: 960px;*/
     height: 0px;
     margin: auto;
     margin-top: 26px;
-    position: relative;
+    line-height: 22vh;
+    top: 50vh;
+    right: calc(50% - 31.5px);
+    position: absolute;
     z-index: 10;
     float: top;
 }
 
-#Ca {
-    position: relative;
-    bottom: 525px;
+#legendText center {
+  position: relative;
+  top: -40vh;
+  display: flex;
+  flex-direction: column;
 }
 
-#F {
-    position: relative;
-    bottom: 425px;
+#legendText center p {
+  padding: 0;
+  margin: 0;
 }
 
-#Na {
-    position: relative;
-    bottom: 300px;
+#hcpHighlightTypeSelector {
+  z-index: 20;
+  font-size: 1.5em;
+  position: absolute;
+  float: right;
+  top: 0;
+  right: 0;
+  background-color: #ccc;
+  border: 0.1em solid #444;
+  border-top: none;
+  border-right: none;
+  border-bottom-left-radius: 5px;
 }
 
-#Cl {
-    position: relative;
-    bottom: 175px;
+#hcpRingAndLevelSelector {
+  font-size: 1.5em;
+  position: absolute;
+  float: right;
+  bottom: 0;
+  right: 0;
+  background-color: #ccc;
+  border: 0.1em solid #444;
+  border-bottom: none;
+  border-right: none;
+  border-top-left-radius: 5px;
+  padding: 1em;
+}
+
+#viewModeSelector {
+  font-size: 1.5em;
+  position: absolute;
+  float: left;
+  bottom: 0;
+  left: 0;
+  background-color: #ccc;
+  border: 0.1em solid #444;
+  border-bottom: none;
+  border-left: none;
+  border-top-right-radius: 5px;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+#controlContainer {
+  z-index: 20;
+  font-size: 1.5em;
+  position: absolute;
+  float: left;
+  top: 0;
+  left: 0;
+  background-color: #ccc;
+  border: 0.1em solid #444;
+  border-top: none;
+  border-left: none;
+  border-bottom-right-radius: 5px;
+  padding-left: 1em;
+  padding-right: 1em;
 }

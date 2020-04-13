@@ -57,7 +57,7 @@
  * visible.
  */
 
-WebGLUtils = function() {
+const WebGLUtils = function() {
 
 /**
  * Creates the HTLM for a failure message
@@ -177,18 +177,24 @@ function initGL() {
 
     // Setup canvas and Intialize Gl
     var canvas = document.getElementById("canvas");
+    let gl;
     try {
         // Get context and configure viewports width & height
         gl = canvas.getContext("experimental-webgl");
         gl.viewportWidth = canvas.width;
         gl.viewportHeight = canvas.height;
     } catch (e) {
+      console.error(e);
         alert("Error with getContext");
     }
     if (!gl) {
         alert("Could not initialize WebGL");
     }
-    
+
     // Enable depth testing
     gl.enable(gl.DEPTH_TEST);
+
+    return gl;
 }
+
+export {WebGLUtils, initGL};

@@ -5,342 +5,195 @@
         <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
         <link rel="stylesheet" type="text/css" href="crystal.css">
-        <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
-        
-        <script type="text/javascript" src="src/assert.js"></script>
-        <script type="text/javascript" src="src/webgl-utils.js"></script>
-        
-        <script type="text/javascript" src="src/gl-matrix/common.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/mat3.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/mat4.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/vec2.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/vec3.js"></script>
-        <script type="text/javascript" src="src/gl-matrix/vec4.js"></script>
-        
-        <script type="text/javascript" src="src/graphics/program.js"></script>
-        <script type="text/javascript" src="src/graphics/shader.js"></script>
-        <script type="text/javascript" src="src/graphics/obj-loader.js"></script>
-        <script type="text/javascript" src="src/graphics/shape.js"></script>
-        <script type="text/javascript" src="src/graphics/matrixStack.js"></script>
-        <script type="text/javascript" src="src/graphics/stack.js"></script>
-        <script type="text/javascript" src="src/graphics/camera.js"></script>
-        <script type="text/javascript" src="src/graphics/angleAxis.js"></script>
-        
-        <script type="text/javascript" src="src/lattices/unitCell.js"></script>
-        <script type="text/javascript" src="src/lattices/simpleCubic.js"></script>
-        <script type="text/javascript" src="src/lattices/layer.js"></script>
-        <script type ="text/javascript" src="src/lattices/NaClLayer.js"></script>
-        <script type ="text/javascript" src="src/lattices/CaF2Layer.js"></script>
-        <script type="text/javascript" src="src/lattices/bodyCentered.js"></script>
-        <script type="text/javascript" src="src/lattices/faceCentered.js"></script>
-        <script type="text/javascript" src="src/lattices/sodiumChloride.js"></script>
-        <script type="text/javascript" src="src/lattices/CalciumFluoride.js"></script>
-        <script type="text/javascript" src="src/lattices/legend.js"></script>
-        <script type="text/javascript" src="src/lattices/hcp.js"></script>
-        <script type="text/javascript" src="src/lattices/faceCenteredLayer.js"></script>
-        
-        <script type="text/javascript" src="src/UI/user.js"></script>
-        <script type="text/javascript" src="src/UI/scene.js"></script>
-        <script type="text/javascript" src="src/UI/crystal.js"></script>
-        <script type="text/javascript" src="src/UI/CoordCheck.js"></script>
 
-        <script type="text/javascript">
-
-            var gl;
-            var prog;
-            var camera;
-            var sphere = new Shape();
-            var type = "";
-
-            function webGLStart() {
-
-                // Initialize scene
-                Scene.load("resources/", $('#displaySelector'));
-
-                initGL(); // sets up canvas element for webgl
-
-                gl.enable(gl.DEPTH_TEST);
-                gl.enable(gl.BLEND);
-                gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-                gl.enable(gl.CULL_FACE);
-
-
-                // Setup shader
-                prog = new Program("shader-vs", "shader-fs");
-                prog.load();
-                prog.bind();
-                prog.addHandle("vertPos", "attribute")
-                prog.addHandle("vertNor", "attribute");
-                prog.addHandle("P", "uniform");
-                prog.addHandle("MV", "uniform");
-                prog.addHandle("kdFront", "uniform");
-                prog.addHandle("alpha", "uniform");
-
-                // Setup camera
-                camera = new Camera();
-                camera.setAspect(1200.0 / 900.0);
-
-                // Setup key events
-                User.setup($('#displaySelector'), $('#crystalSelector'));
-
-                $('#aboutText').hide();
-                $('#legendText').hide(); 
-                tick();
-            }
-
-            function tick() {
-
-                requestAnimFrame(tick);
-
-                // configure gl viewport and clean buffers
-                gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-                gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-                gl.clearColor(1.0, 1.0, 1.0, 1.0);
-
-                var MV = new MatrixStack();
-                var P = new MatrixStack();
-
-                P.pushMatrix();
-                camera.applyProjectionMatrix(P);
-
-                MV.pushMatrix();
-                camera.applyViewMatrix(MV, type);
-
-                prog.bind();
-
-                gl.uniformMatrix4fv(prog.getHandle("P"), false, P.top());
-                MV.pushMatrix();
-                type = Scene.draw(MV, prog);
-                MV.popMatrix();
-
-                prog.unbind();
-
-                P.popMatrix();
-                MV.popMatrix();
-
-            }
-
-            var instructions = "mouse : rotate view\n"
-                             + "mouse + ctrl : zoom\n"
-                             + "scroll : zoom\n"
-                             + "shift (command on mac) + scroll: expand/contract\n"
-                             + "'e' : expand\n" 
-                             + "'c' : contract\n"
-                             + "'i' : inspect unit cell makeup\n"
-                             + "'t' : translucent view\n"
-                             + "'r' : coordination view\n"
-                             + "'s' : single cell view\n"
-                             + "'n' : toggle cell coloring\n"
-                             + "'l' : toggle layer animation\n"
-                             + "shift + 'l' : lattice view\n";
-
-            function instruct() {
-                alert(instructions);
-            }
-
-            function expand() {
-                Scene.expand();
-            }
-
-            function contract() {
-                Scene.contract();
-            }
-
-            function layer() {
-                goToLattice();
-                Scene.toggleLayers();
-            }
-
-
-            function goToCrystal(crystalType) {
-                if(crystalType == 5) {
-                    $('#legendText').show();
-                    $('#crystalSelector').val('-1');
-                    $('#displaySelector').hide();
-                }
-                else {
-                    $('#legendText').hide();
-                    $('#displaySelector').show();
-                }
-                Scene.goToCrystal(crystalType);
-                document.getElementById("crystalType").innerHTML = Scene.getCrystalName();
-            }
-
-            function about() {
-                if ($('#aboutText').is(":visible")) {
-                    $('#aboutText').hide();
-                    $('#simulation').show();
-                } else {
-                    $('#aboutText').show();
-                    $('#simulation').hide();
-                }
-            }
-            
-            function changeCrystal(value) {
-                goToCrystal(value);
-                if($('#displaySelector').val() == 3) {
-                    Scene.activateCoord($('displaySelector'), value);
-                }
-            }
-            
-            function showDisplay(value) {
-                if(value == "0") {
-                    goToLattice();
-                }
-                else if(value == "1") {
-                    Scene.toggleTranslucency();
-                }
-                else if(value == "2") {
-                    Scene.toggleInspection();
-                }
-                else if(value == "3") {
-                    Scene.activateCoord($('#displaySelector'), $('#crystalSelector').val());
-                }
-                else if(value == "4") {
-                    Scene.toggleSingle();
-                }
-            }
-            
-            function goToLattice() {
-                Scene.goToLattice();
-                // change display selector back to lattice
-                $('#displaySelector').val('0');
-            }
-            
-            function amuse() {
-                window.open('https://www.inorganicventures.com/fun-chemists');
-            }
-            
-            function color() {
-                Scene.toggleColor();
-            }
-
-        </script>
+        <script type="text/javascript" src="dist/main.js"></script>
 
     </head>
 
-    <body onload="webGLStart();">
-        
-        <div id="simulation">
-            
-             <div id="navigation">
-                <p>Lattice Structures</p>
-            </div>
+    <body>
 
-            <div id="cells">
-                <center>
-                    
-                    <button id="jokes" onclick="amuse()">Amuse me</button>
-                    <button id="instructions" onclick="instruct()" type="button">Key Controls</button>
-                    
-                    <select id="crystalSelector" onchange="changeCrystal(value)">
-                        <option value="-1" disabled>--- Select a Lattice ---</option>
-                        <option value="0" selected>Simple Cubic</option>
-                        <option value="1">Body-Centered Cubic</option>
-                        <option value="2">Face-Centered Cubic</option>
-                        <option value="3">Sodium Chloride</option>
-                        <option value="4">Calcium Fluoride</option>
-<!--                        <option value="6">HCP</option>-->
-                    </select>
-                    
-                    <button id="legend" onclick="goToCrystal(5)" type="button">Legend</button>
-                    <button id="about" onclick="about()" type="button">About...</button>
-                </center>
-            </div>
+      <div id="simulation">
+        <canvas id="canvas" width="900px" height="675"></canvas>
+        <div id="hcpHighlightTypeSelector">
+          <label style="display: flex; justify-content: space-between;">
+            <input id="hcpHighlightTypeHorizontal" type="radio" name="hcp-highlight-type" value="horizontal">
+            <img width="100" src="resources/hcp-horizontal-icon.png">
+          </label>
 
-            <div id="container">
-                <center>
-                    <canvas id="canvas" width="900px" height="675"></canvas>
-                    
-                    <div id="legendText">
-                        <center>
-                            <p id="Ca"><strong>Calcium</strong></p>
-                            <p id="F"><strong>Fluoride</strong></p>
-                            <p id="Na"><strong>Sodium</strong></p>
-                            <p id="Cl"><strong>Chloride</strong></p>
-                        </center>
-                    </div>
-                    <p id="crystalType">Simple Cubic</p>
-                    <p id="controlButtons">
-                        <button id="expand" onclick="expand()" type="button">Expand</button>
-                        <button id="contract" onclick="contract()" type="button">Contract</button>
-                        
-                        <select id="displaySelector" onchange="showDisplay(value)">
-                            <option selected value="0">Lattice</option>
-                            <option value="1">Translucency</option>
-                            <option value="2">Inspect</option>
-                            <option value="3">Coordination</option>
-                            <option value="4">Single</option>
-                        </select>
-                        
-                        <button id="layer" onclick="layer()" type="button">Layering</button>
-                        <button id="color" onclick="color()" type="button">Coloring</button>
-                    </p>
-                </center>
-            </div>
+          <label style="display: flex; justify-content: space-between;">
+            <input id="hcpHighlightTypeVertical" type="radio" name="hcp-highlight-type" value="vertical">
+            <img width="60" src="resources/hcp-vertical-icon.png">
+          </label>
 
+          <label style="display: flex; justify-content: space-between;">
+              <input id="hcpHighlightTypeNone" type="radio" name="hcp-highlight-type" value="vertical" checked>
+              <p style="padding: 10px; font-family: Arial; font-size: 20px;">None</p>
+          </label>
         </div>
+
+        <div id="hcpRingAndLevelSelector">
+          <div>
+            <p><label>
+              <input id="hcpShowRing-0" type="checkbox" checked>
+              Ring 0
+            </label></p>
+            <p><label>
+              <input id="hcpShowRing-1" type="checkbox" checked>
+              Ring 1
+            </label></p>
+            <p><label>
+              <input id="hcpShowRing-2" type="checkbox" checked>
+              Ring 2
+            </label></p>
+          </div>
+          <div style="border-top: 1px solid #444;">
+            <p><label>
+              <input id="hcpShowLevel--1" type="checkbox" checked>
+              Level -1
+            </label></p>
+            <p><label>
+              <input id="hcpShowLevel-0" type="checkbox" checked>
+              Level 0
+            </label></p>
+            <p><label>
+              <input id="hcpShowLevel-1" type="checkbox" checked>
+              Level 1
+            </label></p>
+            <p><label>
+              <input id="hcpShowLevel-2" type="checkbox" checked>
+              Level 2
+            </label></p>
+          </div>
+        </div>
+
+        <div id="viewModeSelector">
+          <p><label style="display: flex; justify-content: space-between;">
+            <input id="unitCellViewMode" type="radio" name="view-mode" value="unitCell">
+            Unit Cell
+          </label></p>
+          <p><label style="display: flex; justify-content: space-between;">
+            <input id="layerViewMode" type="radio" name="view-mode" value="layer" checked>
+            Layer
+          </label></p>
+          <p><label style="display: flex; justify-content: space-between;">
+            <input id="coordViewMode" type="radio" name="view-mode" value="coord">
+            Coordination
+          </label></p>
+          <p><label style="display: flex; justify-content: space-between;">
+            <input id="singleViewMode" type="radio" name="view-mode" value="single">
+            Single
+          </label></p>
+        </div>
+
+        <div id="expansionSliderContainer">
+          <div id="expansionSliderLabel">Expansion</div>
+          <input type="range" min="0" max="1" value="0" step="0.001" class="slider" id="expansionSlider">
+        </div>
+
+        <div id="controlContainer">
+          <p><h5>Lattice Structures</h5></p>
+          <select id="crystalSelector">
+              <option value="-1" disabled>--- Select a Lattice ---</option>
+              <option value="0" selected>Simple Cubic</option>
+              <option value="1">Body-Centered Cubic</option>
+              <option value="2">Face-Centered Cubic</option>
+              <option value="3">Sodium Chloride</option>
+              <option value="4">Calcium Fluoride</option>
+              <option value="6">HCP</option>
+          </select>
+          <center>
+              <p>
+                <button id="jokes">Amuse me</button>
+                <button id="instructions">Key Controls</button>
+              </p>
+              <p>
+                <button id="legend">Legend</button>
+                <button id="about">About...</button>
+              </p>
+          </center>
+        </div>
+        <div id="crystalType">Simple Cubic</div>
+        <div id="legendText">
+            <center>
+                <p id="Ca"><strong>Calcium</strong></p>
+                <p id="F"><strong>Fluoride</strong></p>
+                <p id="Na"><strong>Sodium</strong></p>
+                <p id="Cl"><strong>Chloride</strong></p>
+            </center>
+        </div>
+      </div>
+      <button id="color" style="display: none;">Coloring</button>
     <center><div id="aboutText">
+            <button id="closeAbout">X</button>
             <center><h1>About</h1></center>
             <p>
-                This is a Unit Cell Visualization simulation designed for use in 
-                CHEM 124/127 at Cal Poly. The simulation is designed with student 
-                interaction in mind, and provides many features to facilitate 
+                This is a Unit Cell Visualization simulation designed for use in
+                CHEM 124/127 at Cal Poly. The simulation is designed with student
+                interaction in mind, and provides many features to facilitate
                 student's understanding of concepts relative to lattice structures.
             </p>
             <p>
-                This is an open source project. It is developed in JavaScript, 
+                This is an open source project. It is developed in JavaScript,
                 using WebGL for all graphics. The project's code is open source
-                and currently resides 
-                <a href="https://github.com/smrtalec95/UnitCellVisualizer">on Github</a>.
+                and currently resides
+                <a href="https://github.com/i-yam-jeremy/UnitCellVisualizer">on Github</a>.
             </p>
 
             <center><h1>Contributors</h1></center>
 
             <h2>Dr. Zahra Alghoul</h2>
             <p>
-                Initial project specifications, and Chemistry knowledge. Ensured the 
-                simulation's displays were accurate to their real world 
+                Initial project specifications, and Chemistry knowledge. Ensured the
+                simulation's displays were accurate to their real world
                 counterparts. Specified simulation features.
             </p>
 
             <h2>Dr. Zoe Wood</h2>
             <p>
-                Initial project specifications, and Graphics 
-                knowledge. Oversaw Corbin's work on the simulation as his senior 
-                project advisor, as well as oversaw Alec's work on the simulation 
+                Initial project specifications, and Graphics
+                knowledge. Oversaw Corbin's work on the simulation as his senior
+                project advisor, as well as oversaw Alec's work on the simulation
                 as his final project for CPE 471, Into to Computer Graphics.
             </p>
 
             <h2>Corbin Gruber</h2>
             <p>
-                Initial project design and implementation. Created initial design 
+                Initial project design and implementation. Created initial design
                 for the simulation. Implementation and testing. Created the SC, BCC,
-                and FCC simulations, along with expand, contract, rotations, 
-                zooming, translucency, inspection, and layering views. Original 
-                control schema involving primarily keystroke controls, along with 
+                and FCC simulations, along with expand, contract, rotations,
+                zooming, translucency, inspection, and layering views. Original
+                control schema involving primarily keystroke controls, along with
                 mouse movement for rotating the views.
             </p>
 
             <h2>Alec James</h2>
             <p>
-                Updated project design and implementation. Added on 
-                Sodium Chloride and Calcium Fluoride along with all features 
-                implemented by Corbin in the simple crystal types. Added on 
-                coordination number views for the simple crystal types. Updated 
+                Updated project design and implementation. Added on
+                Sodium Chloride and Calcium Fluoride along with all features
+                implemented by Corbin in the simple crystal types. Added on
+                coordination number views for the simple crystal types. Updated
                 control schema using buttons and dropdowns for easier navigation
                 and control, as well as improved zooming and expand/contract controls.
                 Added option to change lattice coloring to deactivated, colored
                 fractional atoms (on FCC), and deactivate ions (for NaCl and CaF2).
             </p>
 
+            <h2>Jeremy Berchtold</h2>
+            <p>
+              Added HCP lattice with custom controls allowing users to better inspect the cells by showing/hiding some.
+              Improved UI/UX by using fullscreen viewport with overlays.
+              Reduced the number of key commands and replaced with visual controls to improve
+              ease of use. Added expansion slider to control expansion with a visual control. Fixed
+              FCC coloring to show layering. Implemented FCC layering along the 111 plane.
+            </p>
+
             <center><h1>Special thanks</h1></center>
             <p>
-                Thanks to Dr. Gregory Scott for putting the simulation under 
+                Thanks to Dr. Gregory Scott for putting the simulation under
                 Cal Poly's chemistry department site, and keeping it updated for
                 all future modifications.
             </p>
-            <button id="return" onclick="about()">Return</button>
+            <button id="return">Return</button>
         </div></center>
 
 </body>

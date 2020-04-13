@@ -1,13 +1,5 @@
-(function (scope, undefined) {
-  'use strict';
 
   var OBJ = {};
-
-  if (typeof module !== 'undefined') {
-    module.exports = OBJ;
-  } else {
-    scope.OBJ = OBJ;
-  }
 
   /**
    * The main Mesh class. The constructor will parse through the OBJ file data
@@ -207,12 +199,12 @@
         }
 
         // This is modified
-        return { verts : unpacked.verts, 
+        return { verts : unpacked.verts,
                  norms : unpacked.norms,
                  indices : unpacked.indices };
 
     }
-    
+
     var Ajax = function(){
       // this is just a helper class to ease ajax calls
     var _this = this;
@@ -385,5 +377,5 @@
     gl.deleteBuffer(mesh.vertexBuffer);
     gl.deleteBuffer(mesh.indexBuffer);
   }
-})(this);
 
+export {OBJ};

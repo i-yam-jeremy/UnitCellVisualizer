@@ -8,7 +8,7 @@ lattices for the 3 basic cubic types and a few ionic compounds, a visual
 representation of how the unit cell makes the whole lattice, and coordination number views.
 The simulation is designed to be easy to use and interesting to look at.
 The simulation is written in JavaScript and uses WebGL to handle graphics.
-The simulation is currently available at http://atom.calpoly.edu/crystal .
+The simulation is currently available at https://i-yam-jeremy.github.io/UnitCellVisualizer/ .
 
 ### Design Credit
 

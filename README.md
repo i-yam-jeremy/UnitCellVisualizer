@@ -20,6 +20,7 @@ DOI: [10.1021/acs.jchemed.9b01207](https://doi.org/10.1021/acs.jchemed.9b01207)
 - **Dr. Zahra Alghoul:** Initial specifications and chemistry knowledge.
 - **Dr. Zoe Wood:** Graphics knowledge. Oversaw development on the simulation as part of
 Corbin's senior project, as well as Alec's final project for Intro to Graphics.
+- **Dr. Gregory Scott:** Oversaw Jeremy's work and contribued to the dissemination.
 - **Corbin Gruber:** Initial simulation design. Lattice layering animation and unit
 cell drawings for the 3 basic lattices. Inspection and translucency features.
 Keystroke controls.
@@ -31,7 +32,6 @@ add more lattices in the future.
 viewport with overlays. Reduced number of key commands and replaced with visual
 controls to improve ease of use. Fixed FCC coloring to show layering along 111
  plane.
-- **Dr. Gregory Scott:** Oversaw Jeremy's work and contribued to the dissemination.
 
 ### Installation
 ```

@@ -1,6 +1,6 @@
 # UnitCellVisualizer
 
-This is an open-source lattice structure and unit cell simulation. It is designed for use
+&nbsp;&nbsp;&nbsp;&nbsp;This is an open-source lattice structure and unit cell simulation. It is designed for use
 in CHEM 124/127 at California Polytechnic State University, San Luis Obispo.
 The simulation has multiple features to facilitate learning of concepts
 in a lattice structures unit in a general chemistry course, such as generating
@@ -9,6 +9,11 @@ representation of how the unit cell makes the whole lattice, and coordination nu
 The simulation is designed to be easy to use and interesting to look at.
 The simulation is written in JavaScript and uses WebGL to handle graphics.
 The simulation is currently available at https://i-yam-jeremy.github.io/UnitCellVisualizer/ .
+
+### Citation
+Corbin Gruber, Alec James, Jeremy T. Berchtold, Zoe J. Wood, Gregory E. Scott, and Zahra Alghoul  
+Journal of Chemical Education 2020 97 (7), 2020-2024  
+DOI: [10.1021/acs.jchemed.9b01207](https://doi.org/10.1021/acs.jchemed.9b01207)
 
 ### Design Credit
 
@@ -26,6 +31,7 @@ add more lattices in the future.
 viewport with overlays. Reduced number of key commands and replaced with visual
 controls to improve ease of use. Fixed FCC coloring to show layering along 111
  plane.
+- **Dr. Gregory Scott:** Oversaw Jeremy's work and contribued to the dissemination.
 
 ### Installation
 ```
